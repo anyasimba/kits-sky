@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "sky/*": ["src/*"],
+            "extensions/*": ["extensions/*"],
+            "extras/*": ["extras/*"],
+        },
+        "allowUmdGlobalAccess": true,
+        "target": "es5",
+        "module": "commonjs",
+        "strict": false,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "jsx": "react",
+        "lib": [
+            "esnext",
+            "dom"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ],
+}

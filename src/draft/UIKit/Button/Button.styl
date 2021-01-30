@@ -1,0 +1,23 @@
+// production
+@require('../styles/@base')
+@require('../styles/@ui')
+
+.Button {
+    -default-ui()
+    &_size_small {
+        -small-ui()
+    }
+    &_size_big {
+        -big-ui()
+    }
+    &_angulate {
+        border-radius: 0    
+    }
+
+    background: white;
+    color: black;
+
+    &:hover, &.active {
+        background: cyan;
+    }
+}
