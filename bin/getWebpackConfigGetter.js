@@ -9,7 +9,11 @@ module.exports = (module, mode, cwd, globalPackages) => {
     const resolve = {
         fallback: {},
         extensions: ['.ts', '.tsx', '.js'],
-        modules: ['node_modules', 'src'],
+        modules: ['node_modules', cwd],
+        alias: {
+            sky: path.resolve(__dirname, '../src'),
+            extensions: path.resolve(__dirname, '../extensions'),
+        },
     }
 
     globalPackages.forEach(
@@ -26,18 +30,18 @@ module.exports = (module, mode, cwd, globalPackages) => {
             enforce: 'pre',
             use: ['cache-loader', 'eslint-loader'],
             exclude: ['/node_modules/', '/dist/'],
-            include: [/src/, /extras/],
+            include: [/src/, /extras/, cwd],
         },
         {
             test: /\.tsx?$/,
             use: ['cache-loader', 'ts-loader'],
             exclude: '/node_modules/',
-            include: [/src/, /extras/],
+            include: [/src/, /extras/, cwd],
         },
         {
-            test: /\.scss$/,
+            test: /\.css$/,
             use: ['cache-loader', 'style-loader', 'css-loader?modules'],
-            include: [/src/, /extras/],
+            include: [/src/, /extras/, cwd],
         },
     ]
 
@@ -53,7 +57,7 @@ module.exports = (module, mode, cwd, globalPackages) => {
             stats: 'minimal',
             mode,
             entry: {
-                app: ['webpack-hot-middleware/client', './src', './extras/client', client],
+                app: ['webpack-hot-middleware/client', './extras/client', client],
             },
             resolve,
             context: path.resolve(__dirname, '../'),
@@ -84,7 +88,7 @@ module.exports = (module, mode, cwd, globalPackages) => {
             stats: 'minimal',
             mode,
             entry: {
-                app: ['./src', './extras/server'],
+                app: ['./extras/server', server],
             },
             resolve,
             context: path.resolve(__dirname, '../'),

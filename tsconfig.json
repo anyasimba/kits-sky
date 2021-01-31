@@ -3,8 +3,6 @@
         "baseUrl": ".",
         "paths": {
             "sky/*": ["src/*"],
-            "extensions/*": ["extensions/*"],
-            "extras/*": ["extras/*"],
         },
         "allowUmdGlobalAccess": true,
         "target": "es5",
@@ -12,13 +10,17 @@
         "strict": false,
         "experimentalDecorators": true,
         "sourceMap": true,
+        "esModuleInterop": true,
         "jsx": "react",
         "lib": [
             "esnext",
-            "dom"
+            "dom",
         ]
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "bin/native",
+        "src/experimental",
+        "src/draft"
     ],
 }

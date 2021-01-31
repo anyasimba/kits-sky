@@ -4,13 +4,22 @@
 			"path": "."
 		},
 		{
+			"path": "src\\extensions"
+		},
+		{
 			"path": "src\\draft"
 		},
 		{
 			"path": "src\\experimental"
 		},
 		{
+			"path": "src\\standard"
+		},
+		{
 			"path": "src\\common"
+		},
+		{
+			"path": "playrooms"
 		}
 	],
 	"settings": {}

@@ -6,5 +6,6 @@
         "build": "sky build --mode production",
         "build:dev": "sky build --mode development"
     },
+    "server": true,
     "html:title": "Common"
 }

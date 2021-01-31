@@ -10,4 +10,10 @@ declare global {
 
     interface childProcess extends _.childProcess {}
     const childProcess: childProcess
+
+    interface http extends _.http {}
+    const http: http
+
+    interface https extends _.https {}
+    const https: https
 }
