@@ -1,6 +1,4 @@
 // TODO
-// Наследование
-// Эффекты (включая useEffect с эффектом)
 // Взаимосвязи
 // Экшены и синхронизация
 
@@ -12,6 +10,8 @@ console.log('No worries!')
 
 declare global {
     const HakunaMatata: typeof _.HakunaMatata & typeof _.HakunaMatataClass
+    const Effect: typeof _.Effect
+    type PureEffect = _.PureEffect
 
     const Self: typeof _.Self
 }

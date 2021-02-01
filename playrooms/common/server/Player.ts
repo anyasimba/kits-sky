@@ -1,4 +1,3 @@
-import './experimental'
 import { Room } from './Room'
 
 let id_ = 0

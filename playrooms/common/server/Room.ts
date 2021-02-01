@@ -1,4 +1,3 @@
-import './experimental'
 import { Player } from './Player'
 export type Room = {
     addPlayer(player: Player)

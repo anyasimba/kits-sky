@@ -24,13 +24,18 @@ export function HakunaMatata<T extends (...args: any[]) => any>(
         Object.setPrototypeOf(hakunaMatata, currentHakunaMatataInterface)
         global.useEffect = savedUseEffect
 
-        effectsRef.value.forEach(effect => {
-            const destructor = effect()
-            if (destructor) {
-                hakunaMatata[$$destructors].push(destructor)
+        effectsRef.effects.forEach(effect => {
+            if (_.isFunction(effect)) {
+                const destructor = effect()
+                if (destructor) {
+                    hakunaMatata[$$destructors].push(destructor)
+                }
+                return
             }
+
+            hakunaMatata.addEffect(effect)
         })
-        effectsRef.value = []
+        effectsRef.effects = []
 
         return hakunaMatata
     }

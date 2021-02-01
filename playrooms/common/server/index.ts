@@ -1,5 +1,7 @@
 import 'sky/standard/base'
 import 'sky/extensions/socket.io'
+import 'sky/common/HakunaMatata'
+
 import { Player } from './Player'
 import { Room } from './Room'
 

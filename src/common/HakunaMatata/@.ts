@@ -1,5 +1,7 @@
 export { collectGarbage } from './_collectGarbage'
+export { Effect } from './_Effect'
 export { HakunaMatata as HakunaMatataClass } from './HakunaMatata'
 export { useEffect } from './_hooks'
+export { PureEffect } from './_PureEffect'
 export { HakunaMatata } from './_HakunaMatataCreator'
 export { Self } from './_Self'
