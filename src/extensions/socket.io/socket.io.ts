@@ -1,1 +1,1 @@
-export { default as Io } from 'socket.io'
+export * as Io from 'socket.io'

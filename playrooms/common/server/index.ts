@@ -1,16 +1,14 @@
 import 'sky/standard/base'
 import 'sky/extensions/socket.io'
-const server = http.createServer()
-const io = Io(server, {
-    cors: {
-        origin: '*',
-    },
-})
-io.on('connection', socket => {
-    socket.on('test', (data, ...args) => {
-        console.log(data, ...args)
-    })
-    socket.emit('hello', 1, 2, 3)
+import { Player } from './Player'
+import { Room } from './Room'
+
+const io = new Io.Server(80, { cors: { origin: '*' } })
+
+io.on('connect', socket => {
+    // eslint-disable-next-line no-console
+    console.log('client connected')
+    Player({ socket, room })
 })
 
-server.listen(80)
+const room = Room()

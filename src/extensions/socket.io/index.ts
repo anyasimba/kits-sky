@@ -1,16 +1,11 @@
-import { Server } from 'http'
 import * as _ from './socket.io'
 globally(_)
 
 declare global {
-    interface Socket {
-        on(event: string, callback: (...args: any[]) => void)
-        on(event: 'connection', callback: (socket: Socket) => void)
-        emit(event: string, ...args: any[])
-        send(...args: any[])
+    namespace Io {
+        type Server = _.Io.Server
+        type Namespace = _.Io.Namespace
+        type Socket = _.Io.Socket
     }
-
-    const Io: {
-        (server: Server, options: Partial<_.Io.ServerOptions>): Socket
-    }
+    const Io: typeof _.Io
 }
