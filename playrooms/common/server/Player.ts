@@ -1,3 +1,4 @@
+import { EventListener } from 'sky/common/effects/effects'
 import { Room } from './Room'
 
 let id_ = 0
@@ -36,19 +37,12 @@ export const Player = HakunaMatata((props: PlayerProps) => {
     let life = 100
 
     useEffect(() => {
-        socket.on('move', move)
-        room.addPlayer(self)
-
-        const onSocketDisconnect = () => room.removePlayer(self as Player)
-        socket.on('disconnect', onSocketDisconnect)
-
-        return () => {
-            socket.off('move', move)
-            socket.off('disconnect', onSocketDisconnect)
-            setTimeout(() => {
-                Player({ socket, room })
-            }, 500)
-        }
+        self.addEffect(EventListener(socket, 'disconnect', () => self.destroy()))
+        self.addEffect(
+            Interval(() => {
+                console.log('interval', Math.random())
+            }, 0.1)
+        )
     })
 
     const move = () => {

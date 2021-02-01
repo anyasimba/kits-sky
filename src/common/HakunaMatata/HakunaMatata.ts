@@ -8,12 +8,21 @@ export const $$destructors = Symbol('destructor')
 export const $$dead = Symbol('dead')
 
 export type IHakunaMatata = {
+    readonly dead
     add(hakunaMatata: IHakunaMatata): IHakunaMatata
     remove(hakunaMatata: IHakunaMatata)
     destroy()
 }
 export const HakunaMatata = function () {
-    const self: IHakunaMatata = {} as any
+    type HakunaMatata = {
+        readonly dead
+        add(hakunaMatata: HakunaMatata): HakunaMatata
+        remove(hakunaMatata: HakunaMatata)
+        addEffect(effect: IEffect | PureEffect)
+        removeEffect(effect: IEffect | PureEffect)
+        destroy()
+    }
+    const self: HakunaMatata = {} as any
 
     const hakunaMatatas: IHakunaMatata[] = []
     const effects: IEffect[] | (() => void) = []
@@ -39,7 +48,7 @@ export const HakunaMatata = function () {
         return hakunaMatata
     }
 
-    const remove = (hakunaMatata: IHakunaMatata) => {
+    const _remove = (hakunaMatata: IHakunaMatata) => {
         --hakunaMatata[$$links]
         const purgatory = purgatoryRef.hakunaMatataPurgatory
         if (hakunaMatata[$$links] === 0) {
@@ -53,6 +62,10 @@ export const HakunaMatata = function () {
                 }
             }
         }
+    }
+
+    const remove = (hakunaMatata: IHakunaMatata) => {
+        _remove(hakunaMatata)
         hakunaMatatas.splice(hakunaMatatas.indexOf(hakunaMatata))
     }
 
@@ -72,9 +85,9 @@ export const HakunaMatata = function () {
         return effect
     }
 
-    const removeEffect = (effect: IEffect | (() => void)) => {
+    const _removeEffect = (effect: IEffect | (() => void)) => {
         if (_.isFunction(effect)) {
-            effects.splice(effects.indexOf(effect))
+            effect()
             return
         }
         --effect[$$effectLinks]
@@ -90,18 +103,29 @@ export const HakunaMatata = function () {
                 }
             }
         }
+    }
+
+    const removeEffect = (effect: IEffect | (() => void)) => {
+        if (_.isFunction(effect)) {
+            effect()
+            effects.splice(effects.indexOf(effect))
+            return
+        }
+        _removeEffect(effect)
         effects.splice(effects.indexOf(effect))
     }
 
     const destroy = () => {
         dead = true
-        self[$$detach].forEach(([hakunaMatata, fn]) => {
+        detach.forEach(([hakunaMatata, fn]) => {
             if (!hakunaMatata.dead) {
                 fn()
             }
         })
-        hakunaMatatas.forEach(hakunaMatata => remove(hakunaMatata))
-        effects.forEach(effect => removeEffect(effect))
+        hakunaMatatas.forEach(hakunaMatata => _remove(hakunaMatata))
+        effects.forEach(effect => {
+            _removeEffect(effect)
+        })
         destructors.forEach(destructor => destructor())
     }
 
