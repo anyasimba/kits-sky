@@ -1,15 +1,34 @@
-import { Live, live, Self } from './experimental'
+import './experimental'
 import { Room } from './Room'
 
 let id_ = 0
 
-interface PlayerProps {
+type PlayerProps = {
     socket: Io.Socket
     room: Room
 }
-export type Player = Live<typeof Player>
-export const Player = live((props: PlayerProps) => {
-    const self = Self(Player)
+export type Player = {
+    readonly id: number
+    life: number
+    move(): void
+    fire(player: Player): void
+    notify(player: Player, params: { [key: string]: any })
+}
+export const Player = HakunaMatata((props: PlayerProps) => {
+    const self = Self(HakunaMatata, () => ({
+        get id() {
+            return id
+        },
+        get life() {
+            return life
+        },
+        set life(value) {
+            setLife(value)
+        },
+        move,
+        fire,
+        notify,
+    }))
 
     const { socket, room } = props
 
@@ -54,19 +73,5 @@ export const Player = live((props: PlayerProps) => {
         socket.emit('notify', player.id, params)
     }
 
-    return class Player extends Live {
-        get id() {
-            return id
-        }
-
-        get life() {
-            return life
-        }
-        set life(value) {
-            setLife(value)
-        }
-        move = move
-        fire = fire
-        notify = notify
-    }
+    return self
 })

@@ -1,9 +1,16 @@
-import { Live, live, Self } from './experimental'
+import './experimental'
 import { Player } from './Player'
-
-export type Room = Live<typeof Room>
-export const Room = live(() => {
-    const self = Self(Room)
+export type Room = {
+    addPlayer(player: Player)
+    removePlayer(player: Player)
+    notify(sourcePlayer: Player, params: { [key: string]: any })
+}
+export const Room = HakunaMatata(() => {
+    const self = Self(HakunaMatata, () => ({
+        addPlayer,
+        removePlayer,
+        notify,
+    }))
 
     const players: Player[] = []
 
@@ -19,9 +26,5 @@ export const Room = live(() => {
         players.forEach(player => player.notify(sourcePlayer, params))
     }
 
-    return class Room extends Live {
-        addPlayer = addPlayer
-        removePlayer = removePlayer
-        notify = notify
-    }
+    return self
 })

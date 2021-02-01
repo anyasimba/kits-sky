@@ -1,10 +1,10 @@
-export interface TiledMapPolygon {
+export type TiledMapPolygon = {
     x: number
     y: number
     polygon: Polygon
 }
 
-export interface TiledMapPoint {
+export type TiledMapPoint = {
     x: number
     y: number
     [prop: string]: string | number
