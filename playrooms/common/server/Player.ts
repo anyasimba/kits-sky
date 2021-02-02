@@ -1,4 +1,3 @@
-import { some } from 'underscore'
 import { Room } from './Room'
 
 let id_ = 0
@@ -91,7 +90,3 @@ export const Player = HakunaMatata((props: PlayerProps) => {
 
     return self
 })
-
-type Foo = (a: number, b: number) => void
-function test(foo: Foo) {}
-test(() => {})
