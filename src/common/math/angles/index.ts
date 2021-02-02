@@ -1,5 +1,5 @@
 import * as _ from './angles'
-globally(_, Math)
+globalify(_, Math)
 
 declare global {
     interface Math {

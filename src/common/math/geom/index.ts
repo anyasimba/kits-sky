@@ -2,7 +2,7 @@ import './AABB'
 import './Polygon'
 import './Polyline'
 import * as _ from './geom'
-globally(_, Math)
+globalify(_, Math)
 
 declare global {
     interface Math {

@@ -3,7 +3,7 @@ import 'sky/web'
 import 'sky/common'
 import 'sky/advanced/UIKit'
 import * as _ from './Editor2'
-globally(_, 'Advanced')
+globalify(_, 'Advanced')
 
 declare global {
     namespace Advanced {

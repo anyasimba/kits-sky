@@ -1,5 +1,5 @@
 import * as _ from './InputControls'
-globally(_)
+globalify(_)
 
 declare global {
     type InputControlsEvent = _.InputControlsEvent

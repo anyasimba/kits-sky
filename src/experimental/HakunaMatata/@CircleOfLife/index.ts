@@ -1,5 +1,5 @@
 import * as _ from './CircleOfLife'
-globally(_)
+globalify(_)
 
 declare global {
     type CircleOfLifes = _.CircleOfLifes

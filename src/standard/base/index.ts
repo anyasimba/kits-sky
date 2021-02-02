@@ -1,5 +1,5 @@
 import * as _ from './base'
-globally(_)
+globalify(_)
 
 declare global {
     interface fs extends _.fs {}

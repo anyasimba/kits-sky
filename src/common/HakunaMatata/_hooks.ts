@@ -1,6 +1,6 @@
 import { IEffect } from './_Effect'
 
-export const effectsRef: { effects: (IEffect | (() => (() => void) | void))[] } = { effects: [] }
-export function useEffect(effect: IEffect | (() => (() => void) | void)) {
+export const effectsRef: { effects: (() => (() => void) | void)[] } = { effects: [] }
+export function useEffect(effect: () => (() => void) | void) {
     effectsRef.effects.push(effect)
 }

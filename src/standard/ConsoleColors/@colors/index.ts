@@ -1,6 +1,6 @@
 // production
 import * as colors from './colors'
-globally({ colors }, console)
+globalify({ colors }, console)
 
 declare global {
     interface Console {

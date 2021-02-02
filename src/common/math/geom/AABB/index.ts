@@ -1,5 +1,5 @@
 import * as _ from './AABB'
-globally(_)
+globalify(_)
 
 declare global {
     type AABB2 = _.AABB2

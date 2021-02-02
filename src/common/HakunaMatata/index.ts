@@ -3,15 +3,19 @@
 // Экшены и синхронизация
 
 import * as _ from './@'
-globally(_)
+globalify(_)
 
 // eslint-disable-next-line no-console
 console.log('No worries!')
 
 declare global {
+    type IHakunaMatata = _.IHakunaMatata
     const HakunaMatata: typeof _.HakunaMatata & typeof _.HakunaMatataClass
-    const Effect: typeof _.Effect
+    const Effect: typeof _.Effect & typeof _.EffectClass
     type PureEffect = _.PureEffect
-
+    const asEffect: typeof _.asEffect
     const Self: typeof _.Self
+    const useRelation: typeof _.useRelation
+    type Relation = _.Relation
+    const asRelation: typeof _.asRelation
 }

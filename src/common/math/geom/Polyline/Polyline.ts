@@ -1,3 +1,3 @@
 export class Polyline {
-    points: vec2[]
+    constructor(public points: vec2[] = []) {}
 }

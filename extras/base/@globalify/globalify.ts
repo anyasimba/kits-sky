@@ -1,7 +1,7 @@
 // production
 declare const global
-export type globally = typeof globally
-export function globally(module: object, target: object | string = global) {
+export type globalify = typeof globalify
+export function globalify(module: object, target: object | string = global) {
     if (typeof target === 'string') {
         target = global[target] = global[target] || {}
     }

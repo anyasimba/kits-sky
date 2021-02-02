@@ -11,7 +11,7 @@ export type TiledMapPoint = {
 }
 
 export class TiledMap {
-    dom: Document = null
+    dom: Document
 
     polygons: TiledMapPolygon[] = []
     points: TiledMapPoint[] = []
@@ -39,17 +39,19 @@ export class TiledMap {
     private __objectGroup(node: Element) {
         for (let i = 0; i < node.children.length; i++) {
             const childNode = node.children[i]
-            const x = parseFloat(childNode.attributes.getNamedItem('x').nodeValue)
-            const y = parseFloat(childNode.attributes.getNamedItem('y').nodeValue)
-            const w = parseFloat(childNode.attributes.getNamedItem('width')?.nodeValue)
-            const h = parseFloat(childNode.attributes.getNamedItem('height')?.nodeValue)
-            if (!isNaN(w)) {
+            const x = parseFloat(childNode.attributes.getNamedItem('x')!.nodeValue!)
+            const y = parseFloat(childNode.attributes.getNamedItem('y')!.nodeValue!)
+            const itemW = childNode.attributes.getNamedItem('width')
+            const itemH = childNode.attributes.getNamedItem('height')
+            const w = itemW && parseFloat(itemW.nodeValue!)
+            const h = itemH && parseFloat(itemH.nodeValue!)
+            if (w != null) {
                 const polygon = new Polygon()
                 polygon.points = [
                     new vec2({ x: 0, y: 0 }),
                     new vec2({ x: w, y: 0 }),
-                    new vec2({ x: w, y: -h }),
-                    new vec2({ x: 0, y: -h }),
+                    new vec2({ x: w, y: -h! }),
+                    new vec2({ x: 0, y: -h! }),
                 ]
                 this.polygons.push({ x, y: -y, polygon })
             } else if (childNode.children[0].nodeName === 'polygon') {
@@ -61,7 +63,7 @@ export class TiledMap {
     }
 
     private __polygon(x: number, y: number, node: Element) {
-        const pointsStr = node.children[0].attributes.getNamedItem('points').nodeValue
+        const pointsStr = node.children[0].attributes.getNamedItem('points')!.nodeValue!
         const points = pointsStr.split(' ').map(str => {
             const [x, y] = str.split(',').map(v => parseFloat(v))
             return new vec2({ x, y: -y })
@@ -76,7 +78,7 @@ export class TiledMap {
 
         for (let i = 0; i < node.attributes.length; i++) {
             const attribute = node.attributes[i]
-            p[attribute.nodeName] = attribute.nodeValue
+            p[attribute.nodeName] = attribute.nodeValue!
         }
         p.x = x
         p.y = -y

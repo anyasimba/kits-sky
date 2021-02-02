@@ -1,5 +1,5 @@
 import * as _ from './Live'
-globally(_)
+globalify(_)
 
 declare global {
     type Live = _.Live

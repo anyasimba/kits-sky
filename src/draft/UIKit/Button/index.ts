@@ -1,6 +1,6 @@
 // production
 import * as _ from './Button'
-globally(_, 'UIKit')
+globalify(_, 'UIKit')
 
 declare global {
     namespace UIKit {

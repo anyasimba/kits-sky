@@ -21,7 +21,7 @@ namespace Global {
         @native_method('void', 'Array<vec2>') private setVertices: (vertices: vec2[]) => void
     }
 }
-globally(Global)
+globalify(Global)
 
 declare global {
     type Phys2Circle = Global.Phys2Circle

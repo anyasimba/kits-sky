@@ -1,4 +1,3 @@
-import { EventListener } from 'sky/common/effects/effects'
 import { Room } from './Room'
 
 let id_ = 0
@@ -7,15 +6,16 @@ type PlayerProps = {
     socket: Io.Socket
     room: Room
 }
-export type Player = {
+export type Player = IHakunaMatata & {
     readonly id: number
     life: number
+    room: Room | null
     move(): void
     fire(player: Player): void
     notify(player: Player, params: { [key: string]: any })
 }
 export const Player = HakunaMatata((props: PlayerProps) => {
-    const self = Self(HakunaMatata, () => ({
+    const self: Player = Self(HakunaMatata, () => ({
         get id() {
             return id
         },
@@ -25,29 +25,34 @@ export const Player = HakunaMatata((props: PlayerProps) => {
         set life(value) {
             setLife(value)
         },
+        get room() {
+            return getRoom()
+        },
+        set room(value) {
+            setRoom(value)
+        },
         move,
         fire,
         notify,
     }))
 
-    const { socket, room } = props
+    const { socket } = props
 
     const id = id_++
     let x = 0
     let life = 100
 
+    const [getRoom, setRoom] = useRelation(props.room, room => {
+        self.setRelation(room.hasPlayer(self))
+    })
+
     useEffect(() => {
         self.addEffect(EventListener(socket, 'disconnect', () => self.destroy()))
-        self.addEffect(
-            Interval(() => {
-                console.log('interval', Math.random())
-            }, 0.1)
-        )
     })
 
     const move = () => {
         ++x
-        room.notify(self, { x })
+        getRoom()?.notify(self, { x })
     }
 
     const fire = (player: Player) => {
@@ -68,3 +73,7 @@ export const Player = HakunaMatata((props: PlayerProps) => {
 
     return self
 })
+
+type Foo = (a: number, b: number) => void
+function test(foo: Foo) {}
+test(() => {})

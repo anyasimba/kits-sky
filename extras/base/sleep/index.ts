@@ -1,5 +1,5 @@
 import * as _ from './sleep'
-globally(_)
+globalify(_)
 
 declare global {
     function sleep(time: number)

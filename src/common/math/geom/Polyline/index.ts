@@ -1,5 +1,5 @@
 import * as _ from './Polyline'
-globally(_)
+globalify(_)
 
 declare global {
     type Polyline = _.Polyline

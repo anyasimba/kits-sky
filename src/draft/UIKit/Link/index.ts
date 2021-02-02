@@ -1,6 +1,6 @@
 // production
 import * as _ from './Link'
-globally(_, 'UIKit')
+globalify(_, 'UIKit')
 
 declare global {
     namespace UIKit {

@@ -1,5 +1,5 @@
 import * as _ from './socket.io'
-globally(_)
+globalify(_)
 
 declare global {
     namespace Io {

@@ -1,6 +1,6 @@
 import 'sky/experimental/HakunaMatata'
 import * as _ from './lifes'
-globally(_)
+globalify(_)
 
 declare global {
     type Timeout = _.Timeout

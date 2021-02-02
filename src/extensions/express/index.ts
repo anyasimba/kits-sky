@@ -1,5 +1,5 @@
 import * as _ from './express'
-globally(_)
+globalify(_)
 
 declare global {
     const express: typeof _.express

@@ -1,5 +1,5 @@
 import * as _ from './ease'
-globally(_, Math)
+globalify(_, Math)
 
 declare global {
     interface Math {

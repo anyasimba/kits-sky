@@ -1,6 +1,6 @@
 // production
 import * as _ from './Renderer'
-globally(_, 'Advanced')
+globalify(_, 'Advanced')
 
 declare global {
     namespace Advanced {

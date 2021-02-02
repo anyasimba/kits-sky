@@ -1,15 +1,14 @@
 export class AABB2 {
-    xb: number
-    xe: number
-    yb: number
-    ye: number
+    constructor(public xb: number, public xe: number, public yb: number, public ye: number) {}
 }
 
 export class AABB3 {
-    xb: number
-    xe: number
-    yb: number
-    ye: number
-    zb: number
-    ze: number
+    constructor(
+        public xb: number,
+        public xe: number,
+        public yb: number,
+        public ye: number,
+        public zb: number,
+        public ze: number
+    ) {}
 }

@@ -1,5 +1,5 @@
 import * as _ from './HakunaMatata'
-globally(_)
+globalify(_)
 
 declare global {
     const HakunaMatata: typeof _.HakunaMatata

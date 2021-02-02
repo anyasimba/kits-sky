@@ -1,5 +1,5 @@
 import * as _ from './Polygon'
-globally(_)
+globalify(_)
 
 declare global {
     type Polygon = _.Polygon

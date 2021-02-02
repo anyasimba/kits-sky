@@ -6,7 +6,7 @@ namespace Global {
         @native_prop('vec2') force: vec2
     }
 }
-globally(Global)
+globalify(Global)
 
 declare global {
     const Phys2Force: typeof Global.Phys2Force

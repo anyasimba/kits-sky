@@ -4,7 +4,10 @@ export const $$links = Symbol('links')
 export const $$detach = Symbol('detach')
 export const $$destructors = Symbol('destructor')
 
-export type IEffect = {}
+enum EffectType {}
+export type IEffect = {
+    [' type']?: EffectType
+}
 export const Effect = function () {
     const self: IEffect = {} as any
 

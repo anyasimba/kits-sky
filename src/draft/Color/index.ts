@@ -1,5 +1,5 @@
 import * as _ from './Color'
-globally(_)
+globalify(_)
 
 declare global {
     type Color = _.Color

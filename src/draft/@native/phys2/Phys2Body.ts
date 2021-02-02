@@ -30,7 +30,7 @@ namespace Global {
         @native_method('void', 'number') setOrient: (orient: number) => void
     }
 }
-globally(Global)
+globalify(Global)
 
 declare global {
     type Phys2Body = Global.Phys2Body

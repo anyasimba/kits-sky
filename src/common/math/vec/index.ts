@@ -1,5 +1,5 @@
 import * as _ from './vec'
-globally(_)
+globalify(_)
 
 declare global {
     type vec2 = _.vec2

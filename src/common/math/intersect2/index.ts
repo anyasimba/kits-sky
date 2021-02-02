@@ -1,5 +1,5 @@
 import * as _ from './intersect2'
-globally(_, Math)
+globalify(_, Math)
 
 declare global {
     interface Intersect2 {

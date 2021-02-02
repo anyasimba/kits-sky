@@ -7,7 +7,7 @@ export function bind<T extends Function>(
     return {
         configurable: true,
         get(this: T): T {
-            const value = descriptor.value.bind(this)
+            const value = descriptor.value!.bind(this)
             Object.defineProperty(this, propName, {
                 value,
                 configurable: true,

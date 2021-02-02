@@ -1,6 +1,6 @@
 import 'sky/common/math'
 import * as _ from './TiledMap'
-globally(_)
+globalify(_)
 
 declare global {
     type TiledMapPoint = _.TiledMapPoint

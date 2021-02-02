@@ -1,5 +1,5 @@
 import * as _ from './ConsoleColors'
-globally(_)
+globalify(_)
 
 declare global {
     function ConsoleColors(

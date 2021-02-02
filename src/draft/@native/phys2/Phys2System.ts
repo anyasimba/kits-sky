@@ -38,7 +38,7 @@ namespace Global {
         private __onRemove: (body: Phys2Body) => void
     }
 }
-globally(Global)
+globalify(Global)
 
 declare global {
     const Phys2System: typeof Global.Phys2System

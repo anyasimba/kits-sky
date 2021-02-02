@@ -7,25 +7,23 @@ export const $$detach = Symbol('detach')
 export const $$destructors = Symbol('destructor')
 export const $$dead = Symbol('dead')
 
+enum HakunaMatataType {}
 export type IHakunaMatata = {
-    readonly dead
+    ' type id'?: HakunaMatataType
+    readonly dead: boolean
     add(hakunaMatata: IHakunaMatata): IHakunaMatata
-    remove(hakunaMatata: IHakunaMatata)
-    destroy()
+    remove(hakunaMatata: IHakunaMatata): void
+    addEffect(effect: IEffect | PureEffect): void
+    removeEffect(effect: IEffect | PureEffect): void
+    setRelation(relation: Relation): void
+    destroy(): void
 }
 export const HakunaMatata = function () {
-    type HakunaMatata = {
-        readonly dead
-        add(hakunaMatata: HakunaMatata): HakunaMatata
-        remove(hakunaMatata: HakunaMatata)
-        addEffect(effect: IEffect | PureEffect)
-        removeEffect(effect: IEffect | PureEffect)
-        destroy()
-    }
-    const self: HakunaMatata = {} as any
+    const self: IHakunaMatata = {} as any
 
     const hakunaMatatas: IHakunaMatata[] = []
-    const effects: IEffect[] | (() => void) = []
+    const effects: (IEffect | (() => void))[] = []
+    const relations = {}
     let links = 0
     const detach: [IHakunaMatata, () => void][] = []
     const destructors: (() => void)[] = []
@@ -71,9 +69,8 @@ export const HakunaMatata = function () {
 
     const addEffect = (effect: IEffect | PureEffect) => {
         if (_.isFunction(effect)) {
-            const destructor = effect()
-            effects.push(destructor)
-            return destructor
+            effects.push(effect)
+            return effect
         }
         const purgatory = purgatoryRef.effectsPurgatory
         if (effect[$$effectLinks] === 0) {
@@ -115,6 +112,8 @@ export const HakunaMatata = function () {
         effects.splice(effects.indexOf(effect))
     }
 
+    const setRelation = (relation: Relation) => {}
+
     const destroy = () => {
         dead = true
         detach.forEach(([hakunaMatata, fn]) => {
@@ -140,6 +139,7 @@ export const HakunaMatata = function () {
         remove,
         addEffect,
         removeEffect,
+        setRelation,
         destroy,
         get [$$hakunaMatatas]() {
             return hakunaMatatas
@@ -156,6 +156,6 @@ export const HakunaMatata = function () {
         get [$$destructors]() {
             return destructors
         },
-    })
+    } as IHakunaMatata)
     return self
 }

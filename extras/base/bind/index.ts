@@ -1,5 +1,5 @@
 import * as _ from './bind'
-globally(_)
+globalify(_)
 
 declare global {
     type bind = _.bind

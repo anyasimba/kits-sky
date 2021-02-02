@@ -7,7 +7,7 @@ if (global.Module) {
 }
 
 import * as _ from './native'
-globally(_)
+globalify(_)
 
 declare global {
     const native: { [x: string]: any }

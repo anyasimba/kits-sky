@@ -1,6 +1,6 @@
 // production
 import * as _ from './saveFileToDisk'
-globally(_, 'Web')
+globalify(_, 'Web')
 
 declare global {
     namespace Web {
