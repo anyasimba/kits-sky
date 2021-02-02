@@ -13,10 +13,10 @@ export type IHakunaMatata = {
     readonly dead: boolean
     add(hakunaMatata: IHakunaMatata): IHakunaMatata
     remove(hakunaMatata: IHakunaMatata): void
-    addEffect(effect: IEffect | PureEffect): void
+    addEffect<T extends IEffect | PureEffect>(effect: T): T
     removeEffect(effect: IEffect | PureEffect): void
     setRelation(relation: Relation): void
-    destroy(): void
+    destroy(...args: any): void
 }
 export const HakunaMatata = function () {
     const self: IHakunaMatata = {} as any
@@ -26,7 +26,7 @@ export const HakunaMatata = function () {
     const relations = {}
     let links = 0
     const detach: [IHakunaMatata, () => void][] = []
-    const destructors: (() => void)[] = []
+    const destructors: ((...args: any[]) => void)[] = []
     let dead
 
     const purgatory = purgatoryRef.hakunaMatataPurgatory
@@ -114,7 +114,7 @@ export const HakunaMatata = function () {
 
     const setRelation = (relation: Relation) => {}
 
-    const destroy = () => {
+    const destroy = (...args: any[]) => {
         dead = true
         detach.forEach(([hakunaMatata, fn]) => {
             if (!hakunaMatata.dead) {
@@ -125,7 +125,7 @@ export const HakunaMatata = function () {
         effects.forEach(effect => {
             _removeEffect(effect)
         })
-        destructors.forEach(destructor => destructor())
+        destructors.forEach(destructor => destructor(...args))
     }
 
     Object.setPrototypeOf(self, {

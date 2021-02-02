@@ -1,3 +1,4 @@
+import { some } from 'underscore'
 import { Room } from './Room'
 
 let id_ = 0
@@ -42,12 +43,29 @@ export const Player = HakunaMatata((props: PlayerProps) => {
     let x = 0
     let life = 100
 
-    const [getRoom, setRoom] = useRelation(props.room, room => {
-        self.setRelation(room.hasPlayer(self))
+    const [getRoom, setRoom] = useRelation<Room>(props.room, room => {
+        self.setRelation(room.HasPlayer(self))
     })
 
     useEffect(() => {
-        self.addEffect(EventListener(socket, 'disconnect', () => self.destroy()))
+        self.addEffect(EventListener(socket, 'move', move))
+        self.addEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
+
+        return (by: string) => {
+            if (by !== 'socket') {
+                const room = getRoom()
+                if (room) {
+                    const recreatePlayerEffect = room.addEffect(
+                        Timeout(() => Player({ socket, room }), 0.5)
+                    )
+                    room.addEffect(
+                        EventListener(socket, 'disconnect', () => {
+                            room.removeEffect(recreatePlayerEffect)
+                        })
+                    )
+                }
+            }
+        }
     })
 
     const move = () => {

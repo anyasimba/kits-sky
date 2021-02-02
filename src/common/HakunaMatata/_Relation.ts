@@ -4,9 +4,15 @@ export type Relation = () => RelationType
 
 export function useRelation<T>(
     initialValue: T,
-    onSet: (subject: T) => void
+    set?: (subject: T) => void
 ): [() => T | null, (newValue: T | null) => void] {
-    let value: T | null = initialValue
+    let value: T | null
+    if (arguments.length === 1) {
+        set = initialValue as any
+    } else {
+        value = initialValue as T
+    }
+
     return [
         () => {
             return value
@@ -17,13 +23,14 @@ export function useRelation<T>(
             }
             if (newValue) {
                 hakunaMatataRelationRef.subject = value
-                onSet(newValue)
+                set!(newValue)
                 hakunaMatataRelationRef.subject = null
             }
             value = newValue
         },
     ]
 }
+
 export function asRelation<T extends any[]>(
     relation: (...args: T) => () => void
 ): (...args: T) => Relation {

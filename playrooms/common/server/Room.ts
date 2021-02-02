@@ -1,18 +1,18 @@
 import { Player } from './Player'
 
 export type Room = IHakunaMatata & {
-    hasPlayer(player: Player): Relation
+    HasPlayer(player: Player): Relation
     notify(sourcePlayer: Player, params: { [key: string]: any })
 }
 export const Room = HakunaMatata(() => {
     const self: Room = Self(HakunaMatata, () => ({
-        hasPlayer,
+        HasPlayer,
         notify,
     }))
 
     const players: Player[] = []
 
-    const hasPlayer = asRelation((player: Player) => {
+    const HasPlayer = asRelation((player: Player) => {
         players.push(player)
         return () => {
             players.splice(players.indexOf(player))

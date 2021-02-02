@@ -13,7 +13,10 @@ Object.assign(
 declare global {
     const React: typeof React_
     const ReactDOM: typeof ReactDOM_
-    const useEffect: typeof _.useEffect
+    function useEffect(
+        effect: React_.EffectCallback,
+        deps?: React_.DependencyList | undefined
+    ): void
     const useCallback: typeof _.useCallback
     const useRef: typeof _.useRef
     const useState: typeof _.useState

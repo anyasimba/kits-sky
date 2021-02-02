@@ -15,7 +15,14 @@ declare global {
     type PureEffect = _.PureEffect
     const asEffect: typeof _.asEffect
     const Self: typeof _.Self
-    const useRelation: typeof _.useRelation
+
+    function useRelation<T>(
+        initialValue: T | ((subject: T) => void),
+        set?: (subject: T) => void
+    ): [() => T | null, (newValue: T | null) => void]
+
     type Relation = _.Relation
     const asRelation: typeof _.asRelation
+
+    function useEffect(cb: () => (...args: any[]) => void): void
 }
