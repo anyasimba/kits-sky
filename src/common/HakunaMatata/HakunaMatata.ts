@@ -100,9 +100,9 @@ export const HakunaMatata = function () {
 
     const __clear = (...args: any[]) => {
         dead = true
+        relationsLinks.forEach(([hakunaMatata, relations]) => relations())
         hakunaMatatas.forEach(child => child[$$detachFrom](self))
         effects.forEach(child => __detachEffectFrom(child, self))
-        relationsLinks.forEach(([hakunaMatata, relations]) => relations())
         relations.forEach(([subject, relations]) => relations())
         destructors.forEach(destructor => destructor(...args))
     }

@@ -43,6 +43,7 @@ export const Player = HakunaMatata((props: PlayerProps) => {
     let life = 100
 
     const [getRoom, setRoom] = useRelation<Room>(props.room, room => {
+        room.add(self)
         self.setRelation(room.HasPlayer(self))
     })
 
