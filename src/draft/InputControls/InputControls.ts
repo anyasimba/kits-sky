@@ -12,7 +12,7 @@ export enum InputControlsEvent {
 
 @circle_of_life
 export class InputControls extends CircleOfLife {
-    keys = {} as {[x: string]: boolean}
+    keys = {} as {[key: string]: boolean}
     mouse = {
         left: false,
         middle: false,

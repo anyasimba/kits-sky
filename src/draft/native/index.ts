@@ -10,7 +10,7 @@ import * as _ from './native'
 globalify(_)
 
 declare global {
-    const native: { [x: string]: any }
+    const native: { [key: string]: any }
     function nativePointer(pointer)
 
     type Native = _.Native

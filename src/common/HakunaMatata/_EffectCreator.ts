@@ -1,6 +1,6 @@
 import { currentRef } from './_Self'
 import { effectsRef } from './_hooks'
-import { $$destructors, Effect as EffectClass } from './_Effect'
+import { __getEffectDestructors, Effect as EffectClass } from './_Effect'
 
 declare const global
 type EffectNotAFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never })
@@ -27,7 +27,7 @@ export function Effect<T extends (...args: any[]) => EffectNotAFunction>(
         effectsRef.effects.forEach(effect => {
             const destructor = effect()
             if (destructor) {
-                effect[$$destructors].push(destructor)
+                __getEffectDestructors(effect).push(destructor)
             }
         })
         effectsRef.effects = []

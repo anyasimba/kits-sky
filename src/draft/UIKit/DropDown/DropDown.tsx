@@ -17,7 +17,7 @@ export const DropDown = () => {
     const state = mobx.makeObservable(new State)
 
     const Element = mobx.observer((props: {
-        [x: string]: any
+        [key: string]: any
         children?: any
         className?: string
     }) => {
@@ -61,7 +61,7 @@ export const DropDown = () => {
 }
 
 export const DropDownButton = mobx.observer((props: {
-    [x: string]: any
+    [key: string]: any
     children?: any
     className?: string
 }) => {
@@ -85,7 +85,7 @@ export const DropDownButton = mobx.observer((props: {
 })
 
 export const DropDownContent = mobx.observer((props: {
-    [x: string]: any
+    [key: string]: any
     children?: any
     className?: string
 }) => {

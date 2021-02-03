@@ -1,16 +1,17 @@
 import { purgatoryRef } from './_purgatory'
-import { $$dead, $$destructors, $$hakunaMatatas } from './HakunaMatata'
+import { __clearHakunaMatata } from './HakunaMatata'
+import { __clearEffect } from './_Effect'
 
 export function collectGarbage() {
-    purgatoryRef.hakunaMatataPurgatory.forEach(hakunaMatata => {
-        hakunaMatata[$$dead] = true
-        hakunaMatata[$$hakunaMatatas].forEach(hakunaMatata => hakunaMatata.remove())
-        hakunaMatata[$$destructors].forEach(destructor => destructor())
-    })
-    purgatoryRef.hakunaMatataPurgatory = []
+    while (purgatoryRef.hakunaMatataPurgatory.length > 0) {
+        const purgatory = purgatoryRef.hakunaMatataPurgatory
+        purgatoryRef.hakunaMatataPurgatory = []
+        purgatory.forEach(hakunaMatata => __clearHakunaMatata(hakunaMatata))
+    }
 
-    purgatoryRef.effectsPurgatory.forEach(effect => {
-        effect[$$destructors].forEach(destructor => destructor())
-    })
-    purgatoryRef.effectsPurgatory = []
+    while (purgatoryRef.effectsPurgatory.length > 0) {
+        const purgatory = purgatoryRef.effectsPurgatory
+        purgatoryRef.effectsPurgatory = []
+        purgatory.forEach(effect => __clearEffect(effect))
+    }
 }

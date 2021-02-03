@@ -1,36 +1,52 @@
 import { purgatoryRef } from './_purgatory'
 
-export const $$links = Symbol('links')
-export const $$detach = Symbol('detach')
-export const $$destructors = Symbol('destructor')
+const $$attachTo = Symbol('attachTo')
+export const __attachEffectTo = (self: IEffect, ...args: any[]) => self[$$attachTo](...args)
 
-enum EffectType {}
-export type IEffect = {
-    [' type']?: EffectType
-}
+const $$detachFrom = Symbol('detachFrom')
+export const __detachEffectFrom = (self: IEffect, ...args: any[]) => self[$$detachFrom](...args)
+
+const $$clear = Symbol('clear')
+export const __clearEffect = (self: IEffect, ...args: any[]) => self[$$clear](...args)
+
+const $$destructors = Symbol('destructors')
+export const __getEffectDestructors = (self: IEffect) => self[$$destructors]
+
+export type IEffect = {}
 export const Effect = function () {
-    const self: IEffect = {} as any
+    const self = {}
 
-    let links = 0
-    const detach: [IEffect, () => void][] = []
+    const links: IHakunaMatata[] = []
     const destructors: (() => void)[] = []
 
     const purgatory = purgatoryRef.effectsPurgatory
     purgatory.push(self)
 
+    const __attachTo = (target: IHakunaMatata) => {
+        if (links.length === 0) {
+            const purgatory = purgatoryRef.effectsPurgatory
+            purgatory.splice(purgatory.indexOf(self))
+        }
+        links.push(target)
+    }
+
+    const __detachFrom = (target: IHakunaMatata) => {
+        links.splice(links.indexOf(target), 1)
+        if (links.length === 0) {
+            const purgatory = purgatoryRef.effectsPurgatory
+            purgatory.push(self)
+        }
+    }
+
+    const __clear = () => {
+        destructors.forEach(destructor => destructor())
+    }
+
     Object.setPrototypeOf(self, {
-        get [$$links]() {
-            return links
-        },
-        set [$$links](value: number) {
-            links = value
-        },
-        get [$$detach]() {
-            return detach
-        },
-        get [$$destructors]() {
-            return destructors
-        },
+        [$$attachTo]: __attachTo,
+        [$$detachFrom]: __detachFrom,
+        [$$clear]: __clear,
     })
+
     return self
 }

@@ -1,6 +1,6 @@
 import { currentRef } from './_Self'
 import { effectsRef } from './_hooks'
-import { $$destructors, HakunaMatata as HakunaMatataClass } from './HakunaMatata'
+import { __getHakunaMatataDestructors, HakunaMatata as HakunaMatataClass } from './HakunaMatata'
 
 declare const global
 type SelfNotAFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never })
@@ -16,7 +16,7 @@ export function HakunaMatata<T extends (...args: any[]) => SelfNotAFunction>(
     return (...args: HakunaMatataPropsType<T>) => {
         const savedUseEffect = global.useEffect
         global.useEffect = useEffect
-        const hakunaMatata = constructor(...args) as HakunaMatataReturnType<T>
+        const hakunaMatata: IHakunaMatata = (constructor(...args) as any) as IHakunaMatata
 
         const currentHakunaMatata = currentRef.stack.pop()
         const currentHakunaMatataInterface = currentHakunaMatata.getConstructor()
@@ -27,11 +27,11 @@ export function HakunaMatata<T extends (...args: any[]) => SelfNotAFunction>(
         effectsRef.effects.forEach(effect => {
             const destructor = effect()
             if (destructor) {
-                effect[$$destructors].push(destructor)
+                __getHakunaMatataDestructors(hakunaMatata).push(destructor)
             }
         })
         effectsRef.effects = []
 
-        return hakunaMatata
+        return (hakunaMatata as any) as HakunaMatataReturnType<T>
     }
 }

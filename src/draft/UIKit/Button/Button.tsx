@@ -2,7 +2,7 @@
 import './Button.styl'
 
 export type ButtonProps = {
-    [x: string]: any
+    [key: string]: any
     children?: any
     className?: string
     size?: 'small'|'medium'|'big'

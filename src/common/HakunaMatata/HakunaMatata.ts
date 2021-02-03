@@ -1,15 +1,20 @@
 import { purgatoryRef } from './_purgatory'
-import { IEffect, $$links as $$effectLinks, $$detach as $$effectDetach } from './_Effect'
+import { IEffect, __attachEffectTo, __detachEffectFrom } from './_Effect'
+import { relationRef } from './_Relation'
 
-export const $$hakunaMatatas = Symbol('hakunaMatatas')
-export const $$links = Symbol('links')
-export const $$detach = Symbol('detach')
-export const $$destructors = Symbol('destructor')
-export const $$dead = Symbol('dead')
+const $$clear = Symbol('clear')
+export const __clearHakunaMatata = (self: IHakunaMatata, ...args) => self[$$clear](...args)
 
-enum HakunaMatataType {}
+const $$destructors = Symbol('destructors')
+export const __getHakunaMatataDestructors = (self: IHakunaMatata) => self[$$destructors]
+
+const $$relations = Symbol('relations')
+export const __getHakunaMatataRelations = (self: IHakunaMatata) => self[$$relations]
+
+const $$relationsLinks = Symbol('relationsLinks')
+export const __getHakunaMatataRelationsLinks = (self: IHakunaMatata) => self[$$relationsLinks]
+
 export type IHakunaMatata = {
-    ' type id'?: HakunaMatataType
     readonly dead: boolean
     add(hakunaMatata: IHakunaMatata): IHakunaMatata
     remove(hakunaMatata: IHakunaMatata): void
@@ -23,9 +28,12 @@ export const HakunaMatata = function () {
 
     const hakunaMatatas: IHakunaMatata[] = []
     const effects: (IEffect | (() => void))[] = []
-    const relations = {}
-    let links = 0
-    const detach: [IHakunaMatata, () => void][] = []
+
+    const links: IHakunaMatata[] = []
+
+    const relations: [IHakunaMatata, () => void][] = []
+    const relationsLinks: [IHakunaMatata, () => void[]][] = []
+
     const destructors: ((...args: any[]) => void)[] = []
     let dead
 
@@ -33,107 +41,79 @@ export const HakunaMatata = function () {
     purgatory.push(self)
 
     const add = (hakunaMatata: IHakunaMatata) => {
-        const purgatory = purgatoryRef.hakunaMatataPurgatory
-        if (hakunaMatata[$$links] === 0) {
-            purgatory.splice(purgatory.indexOf(hakunaMatata))
-        }
-        ++hakunaMatata[$$links]
-        hakunaMatata[$$detach].push([
-            self,
-            () => hakunaMatatas.splice(hakunaMatatas.indexOf(hakunaMatata)),
-        ])
-        hakunaMatatas.push(hakunaMatata)
+        hakunaMatata[$$attachTo](self)
+        hakunaMatatas.push(self)
         return hakunaMatata
     }
 
-    const _remove = (hakunaMatata: IHakunaMatata) => {
-        --hakunaMatata[$$links]
-        const purgatory = purgatoryRef.hakunaMatataPurgatory
-        if (hakunaMatata[$$links] === 0) {
-            purgatory.push(hakunaMatata)
-        } else {
-            for (let i = 0; i < hakunaMatata[$$detach].length; ++i) {
-                const detach = hakunaMatata[$$detach][i]
-                if (detach[0] === self) {
-                    hakunaMatata[$$detach].splice(i, 1)
-                    break
-                }
-            }
-        }
-    }
-
     const remove = (hakunaMatata: IHakunaMatata) => {
-        _remove(hakunaMatata)
-        hakunaMatatas.splice(hakunaMatatas.indexOf(hakunaMatata))
+        hakunaMatata[$$detachFrom](self)
+        __remove(hakunaMatata)
     }
 
     const addEffect = (effect: IEffect | PureEffect) => {
-        if (_.isFunction(effect)) {
-            effects.push(effect)
-            return effect
+        if (!_.isFunction(effect)) {
+            __attachEffectTo(effect, self)
         }
-        const purgatory = purgatoryRef.effectsPurgatory
-        if (effect[$$effectLinks] === 0) {
-            purgatory.splice(purgatory.indexOf(effect))
-        }
-        ++effect[$$effectLinks]
-        effect[$$effectDetach].push([self, () => effects.splice(effects.indexOf(effect))])
         effects.push(effect)
         return effect
-    }
-
-    const _removeEffect = (effect: IEffect | (() => void)) => {
-        if (_.isFunction(effect)) {
-            effect()
-            return
-        }
-        --effect[$$effectLinks]
-        const purgatory = purgatoryRef.effectsPurgatory
-        if (effect[$$effectLinks] === 0) {
-            purgatory.push(effect)
-        } else {
-            for (let i = 0; i < effect[$$effectDetach].length; ++i) {
-                const detach = effect[$$effectDetach][i]
-                if (detach[0] === self) {
-                    effect[$$effectDetach].splice(i, 1)
-                    break
-                }
-            }
-        }
     }
 
     const removeEffect = (effect: IEffect | (() => void)) => {
         if (_.isFunction(effect)) {
             effect()
-            effects.splice(effects.indexOf(effect))
-            return
+        } else {
+            __detachEffectFrom(effect, self)
         }
-        _removeEffect(effect)
         effects.splice(effects.indexOf(effect))
     }
 
-    const setRelation = (relation: Relation) => {}
+    const setRelation = (relation: Relation) => {
+        relationRef.relations.push(relation)
+    }
 
     const destroy = (...args: any[]) => {
+        __detachFromAll()
+        __clear(...args)
+    }
+
+    const $$remove = Symbol('remove')
+    const __remove = hakunaMatata => hakunaMatatas.splice(hakunaMatatas.indexOf(hakunaMatata))
+
+    const $$attachTo = Symbol('attachTo')
+    const __attachTo = (target: IHakunaMatata) => {
+        if (links.length === 0) {
+            const purgatory = purgatoryRef.hakunaMatataPurgatory
+            purgatory.splice(purgatory.indexOf(self))
+        }
+        links.push(target)
+    }
+
+    const $$detachFrom = Symbol('detachFrom')
+    const __detachFrom = (target: IHakunaMatata) => {
+        links.splice(links.indexOf(target), 1)
+        if (links.length === 0) {
+            const purgatory = purgatoryRef.hakunaMatataPurgatory
+            purgatory.push(self)
+        }
+    }
+
+    const __clear = (...args: any[]) => {
         dead = true
-        detach.forEach(([hakunaMatata, fn]) => {
-            if (!hakunaMatata.dead) {
-                fn()
-            }
-        })
-        hakunaMatatas.forEach(hakunaMatata => _remove(hakunaMatata))
-        effects.forEach(effect => {
-            _removeEffect(effect)
-        })
+        hakunaMatatas.forEach(child => child[$$detachFrom](self))
+        effects.forEach(child => __detachEffectFrom(child, self))
+        relationsLinks.forEach(([hakunaMatata, relations]) => relations())
+        relations.forEach(([subject, relations]) => relations())
         destructors.forEach(destructor => destructor(...args))
+    }
+
+    const __detachFromAll = () => {
+        links.forEach(link => !link.dead && link[$$remove](self))
     }
 
     Object.setPrototypeOf(self, {
         get dead() {
             return dead === true
-        },
-        set [$$dead](value) {
-            dead = value
         },
         add,
         remove,
@@ -141,21 +121,12 @@ export const HakunaMatata = function () {
         removeEffect,
         setRelation,
         destroy,
-        get [$$hakunaMatatas]() {
-            return hakunaMatatas
-        },
-        get [$$links]() {
-            return links
-        },
-        set [$$links](value: number) {
-            links = value
-        },
-        get [$$detach]() {
-            return detach
-        },
-        get [$$destructors]() {
-            return destructors
-        },
+        [$$remove]: __remove,
+        [$$attachTo]: __attachTo,
+        [$$detachFrom]: __detachFrom,
+        [$$clear]: __clear,
+        [$$relations]: relations,
+        [$$relationsLinks]: relationsLinks,
     } as IHakunaMatata)
     return self
 }
