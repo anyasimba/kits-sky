@@ -1,5 +1,5 @@
-import { IHakunaMatata } from './HakunaMatata'
-import { IEffect } from './_Effect'
+import { IHakunaMatata } from './_HakunaMatata/_HakunaMatataClass'
+import { IEffect } from './_Effect/_EffectClass'
 
 export const purgatoryRef: {
     hakunaMatataPurgatory: IHakunaMatata[]

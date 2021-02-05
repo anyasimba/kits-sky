@@ -1,4 +1,7 @@
-import { purgatoryRef } from './_purgatory'
+import { purgatoryRef } from '../_purgatory'
+
+const $$type = Symbol('type')
+export const __getEffectType = (self: IHakunaMatata) => self[$$type]
 
 const $$attachTo = Symbol('attachTo')
 export const __attachEffectTo = (self: IEffect, ...args: any[]) => self[$$attachTo](...args)
@@ -14,7 +17,8 @@ export const __getEffectDestructors = (self: IEffect) => self[$$destructors]
 
 export type IEffect = {}
 export const Effect = function () {
-    const self = {}
+    // eslint-disable-next-line prefer-rest-params
+    const self = arguments[0] as IEffect
 
     const links: IHakunaMatata[] = []
     const destructors: (() => void)[] = []
@@ -25,7 +29,7 @@ export const Effect = function () {
     const __attachTo = (target: IHakunaMatata) => {
         if (links.length === 0) {
             const purgatory = purgatoryRef.effectsPurgatory
-            purgatory.splice(purgatory.indexOf(self))
+            purgatory.splice(purgatory.indexOf(self), 1)
         }
         links.push(target)
     }
@@ -42,11 +46,11 @@ export const Effect = function () {
         destructors.forEach(destructor => destructor())
     }
 
-    Object.setPrototypeOf(self, {
+    return {
+        [$$type]: null,
         [$$attachTo]: __attachTo,
         [$$detachFrom]: __detachFrom,
         [$$clear]: __clear,
-    })
-
-    return self
+        [$$destructors]: destructors,
+    } as IEffect
 }

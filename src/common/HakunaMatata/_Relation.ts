@@ -1,4 +1,4 @@
-import { __getHakunaMatataRelations, __getHakunaMatataRelationsLinks } from './HakunaMatata'
+import { __getHakunaMatataRelations, __getHakunaMatataRelationsLinks } from './_HakunaMatata/_HakunaMatataClass'
 import { currentRef } from './_Self'
 
 export const relationRef: {
@@ -11,42 +11,82 @@ export const relationRef: {
     relations: [],
 }
 
-enum RelationType {}
+export enum RelationType {}
 export type Relation = () => RelationType
 
 export function useRelation<T extends IHakunaMatata>(
-    initialValue: T,
+    initialValue: T | null | undefined,
     set: (subject: T) => void
-): [() => T | null, (newValue: T | null) => void] {
-    const hakunaMatata = _.last(currentRef.stack)
-    let subject: T | null
+): [() => T | null | undefined, (newValue: T | null) => void] {
+    const hakunaMatata = _.last(currentRef.stack).current
+    let subject: T | null | undefined = null
     let relations: Relation[] | null = null
     if (arguments.length === 1) {
         set = initialValue as any
     } else {
-        subject = initialValue as T
+        if (initialValue != null) {
+            setSubject(initialValue)
+            subject = initialValue as T
+        }
     }
 
-    const removeSubject = (subject: IHakunaMatata) => {
+    function removeSubject(subject: IHakunaMatata) {
         const list = __getHakunaMatataRelations(hakunaMatata)
         for (let i = 0; i < list.length; i++) {
             const [child, relations] = list[i]
             if (child === subject) {
-                list.splice(i)
+                list.splice(i, 1)
                 break
             }
         }
     }
 
-    const removeHakunaMatataFrom = (subject: IHakunaMatata) => {
+    function removeHakunaMatataFrom(subject: IHakunaMatata) {
         const list = __getHakunaMatataRelationsLinks(subject)
         for (let i = 0; i < list.length; i++) {
             const [child, relations] = list[i]
             if (child === hakunaMatata) {
-                list.splice(i)
+                list.splice(i, 1)
                 break
             }
         }
+    }
+
+    function setSubject(newSubject) {
+        relations = relationRef.relations
+
+        if (newSubject instanceof HakunaMatata) {
+            __getHakunaMatataRelationsLinks(newSubject).push([
+                hakunaMatata,
+                () => {
+                    subject = null
+                    removeSubject(newSubject)
+                    clear()
+                },
+            ])
+
+            __getHakunaMatataRelations(hakunaMatata).push([
+                newSubject,
+                () => {
+                    removeHakunaMatataFrom(newSubject)
+                    clear()
+                },
+            ])
+        } else {
+            __getHakunaMatataRelations(hakunaMatata).push([
+                newSubject,
+                () => {
+                    clear()
+                },
+            ])
+        }
+
+        relationRef.subject = newSubject
+        relationRef.self = hakunaMatata
+        set(newSubject)
+        relationRef.subject = null
+        relationRef.self = null
+        relationRef.relations = []
     }
 
     const clear = () => {
@@ -57,35 +97,13 @@ export function useRelation<T extends IHakunaMatata>(
         () => {
             return subject
         },
-        (newSubject: T | null) => {
-            if (subject) {
+        (newSubject: T | null | undefined) => {
+            if (subject != null) {
                 removeSubject(subject)
                 clear()
             }
-            if (newSubject) {
-                relations = relationRef.relations
-                __getHakunaMatataRelationsLinks(newSubject).push([
-                    hakunaMatata,
-                    () => {
-                        subject = null
-                        removeSubject(newSubject)
-                        clear()
-                    },
-                ])
-                __getHakunaMatataRelations(hakunaMatata).push([
-                    newSubject,
-                    () => {
-                        removeHakunaMatataFrom(newSubject)
-                        clear()
-                    },
-                ])
-
-                relationRef.subject = newSubject
-                relationRef.self = hakunaMatata
-                set(newSubject)
-                relationRef.subject = null
-                relationRef.self = null
-                relationRef.relations = []
+            if (newSubject != null) {
+                setSubject(newSubject)
             } else {
                 relations = null
             }

@@ -1,23 +1,28 @@
+import { Body } from '../components/Body'
 import { Room } from './Room'
 
 let id_ = 0
 
 type PlayerProps = {
-    socket: Io.Socket
-    room: Room
+    socket?: Io.ServerSocket
+    room?: Room
 }
 export type Player = IHakunaMatata & {
     readonly id: number
+    readonly x: number
     life: number
     room: Room | null
     move(): void
     fire(player: Player): void
     notify(player: Player, params: { [key: string]: any })
 }
-export const Player = HakunaMatata((props: PlayerProps) => {
+export const Player = HakunaMatata((props: PlayerProps = {}) => {
     const self: Player = Self(HakunaMatata, () => ({
         get id() {
             return id
+        },
+        get x() {
+            return x
         },
         get life() {
             return life
@@ -36,25 +41,36 @@ export const Player = HakunaMatata((props: PlayerProps) => {
         notify,
     }))
 
-    const { socket } = props
+    const dynamic = Dynamic(() => ({
+        get x() {
+            return x
+        },
+        set x(value) {
+            x = value
+        },
+    }))
 
     const id = id_++
-    let x = 0
+    let x = useShared(() => 0, 'x')
     let life = 100
 
-    const [getRoom, setRoom] = useRelation<Room>(props.room, room => {
-        room.add(self)
-        self.setRelation(room.HasPlayer(self))
+    const [getSocket] = useRelation<Io.ServerSocket>(props.socket, socket => {
+        // self.setEffect(EventListener(socket, 'move', move))
+        // self.setEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
     })
+    const [getRoom, setRoom] = useRelation<Room>(props.room, room => {
+        // room.add(self)
+        // self.setRelation(room.HasPlayer(self))
+    })
+    console.log('Player')
+    // const body = useShared(() => Body(), 'body')
 
     useEffect(() => {
-        self.addEffect(EventListener(socket, 'move', move))
-        self.addEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
-
         return (by: string) => {
             if (by !== 'socket') {
                 const room = getRoom()
-                if (room) {
+                const socket = getSocket()
+                if (room && socket) {
                     const recreatePlayerEffect = room.addEffect(
                         Timeout(() => Player({ socket, room }), 0.5)
                     )
@@ -69,7 +85,7 @@ export const Player = HakunaMatata((props: PlayerProps) => {
     })
 
     const move = () => {
-        ++x
+        ++dynamic.x
         getRoom()?.notify(self, { x })
     }
 
@@ -86,7 +102,7 @@ export const Player = HakunaMatata((props: PlayerProps) => {
     }
 
     const notify = (player: Player, params: { [key: string]: any }) => {
-        socket.emit('notify', player.id, params)
+        getSocket()?.emit('notify', player.id, params)
     }
 
     return self

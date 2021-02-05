@@ -15,12 +15,12 @@ export const Room = HakunaMatata(() => {
     const HasPlayer = asRelation((player: Player) => {
         players.push(player)
         return () => {
-            players.splice(players.indexOf(player))
+            players.splice(players.indexOf(player), 1)
         }
     })
 
     const notify = (sourcePlayer: Player, params: { [key: string]: any }) => {
-        players.forEach(player => player.notify(sourcePlayer, params))
+        players.forEach(player => player.notify(sourcePlayer, { ...params, count: players.length }))
     }
 
     return self

@@ -1,12 +1,16 @@
-import { purgatoryRef } from './_purgatory'
-import { IEffect, __attachEffectTo, __detachEffectFrom } from './_Effect'
-import { relationRef } from './_Relation'
+import { purgatoryRef } from '../_purgatory'
+import { IEffect, __attachEffectTo, __detachEffectFrom } from '../_Effect/_EffectClass'
+import { relationRef, RelationType } from '../_Relation'
+import { withScopeRef } from '../_withScope'
 
+const $$type = Symbol('type')
+export const __getHakunaMatataType = (self: IHakunaMatata) => self[$$type]
+
+const $$remove = Symbol('remove')
+const $$attachTo = Symbol('attachTo')
+const $$detachFrom = Symbol('detachFrom')
 const $$clear = Symbol('clear')
 export const __clearHakunaMatata = (self: IHakunaMatata, ...args) => self[$$clear](...args)
-
-const $$destructors = Symbol('destructors')
-export const __getHakunaMatataDestructors = (self: IHakunaMatata) => self[$$destructors]
 
 const $$relations = Symbol('relations')
 export const __getHakunaMatataRelations = (self: IHakunaMatata) => self[$$relations]
@@ -14,17 +18,22 @@ export const __getHakunaMatataRelations = (self: IHakunaMatata) => self[$$relati
 const $$relationsLinks = Symbol('relationsLinks')
 export const __getHakunaMatataRelationsLinks = (self: IHakunaMatata) => self[$$relationsLinks]
 
+const $$destructors = Symbol('destructors')
+export const __getHakunaMatataDestructors = (self: IHakunaMatata) => self[$$destructors]
+
 export type IHakunaMatata = {
     readonly dead: boolean
     add(hakunaMatata: IHakunaMatata): IHakunaMatata
     remove(hakunaMatata: IHakunaMatata): void
-    addEffect<T extends IEffect | PureEffect>(effect: T): T
-    removeEffect(effect: IEffect | PureEffect): void
+    addEffect<T extends IEffect>(effect: T): T
+    removeEffect(effect: IEffect): void
     setRelation(relation: Relation): void
+    setEffect(effect: IEffect): void
     destroy(...args: any): void
 }
 export const HakunaMatata = function () {
-    const self: IHakunaMatata = {} as any
+    // eslint-disable-next-line prefer-rest-params
+    const self: IHakunaMatata = arguments[0]
 
     const hakunaMatatas: IHakunaMatata[] = []
     const effects: (IEffect | (() => void))[] = []
@@ -37,12 +46,14 @@ export const HakunaMatata = function () {
     const destructors: ((...args: any[]) => void)[] = []
     let dead
 
-    const purgatory = purgatoryRef.hakunaMatataPurgatory
-    purgatory.push(self)
+    if (!withScopeRef.on) {
+        const purgatory = purgatoryRef.hakunaMatataPurgatory
+        purgatory.push(self)
+    }
 
     const add = (hakunaMatata: IHakunaMatata) => {
         hakunaMatata[$$attachTo](self)
-        hakunaMatatas.push(self)
+        hakunaMatatas.push(hakunaMatata)
         return hakunaMatata
     }
 
@@ -51,25 +62,24 @@ export const HakunaMatata = function () {
         __remove(hakunaMatata)
     }
 
-    const addEffect = (effect: IEffect | PureEffect) => {
-        if (!_.isFunction(effect)) {
-            __attachEffectTo(effect, self)
-        }
+    const addEffect = (effect: IEffect) => {
+        __attachEffectTo(effect, self)
         effects.push(effect)
         return effect
     }
 
-    const removeEffect = (effect: IEffect | (() => void)) => {
-        if (_.isFunction(effect)) {
-            effect()
-        } else {
-            __detachEffectFrom(effect, self)
-        }
-        effects.splice(effects.indexOf(effect))
+    const removeEffect = (effect: IEffect) => {
+        __detachEffectFrom(effect, self)
+        effects.splice(effects.indexOf(effect), 1)
     }
 
     const setRelation = (relation: Relation) => {
         relationRef.relations.push(relation)
+    }
+
+    const setEffect = (effect: IEffect) => {
+        self.addEffect(effect)
+        relationRef.relations.push(() => (self.removeEffect(effect) as unknown) as RelationType)
     }
 
     const destroy = (...args: any[]) => {
@@ -77,19 +87,16 @@ export const HakunaMatata = function () {
         __clear(...args)
     }
 
-    const $$remove = Symbol('remove')
-    const __remove = hakunaMatata => hakunaMatatas.splice(hakunaMatatas.indexOf(hakunaMatata))
+    const __remove = hakunaMatata => hakunaMatatas.splice(hakunaMatatas.indexOf(hakunaMatata), 1)
 
-    const $$attachTo = Symbol('attachTo')
     const __attachTo = (target: IHakunaMatata) => {
         if (links.length === 0) {
             const purgatory = purgatoryRef.hakunaMatataPurgatory
-            purgatory.splice(purgatory.indexOf(self))
+            purgatory.splice(purgatory.indexOf(self), 1)
         }
         links.push(target)
     }
 
-    const $$detachFrom = Symbol('detachFrom')
     const __detachFrom = (target: IHakunaMatata) => {
         links.splice(links.indexOf(target), 1)
         if (links.length === 0) {
@@ -101,8 +108,8 @@ export const HakunaMatata = function () {
     const __clear = (...args: any[]) => {
         dead = true
         relationsLinks.forEach(([hakunaMatata, relations]) => relations())
-        hakunaMatatas.forEach(child => child[$$detachFrom](self))
-        effects.forEach(child => __detachEffectFrom(child, self))
+        hakunaMatatas.forEach(hakunaMatata => hakunaMatata[$$detachFrom](self))
+        effects.forEach(effect => __detachEffectFrom(effect, self))
         relations.forEach(([subject, relations]) => relations())
         destructors.forEach(destructor => destructor(...args))
     }
@@ -111,7 +118,8 @@ export const HakunaMatata = function () {
         links.forEach(link => !link.dead && link[$$remove](self))
     }
 
-    Object.setPrototypeOf(self, {
+    return {
+        [$$type]: null,
         get dead() {
             return dead === true
         },
@@ -120,6 +128,7 @@ export const HakunaMatata = function () {
         addEffect,
         removeEffect,
         setRelation,
+        setEffect,
         destroy,
         [$$remove]: __remove,
         [$$attachTo]: __attachTo,
@@ -127,6 +136,6 @@ export const HakunaMatata = function () {
         [$$clear]: __clear,
         [$$relations]: relations,
         [$$relationsLinks]: relationsLinks,
-    } as IHakunaMatata)
-    return self
+        [$$destructors]: destructors,
+    } as IHakunaMatata
 }

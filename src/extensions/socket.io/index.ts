@@ -5,7 +5,7 @@ declare global {
     namespace Io {
         type Server = _.Io.Server
         type Namespace = _.Io.Namespace
-        type Socket = _.Io.Socket
+        type ServerSocket = _.Io.Socket
     }
     const Io: typeof _.Io
 }

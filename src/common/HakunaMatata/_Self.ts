@@ -11,10 +11,17 @@ export function Self<T extends SelfParent, C extends SelfConstructor>(
 ): SelfConstructorResult<C> & SelfParentResult<T> {
     const current: any = { getConstructor }
     currentRef.stack.push(current)
+
+    const self = {}
+
     if (_.isFunction(parent)) {
-        current.parent = (parent as any)()
+        if (parent === (HakunaMatata as any) || parent === (Effect as any)) {
+            current.parent = (parent as any)(self)
+        } else {
+            current.parent = (parent as any)()
+        }
     } else {
         current.parent = parent
     }
-    return {} as any
+    return (current.current = Object.setPrototypeOf(self, current.parent) as any)
 }
