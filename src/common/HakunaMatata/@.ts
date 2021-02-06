@@ -19,4 +19,4 @@ export {
     action,
     routeUpdates,
 } from './_useShared'
-export { withScope } from './_withScope'
+export { withScope, withHakunaMatata } from './_withScope'

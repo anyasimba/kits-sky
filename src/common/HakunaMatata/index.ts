@@ -29,4 +29,5 @@ declare global {
     const action: typeof _.action
     const routeUpdates: typeof _.routeUpdates
     const withScope: typeof _.withScope
+    const withHakunaMatata: typeof _.withHakunaMatata
 }

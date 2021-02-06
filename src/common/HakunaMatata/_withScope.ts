@@ -1,7 +1,9 @@
-import { HakunaMatataClass } from './@'
-import { __getHakunaMatataDestructors } from './_HakunaMatata/_HakunaMatataClass'
-
-export const withScopeRef = { on: false }
+import {
+    HakunaMatata as HakunaMatataClass,
+    __getHakunaMatataDestructors,
+} from './_HakunaMatata/_HakunaMatataClass'
+import { withScopeRef } from './_withScopeRef'
+import { commit } from './_commit'
 
 export function withScope<T extends any[], R extends any>(
     fn: (scope: IHakunaMatata, ...args: T) => R
@@ -34,9 +36,16 @@ export function withScope<T extends any[], R extends any>(
             getScope.emit('change')
             getScope.emit('destroy')
         } else {
-            __getHakunaMatataDestructors(scope).push(() => getScope.emit('destroy'))
+            __getHakunaMatataDestructors(scope).push(() => {
+                getScope.emit('change')
+                getScope.emit('destroy')
+            })
         }
+
+        commit()
 
         return getScope
     }
 }
+
+export const withHakunaMatata = withScope(scope => {})(scope => {})()!

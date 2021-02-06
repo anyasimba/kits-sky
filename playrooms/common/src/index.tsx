@@ -8,7 +8,7 @@ import { ClassViewMap } from './ClassViewMap'
 const socket = io('ws://localhost')
 
 const Connected = withIoClientSocket(socket, withConnected => {
-    socket.on('notify', (update: Update) => (playerID, params) => {
+    socket.on('notify', (playerID, params) => {
         // eslint-disable-next-line no-console
         console.log(playerID, params)
     })

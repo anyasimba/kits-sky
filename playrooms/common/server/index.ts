@@ -9,9 +9,10 @@ import { Room } from '../shared/entities/Room'
 
 const io = new Io.Server(80, { cors: { origin: '*' } })
 
-const room = Room()
+const room = withHakunaMatata.add(Room())
 
 routeUpdates(update => {
+    // eslint-disable-next-line no-console
     console.log(update)
 })
 

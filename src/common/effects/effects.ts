@@ -19,11 +19,11 @@ export const HTMLEventListener = asEffect(
         listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
         options?: boolean | AddEventListenerOptions
     ) => {
-        listener = function (this: HTMLElement, ev: HTMLElementEventMap[K]) {
+        const listener_ = function (this: HTMLElement, ev: HTMLElementEventMap[K]) {
             action(() => listener.call(this, ev))
         }
-        element.addEventListener(type, listener, options)
-        return () => element.removeEventListener(type, listener, options)
+        element.addEventListener(type, listener_, options)
+        return () => element.removeEventListener(type, listener_, options)
     }
 )
 
@@ -36,10 +36,10 @@ export const AnimationFrame = asEffect((cb: () => void) => {
 
 export const EventListener = asEffect(
     <T extends { on; off }>(source: T, type: string, listener: (...args: any[]) => void) => {
-        listener = function (...args: any[]) {
+        const listener_ = function (...args: any[]) {
             action(() => listener(...args))
         }
-        source.on(type, listener)
-        return () => source.off(type, listener)
+        source.on(type, listener_)
+        return () => source.off(type, listener_)
     }
 )

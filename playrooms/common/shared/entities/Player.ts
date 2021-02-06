@@ -1,4 +1,3 @@
-import { Body } from '../components/Body'
 import { Room } from './Room'
 
 let id_ = 0
@@ -55,15 +54,16 @@ export const Player = HakunaMatata((props: PlayerProps = {}) => {
     let life = 100
 
     const [getSocket] = useRelation<Io.ServerSocket>(props.socket, socket => {
-        // self.setEffect(EventListener(socket, 'move', move))
-        // self.setEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
+        // TODO let relations after construct
+        self.setEffect(EventListener(socket, 'move', () => move()))
+        self.setEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
     })
     const [getRoom, setRoom] = useRelation<Room>(props.room, room => {
-        // room.add(self)
-        // self.setRelation(room.HasPlayer(self))
+        room.add(self)
+        self.setRelation(room.HasPlayer(self))
     })
+    // eslint-disable-next-line no-console
     console.log('Player')
-    // const body = useShared(() => Body(), 'body')
 
     useEffect(() => {
         return (by: string) => {
@@ -85,7 +85,8 @@ export const Player = HakunaMatata((props: PlayerProps = {}) => {
     })
 
     const move = () => {
-        ++dynamic.x
+        // ++dynamic.x
+        ++x
         getRoom()?.notify(self, { x })
     }
 

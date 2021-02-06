@@ -1,5 +1,10 @@
-import { __getHakunaMatataRelations, __getHakunaMatataRelationsLinks } from './_HakunaMatata/_HakunaMatataClass'
+import {
+    __getHakunaMatataRelations,
+    __getHakunaMatataRelationsLinks,
+} from './_HakunaMatata/_HakunaMatataClass'
 import { currentRef } from './_Self'
+
+export const relationInitialsRef: { initials: (() => void)[] } = { initials: [] }
 
 export const relationRef: {
     subject: IHakunaMatata | null
@@ -25,7 +30,7 @@ export function useRelation<T extends IHakunaMatata>(
         set = initialValue as any
     } else {
         if (initialValue != null) {
-            setSubject(initialValue)
+            relationInitialsRef.initials.push(() => setSubject(initialValue))
             subject = initialValue as T
         }
     }

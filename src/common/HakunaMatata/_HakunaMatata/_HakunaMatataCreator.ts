@@ -7,6 +7,7 @@ import {
 } from './_HakunaMatataClass'
 import { runtimeRef } from '../_runtime'
 import { SharedTypeID } from '../_SharedTypeID'
+import { relationInitialsRef } from '../_Relation'
 
 Object.defineProperty(HakunaMatata, Symbol.hasInstance, {
     value: (obj: any) => {
@@ -53,6 +54,9 @@ export function HakunaMatata<P extends any[], R extends HakunaMatataNotAFunction
             }
         })
         effectsRef.effects = []
+
+        relationInitialsRef.initials.forEach(initial => initial())
+        relationInitialsRef.initials = []
 
         return (hakunaMatata as any) as R
     }

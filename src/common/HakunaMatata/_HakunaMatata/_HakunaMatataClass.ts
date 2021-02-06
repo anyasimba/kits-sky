@@ -1,7 +1,7 @@
 import { purgatoryRef } from '../_purgatory'
 import { IEffect, __attachEffectTo, __detachEffectFrom } from '../_Effect/_EffectClass'
 import { relationRef, RelationType } from '../_Relation'
-import { withScopeRef } from '../_withScope'
+import { withScopeRef } from '../_withScopeRef'
 
 const $$type = Symbol('type')
 export const __getHakunaMatataType = (self: IHakunaMatata) => self[$$type]
@@ -23,7 +23,7 @@ export const __getHakunaMatataDestructors = (self: IHakunaMatata) => self[$$dest
 
 export type IHakunaMatata = {
     readonly dead: boolean
-    add(hakunaMatata: IHakunaMatata): IHakunaMatata
+    add<T extends IHakunaMatata>(hakunaMatata: T): T
     remove(hakunaMatata: IHakunaMatata): void
     addEffect<T extends IEffect>(effect: T): T
     removeEffect(effect: IEffect): void
