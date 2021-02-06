@@ -9,14 +9,19 @@ import { Room } from '../shared/entities/Room'
 
 const io = new Io.Server(80, { cors: { origin: '*' } })
 
+const room = Room()
+
 routeUpdates(update => {
     console.log(update)
 })
-
-const room = Room()
 
 withIoServerSockets(io, (withConnected, socket) => {
     // eslint-disable-next-line no-console
     console.log('client connected')
     withConnected.add(Player({ socket, room }))
+
+    return () => {
+        // eslint-disable-next-line no-console
+        console.log('client disconnected')
+    }
 })

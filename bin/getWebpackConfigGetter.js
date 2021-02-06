@@ -24,14 +24,17 @@ module.exports = (module, mode, cwd, globalPackages) => {
             ))
     )
 
-    const rules = [
-        {
+    const rules = []
+    if (mode === 'production') {
+        rules.push({
             test: /\.tsx?$/,
             enforce: 'pre',
             use: ['cache-loader', 'eslint-loader'],
             exclude: ['/node_modules/', '/dist/'],
             include: [/src/, /extras/, cwd],
-        },
+        })
+    }
+    rules.push(
         {
             test: /\.tsx?$/,
             use: ['cache-loader', 'ts-loader'],
@@ -42,8 +45,8 @@ module.exports = (module, mode, cwd, globalPackages) => {
             test: /\.css$/,
             use: ['cache-loader', 'style-loader', 'css-loader?modules'],
             include: [/src/, /extras/, cwd],
-        },
-    ]
+        }
+    )
 
     function getClientConfig() {
         let client

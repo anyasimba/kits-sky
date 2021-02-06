@@ -1,5 +1,5 @@
 import { currentRef } from '../_Self'
-import { effectsRef } from '../_hooks'
+import { effectsRef, useEffect } from '../_hooks'
 import {
     __getHakunaMatataDestructors,
     HakunaMatata as HakunaMatataClass,

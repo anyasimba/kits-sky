@@ -3,40 +3,47 @@ import 'sky/extensions/socket.io-client'
 import 'sky/extensions/socket.io-client/@HakunaMatata'
 import 'sky/common/HakunaMatata'
 
-import { ViewMap } from './ViewMap'
+import { ClassViewMap } from './ClassViewMap'
 
 const socket = io('ws://localhost')
 
 const Connected = withIoClientSocket(socket, withConnected => {
-    withConnected.addEffect(UpdateApp())
-
     socket.on('notify', (update: Update) => (playerID, params) => {
         // eslint-disable-next-line no-console
         console.log(playerID, params)
     })
 
-    socket.on('update', (update: Update) => accept(update, ViewMap))
+    socket.on('update', (update: Update) => accept(update, ClassViewMap))
+
+    // eslint-disable-next-line no-console
+    console.log('socket connected')
+    return () => {
+        // eslint-disable-next-line no-console
+        console.log('socket disconnected')
+    }
 })
 
-const App = () => {
-    const [, updateState] = React.useState<object>()
+function useScope<T>(getScope: T) {
+    const [_, set] = useState(0)
     useEffect(() => {
-        forceUpdate = () => updateState({})
-        return () => (forceUpdate = null)
-    })
+        const off = (getScope as any).on('change', () => set(value => ++value))
+        return () => off()
+    }, [getScope])
+    return getScope
+}
+
+type AppProps = {
+    Connected: typeof Connected
+}
+const App: React.FC<AppProps> = props => {
+    const Connected = useScope(props.Connected)
 
     return (
         <>
-            <div>{Connected() && 'Connected'}</div>
+            <div>{Connected() ? 'Connected' : 'Disconnected'}</div>
             <div>{Connected() && <button onClick={() => socket.emit('move')}>Move</button>}</div>
         </>
     )
 }
 
-let forceUpdate: (() => void) | null = null
-const UpdateApp = asEffect(() => {
-    forceUpdate && forceUpdate()
-    return () => forceUpdate && forceUpdate()
-})
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App Connected={Connected} />, document.getElementById('root'))

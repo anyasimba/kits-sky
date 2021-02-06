@@ -1,3 +1,4 @@
+import 'sky/common/EventEmitter'
 import * as _ from './@'
 globalify(_)
 

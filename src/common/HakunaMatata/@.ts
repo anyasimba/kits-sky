@@ -7,7 +7,6 @@ export {
 export { HakunaMatata } from './_HakunaMatata/_HakunaMatataCreator'
 export { asEffect } from './_asEffect'
 export { commit } from './_commit'
-export { useEffect } from './_hooks'
 export { useRelation, Relation, asRelation } from './_Relation'
 export { Self } from './_Self'
 export {

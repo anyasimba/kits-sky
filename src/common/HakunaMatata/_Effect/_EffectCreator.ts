@@ -1,5 +1,5 @@
 import { currentRef } from '../_Self'
-import { effectsRef } from '../_hooks'
+import { effectsRef, useEffect } from '../_hooks'
 import { __getEffectDestructors, Effect as EffectClass, __getEffectType } from './_EffectClass'
 import { runtimeRef } from '../_runtime'
 import { SharedTypeID } from '../_SharedTypeID'
@@ -43,7 +43,6 @@ export function Effect<P extends any[], R extends EffectNotAFunction>(
         global.useEffect = savedUseEffect
 
         effectsRef.effects.forEach(effect_ => {
-            console.log(effect, Object.getPrototypeOf(effect))
             const destructor = effect_()
             if (destructor) {
                 __getEffectDestructors(effect).push(destructor)

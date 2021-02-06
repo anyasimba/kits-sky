@@ -1,5 +1,5 @@
 import { Player } from '../../shared/entities/Player'
-import { ViewMap } from '../ViewMap'
+import { ClassViewMap } from '../ClassViewMap'
 
 export type PlayerView = {}
 export const PlayerView = HakunaMatata(() => {
@@ -8,4 +8,4 @@ export const PlayerView = HakunaMatata(() => {
     return self
 })
 
-ViewMap.set(Player, PlayerView)
+ClassViewMap.set(Player, PlayerView)
