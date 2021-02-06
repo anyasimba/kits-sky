@@ -1,6 +1,7 @@
 import { purgatoryRef } from '../_purgatoryRef'
 import { IEffect, __attachEffectTo, __detachEffectFrom } from '../_Effect/_EffectClass'
-import { relationRef, RelationType } from '../_Relation/_Relation'
+import { RelationType } from '../_Relation/_Relation'
+import { relationRef } from '../_Relation/_relationRef'
 import { withScopeRef } from '../_Scope/_withScopeRef'
 
 const $$type = Symbol('type')

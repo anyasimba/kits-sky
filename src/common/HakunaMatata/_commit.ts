@@ -1,7 +1,7 @@
 import { purgatoryRef } from './_purgatoryRef'
 import { __clearHakunaMatata } from './_HakunaMatata/_HakunaMatataClass'
 import { __clearEffect } from './_Effect/_EffectClass'
-import { updateRef } from './_Update/_useShared'
+import { updateRef } from './_Update/_updateRef'
 
 export function commit() {
     while (purgatoryRef.hakunaMatataPurgatory.length > 0) {
