@@ -4,6 +4,7 @@ import {
 } from '../_HakunaMatata/_HakunaMatataClass'
 import { currentRef } from '../_Self'
 import { relationInitialsRef } from './_relationInitialsRef'
+import { relationRef } from './_relationRef'
 
 export function useRelation<T extends IHakunaMatata>(
     initialValue: T | null | undefined,

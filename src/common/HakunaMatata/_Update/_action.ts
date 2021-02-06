@@ -1,4 +1,5 @@
-import { runtimeRef } from "../_runtimeRef"
+import { runtimeRef } from '../_runtimeRef'
+import { updateRef } from './_updateRef'
 
 export function action<T extends () => void>(fn: T) {
     runtimeRef.runtime = true

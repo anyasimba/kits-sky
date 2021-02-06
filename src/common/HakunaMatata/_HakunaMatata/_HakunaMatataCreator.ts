@@ -7,8 +7,8 @@ import {
 } from './_HakunaMatataClass'
 import { runtimeRef } from '../_runtimeRef'
 import { SharedTypeID } from '../_Update/_SharedTypeID'
-import { relationInitialsRef } from '../_Relation/_Relation'
-import { ActionMode, updateRef } from '../_Update/_useShared'
+import { relationInitialsRef } from '../_Relation/_relationInitialsRef'
+import { updateRef } from '../_Update/_updateRef'
 
 Object.defineProperty(HakunaMatata, Symbol.hasInstance, {
     value: (obj: any) => {
@@ -53,7 +53,7 @@ export function HakunaMatata<P extends any[], R extends HakunaMatataNotAFunction
             const savedActionMode = updateRef.mode
             updateRef.mode = savedActionMode
             hakunaMatata = (constructor as any)(...args) as IHakunaMatata
-            updateRef.updates.push([sharedTypeID, ...args])
+            // update
             updateRef.mode = savedActionMode
         } else {
             hakunaMatata = (constructor as any)(...args) as IHakunaMatata

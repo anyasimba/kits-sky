@@ -1,3 +1,5 @@
+import { updateRef } from './_updateRef'
+
 const $$commit = Symbol('update')
 export const __updaterCommit = (self: IUpdater) => self[$$commit]()
 

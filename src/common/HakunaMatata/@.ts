@@ -1,9 +1,8 @@
-export * from './_Effect/@'
-export * from './_HakunaMatata/@'
-export * from './_Relation/@'
-export * from './_Scope/@'
-export * from './_Update/@'
+import './_Effect'
+import './_HakunaMatata'
+import './_Relation'
+import './_Scope'
+import './_Update'
 
 export { commit } from './_commit'
 export { Self } from './_Self'
-
