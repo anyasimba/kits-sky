@@ -1,7 +1,7 @@
-import { purgatoryRef } from '../_purgatory'
+import { purgatoryRef } from '../_purgatoryRef'
 import { IEffect, __attachEffectTo, __detachEffectFrom } from '../_Effect/_EffectClass'
-import { relationRef, RelationType } from '../_Relation'
-import { withScopeRef } from '../_withScopeRef'
+import { relationRef, RelationType } from '../_Relation/_Relation'
+import { withScopeRef } from '../_Scope/_withScopeRef'
 
 const $$type = Symbol('type')
 export const __getHakunaMatataType = (self: IHakunaMatata) => self[$$type]

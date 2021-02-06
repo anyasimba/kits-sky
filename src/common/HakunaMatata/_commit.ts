@@ -1,7 +1,7 @@
-import { purgatoryRef } from './_purgatory'
+import { purgatoryRef } from './_purgatoryRef'
 import { __clearHakunaMatata } from './_HakunaMatata/_HakunaMatataClass'
 import { __clearEffect } from './_Effect/_EffectClass'
-import { updateRef } from './_useShared'
+import { updateRef } from './_Update/_useShared'
 
 export function commit() {
     while (purgatoryRef.hakunaMatataPurgatory.length > 0) {
@@ -15,4 +15,8 @@ export function commit() {
         purgatoryRef.effectsPurgatory = []
         purgatory.forEach(effect => __clearEffect(effect))
     }
+
+    updateRef.commiters.forEach(commit => {
+        commit()
+    })
 }

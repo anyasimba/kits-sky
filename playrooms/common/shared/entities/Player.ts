@@ -15,7 +15,7 @@ export type Player = IHakunaMatata & {
     fire(player: Player): void
     notify(player: Player, params: { [key: string]: any })
 }
-export const Player = HakunaMatata((props: PlayerProps = {}) => {
+export const Player = HakunaMatata(ActionMode.PURE, (props: PlayerProps = {}) => {
     const self: Player = Self(HakunaMatata, () => ({
         get id() {
             return id
@@ -55,7 +55,7 @@ export const Player = HakunaMatata((props: PlayerProps = {}) => {
 
     const [getSocket] = useRelation<Io.ServerSocket>(props.socket, socket => {
         // TODO let relations after construct
-        self.setEffect(EventListener(socket, 'move', () => move()))
+        self.setEffect(EventListener(socket, 'move', move))
         self.setEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
     })
     const [getRoom, setRoom] = useRelation<Room>(props.room, room => {

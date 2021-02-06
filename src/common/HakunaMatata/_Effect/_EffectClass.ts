@@ -1,4 +1,5 @@
-import { purgatoryRef } from '../_purgatory'
+import { purgatoryRef } from '../_purgatoryRef'
+import { SharedTypeID } from '../_Update/_SharedTypeID'
 
 const $$type = Symbol('type')
 export const __getEffectType = (self: IHakunaMatata) => self[$$type]

@@ -1,22 +1,9 @@
-export { Effect as EffectClass, IEffect } from './_Effect/_EffectClass'
-export { Effect } from './_Effect/_EffectCreator'
-export {
-    HakunaMatata as HakunaMatataClass,
-    IHakunaMatata,
-} from './_HakunaMatata/_HakunaMatataClass'
-export { HakunaMatata } from './_HakunaMatata/_HakunaMatataCreator'
-export { asEffect } from './_asEffect'
+export * from './_Effect/@'
+export * from './_HakunaMatata/@'
+export * from './_Relation/@'
+export * from './_Scope/@'
+export * from './_Update/@'
+
 export { commit } from './_commit'
-export { useRelation, Relation, asRelation } from './_Relation'
 export { Self } from './_Self'
-export {
-    useShared,
-    Dynamic,
-    asAction,
-    ActionMode,
-    accept,
-    Update,
-    action,
-    routeUpdates,
-} from './_useShared'
-export { withScope, withHakunaMatata } from './_withScope'
+

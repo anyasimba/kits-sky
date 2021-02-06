@@ -1,8 +1,8 @@
 import { currentRef } from '../_Self'
-import { effectsRef, useEffect } from '../_hooks'
+import { effectsRef, useEffect } from '../_useEffect'
 import { __getEffectDestructors, Effect as EffectClass, __getEffectType } from './_EffectClass'
-import { runtimeRef } from '../_runtime'
-import { SharedTypeID } from '../_SharedTypeID'
+import { runtimeRef } from '../_runtimeRef'
+import { SharedTypeID } from '../_Update/_SharedTypeID'
 
 Object.defineProperty(Effect, Symbol.hasInstance, {
     value: (obj: any) => {

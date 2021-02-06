@@ -1,3 +1,4 @@
+import { ActionMode } from 'sky/common/HakunaMatata/@'
 import { Player } from './Player'
 
 export type Room = IHakunaMatata & {

@@ -1,23 +1,9 @@
 import {
     __getHakunaMatataRelations,
     __getHakunaMatataRelationsLinks,
-} from './_HakunaMatata/_HakunaMatataClass'
-import { currentRef } from './_Self'
-
-export const relationInitialsRef: { initials: (() => void)[] } = { initials: [] }
-
-export const relationRef: {
-    subject: IHakunaMatata | null
-    self: IHakunaMatata | null
-    relations: Relation[]
-} = {
-    subject: null,
-    self: null,
-    relations: [],
-}
-
-export enum RelationType {}
-export type Relation = () => RelationType
+} from '../_HakunaMatata/_HakunaMatataClass'
+import { currentRef } from '../_Self'
+import { relationInitialsRef } from './_relationInitialsRef'
 
 export function useRelation<T extends IHakunaMatata>(
     initialValue: T | null | undefined,
@@ -115,10 +101,4 @@ export function useRelation<T extends IHakunaMatata>(
             subject = newSubject
         },
     ]
-}
-
-export function asRelation<T extends any[]>(
-    relation: (...args: T) => () => void
-): (...args: T) => Relation {
-    return relation as any
 }

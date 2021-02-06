@@ -1,9 +1,9 @@
 import {
     HakunaMatata as HakunaMatataClass,
     __getHakunaMatataDestructors,
-} from './_HakunaMatata/_HakunaMatataClass'
+} from '../_HakunaMatata/_HakunaMatataClass'
 import { withScopeRef } from './_withScopeRef'
-import { commit } from './_commit'
+import { commit } from '../_commit'
 
 export function withScope<T extends any[], R extends any>(
     fn: (scope: IHakunaMatata, ...args: T) => R
@@ -47,5 +47,3 @@ export function withScope<T extends any[], R extends any>(
         return getScope
     }
 }
-
-export const withHakunaMatata = withScope(scope => {})(scope => {})()!

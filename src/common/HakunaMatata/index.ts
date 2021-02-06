@@ -24,6 +24,7 @@ declare global {
     const Dynamic: typeof _.Dynamic
     const asAction: typeof _.asAction
     type ActionMode = _.ActionMode
+    const ActionMode: typeof _.ActionMode
     const accept: typeof _.accept
     type Update = _.Update
     const action: typeof _.action

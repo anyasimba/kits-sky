@@ -1,11 +1,7 @@
+import { Player, Room } from '../shared'
 import 'sky/standard/base'
 import 'sky/extensions/socket.io'
 import 'sky/extensions/socket.io/@HakunaMatata'
-import 'sky/common/HakunaMatata'
-import 'sky/common/effects'
-
-import { Player } from '../shared/entities/Player'
-import { Room } from '../shared/entities/Room'
 
 const io = new Io.Server(80, { cors: { origin: '*' } })
 
@@ -16,13 +12,18 @@ routeUpdates(update => {
     console.log(update)
 })
 
+let clientsCount = 0
 withIoServerSockets(io, (withConnected, socket) => {
     // eslint-disable-next-line no-console
-    console.log('client connected')
+    const log = () => console.log(`clients count: ${clientsCount}`)
+
+    ++clientsCount
+    log()
+
     withConnected.add(Player({ socket, room }))
 
     return () => {
-        // eslint-disable-next-line no-console
-        console.log('client disconnected')
+        --clientsCount
+        log()
     }
 })
