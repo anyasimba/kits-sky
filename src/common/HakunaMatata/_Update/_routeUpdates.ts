@@ -1,4 +1,7 @@
-let routeUpdatesFn: ((update: Update) => void) | null = null
-export function routeUpdates(fn: (update: Update) => void) {
-    routeUpdatesFn = fn
+export const routeUpdatesRef: { routeUpdates: ((update: Update) => void) | null } = {
+    routeUpdates: null,
+}
+
+export function routeUpdates(routeUpdates: (update: Update) => void) {
+    routeUpdatesRef.routeUpdates = routeUpdates
 }

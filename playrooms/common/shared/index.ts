@@ -1,4 +1,5 @@
 import 'sky/common/HakunaMatata'
 import 'sky/common/effects'
+import 'sky/common/math'
 export * from './entities/Player'
 export * from './entities/Room'

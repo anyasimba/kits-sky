@@ -1,5 +1,5 @@
 import { currentRef } from '../_Self'
-import { effectsRef, useEffect } from '../_useEffect'
+import { useRef } from '../_use'
 import {
     __getHakunaMatataDestructors,
     HakunaMatata as HakunaMatataClass,
@@ -9,6 +9,8 @@ import { runtimeRef } from '../_runtimeRef'
 import { SharedTypeID } from '../_Update/_SharedTypeID'
 import { relationInitialsRef } from '../_Relation/_relationInitialsRef'
 import { updateRef } from '../_Update/_updateRef'
+import { Update } from '../_Update/_Update'
+import { actionRef } from '../_Action/_actionRef'
 
 Object.defineProperty(HakunaMatata, Symbol.hasInstance, {
     value: (obj: any) => {
@@ -16,7 +18,6 @@ Object.defineProperty(HakunaMatata, Symbol.hasInstance, {
     },
 })
 
-declare const global
 type HakunaMatataNotAFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never })
 export function HakunaMatata<P extends any[], R extends HakunaMatataNotAFunction>(
     actionMode: ActionMode | ((...args: P) => R),
@@ -45,18 +46,16 @@ export function HakunaMatata<P extends any[], R extends HakunaMatataNotAFunction
     function create(...args: P) {
         runtimeRef.runtime = true
 
-        const savedUseEffect = global.useEffect
-        global.useEffect = useEffect
-
         let hakunaMatata: IHakunaMatata
-        if (actionMode === ActionMode.PURE) {
-            const savedActionMode = updateRef.mode
-            updateRef.mode = savedActionMode
-            hakunaMatata = (constructor as any)(...args) as IHakunaMatata
-            // update
-            updateRef.mode = savedActionMode
+        if (actionRef.mode !== ActionMode.PURE && actionMode === ActionMode.PURE) {
+            // eslint-disable-next-line no-console
+            console.log('should in pure')
+            return
         } else {
+            const savedActionMode = updateRef.mode
+            updateRef.mode = 'create'
             hakunaMatata = (constructor as any)(...args) as IHakunaMatata
+            updateRef.mode = savedActionMode
         }
 
         const currentHakunaMatata = currentRef.stack.pop()
@@ -64,20 +63,30 @@ export function HakunaMatata<P extends any[], R extends HakunaMatataNotAFunction
         currentHakunaMatataInterface[$$type] = null
         Object.setPrototypeOf(currentHakunaMatataInterface, currentHakunaMatata.parent)
         Object.setPrototypeOf(hakunaMatata, currentHakunaMatataInterface)
-        global.useEffect = savedUseEffect
 
-        effectsRef.effects.forEach(effect => {
+        useRef.effects.forEach(effect => {
             const destructor = effect()
             if (destructor) {
                 __getHakunaMatataDestructors(hakunaMatata).push(destructor)
             }
         })
-        effectsRef.effects = []
+        useRef.effects = []
 
         relationInitialsRef.initials.forEach(initial => initial())
         relationInitialsRef.initials = []
 
+        if (currentRef.stack.length === 0) {
+            Update({
+                deps: [],
+                mode: ActionMode.TRANSPARENT,
+                type: 'create',
+                options: {
+                    type: sharedTypeID,
+                },
+            })
+        }
+
         return (hakunaMatata as any) as R
     }
-    return create
+    return create as (...args: P) => R
 }

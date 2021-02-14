@@ -8,20 +8,20 @@ type PlayerProps = {
 }
 export type Player = IHakunaMatata & {
     readonly id: number
-    readonly x: number
+    readonly pos: vec2
     life: number
     room: Room | null
     move(): void
     fire(player: Player): void
     notify(player: Player, params: { [key: string]: any })
 }
-export const Player = HakunaMatata(ActionMode.PURE, (props: PlayerProps = {}) => {
+export const Player = HakunaMatata((props: PlayerProps = {}) => {
     const self: Player = Self(HakunaMatata, () => ({
         get id() {
             return id
         },
-        get x() {
-            return x
+        get pos() {
+            return pos
         },
         get life() {
             return life
@@ -40,21 +40,28 @@ export const Player = HakunaMatata(ActionMode.PURE, (props: PlayerProps = {}) =>
         notify,
     }))
 
-    const dynamic = Dynamic(() => ({
-        get x() {
-            return x
-        },
-        set x(value) {
-            x = value
+    const watch = Watch(() => ({
+        set pos(value) {
+            pos = value
         },
     }))
 
+    const dynamic = Dynamic(() => ({
+        set pos(value) {
+            pos = value
+        },
+        set life(value) {
+            life = value
+        },
+    }))
+
+    function visibility(ctx) {}
+
     const id = id_++
-    let x = useShared(() => 0, 'x')
-    let life = 100
+    let pos = useShared(() => new vec2({ x: 0, y: 0 }), 'pos')
+    let life = useShared(() => 100, 'life')
 
     const [getSocket] = useRelation<Io.ServerSocket>(props.socket, socket => {
-        // TODO let relations after construct
         self.setEffect(EventListener(socket, 'move', move))
         self.setEffect(EventListener(socket, 'disconnect', () => self.destroy('socket')))
     })
@@ -65,7 +72,7 @@ export const Player = HakunaMatata(ActionMode.PURE, (props: PlayerProps = {}) =>
     // eslint-disable-next-line no-console
     console.log('Player')
 
-    useEffect(() => {
+    use(() => {
         return (by: string) => {
             if (by !== 'socket') {
                 const room = getRoom()
@@ -85,9 +92,10 @@ export const Player = HakunaMatata(ActionMode.PURE, (props: PlayerProps = {}) =>
     })
 
     const move = () => {
-        // ++dynamic.x
-        ++x
-        getRoom()?.notify(self, { x })
+        ++pos.x
+        dynamic.pos = pos
+        watch.pos = pos
+        getRoom()?.notify(self, { pos })
     }
 
     const fire = (player: Player) => {
@@ -95,7 +103,7 @@ export const Player = HakunaMatata(ActionMode.PURE, (props: PlayerProps = {}) =>
     }
 
     const setLife = value => {
-        life = value
+        dynamic.life = value
 
         if (life <= 0) {
             self.destroy()

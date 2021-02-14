@@ -7,5 +7,6 @@ declare global {
     const Interval: typeof _.Interval
     const HTMLEventListener: typeof _.HTMLEventListener
     const AnimationFrame: typeof _.AnimationFrame
+    const AnimationFrames: typeof _.AnimationFrames
     const EventListener: typeof _.EventListener
 }

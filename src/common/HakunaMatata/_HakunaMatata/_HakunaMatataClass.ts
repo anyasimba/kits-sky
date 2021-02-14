@@ -23,7 +23,7 @@ const $$destructors = Symbol('destructors')
 export const __getHakunaMatataDestructors = (self: IHakunaMatata) => self[$$destructors]
 
 export type IHakunaMatata = {
-    readonly dead: boolean
+    readonly disposed: boolean
     add<T extends IHakunaMatata>(hakunaMatata: T): T
     remove(hakunaMatata: IHakunaMatata): void
     addEffect<T extends IEffect>(effect: T): T
@@ -45,7 +45,7 @@ export const HakunaMatata = function () {
     const relationsLinks: [IHakunaMatata, () => void[]][] = []
 
     const destructors: ((...args: any[]) => void)[] = []
-    let dead
+    let disposed
 
     if (!withScopeRef.on) {
         const purgatory = purgatoryRef.hakunaMatataPurgatory
@@ -107,22 +107,23 @@ export const HakunaMatata = function () {
     }
 
     const __clear = (...args: any[]) => {
-        dead = true
-        relationsLinks.forEach(([hakunaMatata, relations]) => relations())
+        disposed = true
         hakunaMatatas.forEach(hakunaMatata => hakunaMatata[$$detachFrom](self))
+        // after
+        relationsLinks.forEach(([hakunaMatata, relations]) => relations())
         effects.forEach(effect => __detachEffectFrom(effect, self))
         relations.forEach(([subject, relations]) => relations())
         destructors.forEach(destructor => destructor(...args))
     }
 
     const __detachFromAll = () => {
-        links.forEach(link => !link.dead && link[$$remove](self))
+        links.forEach(link => !link.disposed && link[$$remove](self))
     }
 
     return {
         [$$type]: null,
-        get dead() {
-            return dead === true
+        get disposed() {
+            return disposed === true
         },
         add,
         remove,

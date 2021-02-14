@@ -13,7 +13,7 @@ export function withScope<T extends any[], R extends any>(
         const scope: IHakunaMatata = (HakunaMatataClass as any)({})
         withScopeRef.on = false
 
-        const getScope = FunctionEventEmitter(() => (scope.dead ? null : scope))
+        const getScope = FunctionEventEmitter(() => (scope.disposed ? null : scope))
 
         const baseArgs = args.slice(0, -1) as T
         fn(scope, ...baseArgs)
@@ -25,14 +25,14 @@ export function withScope<T extends any[], R extends any>(
         ) => void | (() => void))(scope, ...baseArgs)
 
         if (destructor) {
-            if (scope.dead) {
+            if (scope.disposed) {
                 destructor()
             } else {
                 __getHakunaMatataDestructors(scope).push(destructor)
             }
         }
 
-        if (scope.dead) {
+        if (scope.disposed) {
             getScope.emit('change')
             getScope.emit('destroy')
         } else {

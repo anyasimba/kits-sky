@@ -1,12 +1,13 @@
 import { runtimeRef } from '../_runtimeRef'
-import { updateRef } from './_updateRef'
+import { updateRef } from '../_Update/_updateRef'
+import { actionRef } from './_actionRef'
 
 export function action<T extends () => void>(fn: T) {
     runtimeRef.runtime = true
 
-    if (updateRef.mode === 'pure') {
+    if (actionRef.mode === ActionMode.PURE) {
         //
-    } else if (updateRef.mode === 'continius') {
+    } else if (actionRef.mode === ActionMode.CONTINUS) {
         //
     } else {
         fn()

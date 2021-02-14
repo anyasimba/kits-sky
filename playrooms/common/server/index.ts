@@ -5,25 +5,29 @@ import 'sky/extensions/socket.io/@HakunaMatata'
 
 const io = new Io.Server(80, { cors: { origin: '*' } })
 
-const room = withHakunaMatata.add(Room())
-
-routeUpdates(update => {
-    // eslint-disable-next-line no-console
-    console.log(update)
-})
-
 let clientsCount = 0
-withIoServerSockets(io, (withConnected, socket) => {
-    // eslint-disable-next-line no-console
-    const log = () => console.log(`clients count: ${clientsCount}`)
+// eslint-disable-next-line no-console
+const log = () => console.log(clientsCount)
 
+const players: any[] = []
+
+io.on('connect', (socket: Io.ServerSocket) => {
     ++clientsCount
     log()
 
-    withConnected.add(Player({ socket, room }))
+    const player = {
+        card: Math.random(),
+    }
+    const interval = setInterval(() => {
+        player.card = Math.random()
+    }, 100)
+    players.push(player)
 
-    return () => {
+    socket.on('disconnect', () => {
+        clearInterval(interval)
+        players.splice(players.indexOf(player), 1)
+
         --clientsCount
         log()
-    }
+    })
 })

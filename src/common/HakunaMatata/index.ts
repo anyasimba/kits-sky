@@ -7,6 +7,5 @@ console.log('No worries!')
 
 declare global {
     const commit: typeof _.commit
-    const Self: typeof _.Self
-    function useEffect(cb: () => (...args: any[]) => void): void
+    function use(cb: () => ((...args: any[]) => void) | void): void
 }

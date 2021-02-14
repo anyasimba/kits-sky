@@ -1,12 +1,13 @@
 import { updateRef } from './_updateRef'
 
-const $$commit = Symbol('update')
-export const __updaterCommit = (self: IUpdater) => self[$$commit]()
-
-export type IUpdater = {
+export type Updater = {
     accept(update: Update): void
 }
-export function Updater(commit: (updates: Update[]) => void) {
+export const Updater = Effect((commit: (updates: Update[]) => void) => {
+    const self = Self(Effect, () => ({
+        accept,
+    }))
+
     let updates: Update[] = []
 
     const accept = (update: Update) => updates.push(update)
@@ -17,9 +18,10 @@ export function Updater(commit: (updates: Update[]) => void) {
         commit(updates_)
     }
 
-    updateRef.commiters.push(__commit)
+    use(() => {
+        updateRef.commiters.push(__commit)
+        return () => updateRef.commiters.splice(updateRef.commiters.indexOf(__commit), 1)
+    })
 
-    return {
-        accept,
-    }
-}
+    return self
+})

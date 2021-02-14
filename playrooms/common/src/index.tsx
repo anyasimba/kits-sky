@@ -7,7 +7,7 @@ import { ClassViewMap } from './ClassViewMap'
 
 const socket = io('ws://localhost')
 
-const Connected = withIoClientSocket(socket, withConnected => {
+const Connected = withIoClientSocket(socket, () => {
     socket.on('notify', (playerID, params) => {
         // eslint-disable-next-line no-console
         console.log(playerID, params)
@@ -23,17 +23,8 @@ const Connected = withIoClientSocket(socket, withConnected => {
     }
 })
 
-function useScope<T>(getScope: T) {
-    const [_, set] = useState(0)
-    useEffect(() => {
-        const off = (getScope as any).on('change', () => set(value => ++value))
-        return () => off()
-    }, [getScope])
-    return getScope
-}
-
 type AppProps = {
-    Connected: typeof Connected
+    Connected: Scope
 }
 const App: React.FC<AppProps> = props => {
     const Connected = useScope(props.Connected)

@@ -1,4 +1,4 @@
-import * as _ from './EventEmitter'
+import * as _ from 'anyasimba.event-emitter'
 globalify(_)
 
 declare global {

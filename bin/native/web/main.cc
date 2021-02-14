@@ -6,6 +6,6 @@ EMSCRIPTEN_BINDINGS(___Emscripten) {
         .function("pointer", &___EmscriptenObj::pointer);
 }
 
-EMSCRIPTEN_BINDINGS (main) {
+EMSCRIPTEN_BINDINGS(main) {
     BIND(Common)
 }

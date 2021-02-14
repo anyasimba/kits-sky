@@ -1,7 +1,9 @@
+const { mergeInto, LibraryManager, _callbacks } = window
+
 mergeInto(LibraryManager.library, {
-    invokeCallback: function (callbackID) {
-        var cb = _callbacks[callbackID]
+    invokeCallback(callbackID) {
+        const cb = _callbacks[callbackID]
         delete _callbacks[callbackID]
         cb()
-    }
+    },
 })
