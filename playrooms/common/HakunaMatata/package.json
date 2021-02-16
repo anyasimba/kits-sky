@@ -1,8 +1,8 @@
 {
-    "name": "common",
+    "name": "hakuna-matata",
     "scripts": {
         "start": "sky start --mode development"
     },
     "server": true,
-    "html:title": "Common"
+    "html:title": "No worries!"
 }

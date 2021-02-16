@@ -7,7 +7,6 @@
         "email": "anyasimba@yandex.ru",
         "url": "https://career.habr.com/anyasimba"
     },
-    "scripts": {},
     "bin": {
         "sky": "bin/cli.js"
     },
