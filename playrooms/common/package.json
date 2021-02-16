@@ -1,10 +1,7 @@
 {
     "name": "common",
     "scripts": {
-        "start": "sky start --mode development",
-        "start:production": "sky start --mode production",
-        "build": "sky build --mode production",
-        "build:dev": "sky build --mode development"
+        "start": "sky start --mode development"
     },
     "server": true,
     "html:title": "Common"

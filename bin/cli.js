@@ -36,7 +36,7 @@ switch (command) {
             app.get('/', (req, res) => {
                 res.send(getHtml(module['html:title'], scripts))
             })
-            app.listen(3000)
+            app.listen(3019)
         }
 
         if (module.server) {

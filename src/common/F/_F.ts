@@ -1,15 +1,14 @@
 import { selfRef } from './_Self'
 
 type NotAFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never })
-export function F<P extends any[], R extends NotAFunction>(
-    constructor: (...args: P) => R
-): (...args: P) => R {
+export function F<P extends any[], R extends NotAFunction>(constructor: (...args: P) => R) {
     const $$type = Symbol('type')
 
-    const create = (...args: P) => {
+    const create = function (...args: P) {
         if (selfRef.stack.length === 0) {
             selfRef.self = {}
         }
+
         const current: any = {}
         selfRef.stack.push(current)
 

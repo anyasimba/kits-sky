@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import 'sky/common/F'
 
+type Foo = typeof Foo
 const Foo = F(() => {
     let x = 10
 
@@ -14,17 +16,20 @@ const Foo = F(() => {
             return self
         },
         test2() {
-            // eslint-disable-next-line no-console
             console.log('test2 base')
+        },
+        some() {
+            console.log('some')
         },
     }))
 
     return self
 })
 
+type Boo = typeof Boo
 const Boo = F(() => {
     let y = 19
-    return Self(Foo, () => ({
+    const self = Self(Foo, () => ({
         get y() {
             return y
         },
@@ -32,11 +37,13 @@ const Boo = F(() => {
             y = value
         },
     }))
+    return self
 })
 
+type Goo = typeof Goo
 const Goo = F(() => {
     let z = 42
-    return Self(Boo, () => ({
+    const self = Self(Boo, () => ({
         get z() {
             return z
         },
@@ -44,16 +51,21 @@ const Goo = F(() => {
             z = value
         },
         test2() {
-            // eslint-disable-next-line no-console
             console.log('test2')
         },
     }))
+
+    return self
 })
 
+Foo().test2()
+
+const foo = Foo()
+const boo = Boo()
 const goo = Goo()
 const goo2 = goo.test()
 goo2.test2()
-Foo().test2()
-
-// eslint-disable-next-line no-console
 console.log(goo.x, goo.y, goo.z)
+console.log(foo instanceof Goo, foo instanceof Boo, foo instanceof Foo)
+console.log(boo instanceof Goo, boo instanceof Boo, boo instanceof Foo)
+console.log(goo instanceof Goo, goo instanceof Boo, goo instanceof Foo)
