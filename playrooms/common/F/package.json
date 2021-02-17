@@ -1,7 +1,0 @@
-{
-    "name": "f",
-    "scripts": {
-        "start": "sky start --mode development"
-    },
-    "server": true
-}

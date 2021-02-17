@@ -1,4 +1,4 @@
-import * as _ from './@'
+import * as _ from '@anyasimba/f'
 globalify(_)
 
 declare global {

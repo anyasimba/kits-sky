@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const fs = require('fs')
+const os = require('os')
 const { execSync } = require('child_process')
 const webpack = require('webpack')
 const NodemonPlugin = require('nodemon-webpack-plugin')
@@ -37,7 +38,13 @@ module.exports = (module, mode, cwd, globalPackages) => {
     rules.push(
         {
             test: /\.tsx?$/,
-            use: ['cache-loader', 'ts-loader'],
+            use: [
+                {
+                    loader: 'cache-loader',
+                    options: { cacheDirectory: path.resolve(__dirname, '../node_modules/.cache') },
+                },
+                'ts-loader',
+            ],
             exclude: '/node_modules/',
             include: [/src/, /extras/, cwd],
         },
