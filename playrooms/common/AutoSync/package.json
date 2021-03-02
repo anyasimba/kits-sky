@@ -3,6 +3,5 @@
     "scripts": {
         "start": "sky start --mode development"
     },
-    "server": true,
     "client": false
 }

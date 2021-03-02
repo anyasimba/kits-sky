@@ -39,7 +39,7 @@ switch (command) {
             app.listen(3019)
         }
 
-        if (module.server) {
+        if (module.server || module.client === false) {
             fs.mkdtemp(path.join(os.tmpdir()), (err, folder) => {
                 if (err) throw err
                 watchConfig(webpackConfigGetter.getServerConfig(folder))

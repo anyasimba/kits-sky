@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const fs = require('fs')
-const os = require('os')
 const { execSync } = require('child_process')
 const webpack = require('webpack')
 const NodemonPlugin = require('nodemon-webpack-plugin')
