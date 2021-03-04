@@ -1,6 +1,6 @@
-const sharedRef = []
+import { Visibility } from './_Visibility'
 
-export function Shared<T>(state: T) {
+export function Shared<T>(visibility: Visibility, state: T) {
     const internal = Object.assign({}, state)
     const shared = {}
 
@@ -9,7 +9,7 @@ export function Shared<T>(state: T) {
             get: () => internal[key],
             set: value => {
                 internal[key] = value
-                // analize
+                visibility().forEach(listener => listener.accept({}))
             },
         })
     })
