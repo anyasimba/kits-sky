@@ -1,4 +1,4 @@
-export * from './@@distance'
+export * from './_distance'
 
 export function polyOrient(points: vec2[]): number {
     const { length } = points

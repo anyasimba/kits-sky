@@ -1,4 +1,4 @@
-import * as _ from './base'
+import * as _ from './standard-api'
 globalify(_)
 
 declare global {

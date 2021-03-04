@@ -1,4 +1,4 @@
-import * as _ from './ease'
+import * as _ from './@'
 globalify(_, Math)
 
 declare global {

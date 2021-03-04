@@ -1,4 +1,3 @@
-// production
 import * as colors from './colors'
 globalify({ colors }, console)
 

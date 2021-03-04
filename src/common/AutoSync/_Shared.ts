@@ -1,11 +1,18 @@
-export function Shared<T>(initialState?: T) {
-    // eslint-disable-next-line no-console
-    console.log('i am shared')
+const sharedRef = []
 
+export function Shared<T>(state: T) {
+    const internal = Object.assign({}, state)
     const shared = {}
-    if (initialState) {
-        Object.assign(shared, initialState)
-    }
 
-    return shared
+    Object.keys(state!).forEach(key => {
+        Object.defineProperty(shared, key, {
+            get: () => internal[key],
+            set: value => {
+                internal[key] = value
+                // analize
+            },
+        })
+    })
+
+    return shared as T
 }

@@ -1,5 +1,5 @@
 import { Player, Room } from '../shared'
-import 'sky/standard/base'
+import 'sky/standard/standard-api'
 import 'sky/extensions/socket.io'
 import 'sky/extensions/socket.io/@HakunaMatata'
 

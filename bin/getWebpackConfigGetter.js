@@ -38,18 +38,20 @@ module.exports = (module, mode, cwd, globalPackages) => {
         {
             test: /\.tsx?$/,
             use: [
+                'ts-loader',
+                path.join(__dirname, 'autoSyncLoader'),
                 {
                     loader: 'cache-loader',
                     options: { cacheDirectory: path.resolve(__dirname, '../node_modules/.cache') },
                 },
-                'ts-loader',
             ],
             exclude: '/node_modules/',
             include: [/src/, /extras/, cwd],
         },
         {
             test: /\.css$/,
-            use: ['cache-loader', 'style-loader', 'css-loader?modules'],
+            use: ['style-loader', 'css-loader?modules', 'cache-loader'],
+            exclude: '/node_modules/',
             include: [/src/, /extras/, cwd],
         }
     )

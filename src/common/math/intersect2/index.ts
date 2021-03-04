@@ -1,4 +1,4 @@
-import * as _ from './intersect2'
+import * as _ from './@'
 globalify(_, Math)
 
 declare global {

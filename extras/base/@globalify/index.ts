@@ -1,4 +1,3 @@
-// production
 import { globalify } from './globalify'
 import * as _ from './globalify'
 globalify(_)

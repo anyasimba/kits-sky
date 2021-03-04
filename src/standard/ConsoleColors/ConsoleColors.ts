@@ -1,4 +1,4 @@
-import './@colors'
+import './_colors'
 
 export function ConsoleColors(
     overrideConsole: boolean,

@@ -12,11 +12,10 @@ export type TiledMapPoint = {
 
 export class TiledMap {
     dom: Document
-
     polygons: TiledMapPolygon[] = []
     points: TiledMapPoint[] = []
 
-    constructor(xml) {
+    constructor(xml: string) {
         const parser = new DOMParser()
         const dom = (this.dom = parser.parseFromString(xml, 'application/xml'))
         if (dom.documentElement.nodeName == 'parsererror') {

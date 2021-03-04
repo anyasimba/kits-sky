@@ -1,4 +1,4 @@
-import * as _ from './ConsoleColors'
+import * as _ from './@'
 globalify(_)
 
 declare global {
