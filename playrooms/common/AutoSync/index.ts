@@ -1,30 +1,11 @@
-import { text } from 'express'
 import 'sky/common/AutoSync'
+import 'sky/common/math'
+import { Game } from './Game'
 
-function nullable<T>(value?: T | null): T | null {
-    if (value === undefined) {
-        return null
-    }
-    return value
-}
-function optional<T>(value?: T): typeof value {
-    return value
-}
-
-const visibility = () => {
-    return [
-        {
-            accept(update: any) {
-                console.log(update)
-            },
-        },
-    ]
-}
-
-const test = Shared(visibility, {
-    x: optional<number>(19),
-    y: optional<number>(19),
-    z: optional<number>(19),
-})
-
-test.x = 0
+const game = new Game()
+const player = game.addPlayer([
+    update => {
+        console.log(update)
+    },
+])
+player.move(new vec2({ x: 0, y: 1 }))

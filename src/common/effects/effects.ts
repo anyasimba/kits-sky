@@ -26,7 +26,7 @@ export const AnimationFrame = asEffect((cb: () => void) => {
 })
 
 export const AnimationFrames = asEffect((cb: () => void) => {
-    let request
+    let request: any
     function tick() {
         request = requestAnimationFrame(tick)
         cb()
@@ -36,7 +36,11 @@ export const AnimationFrames = asEffect((cb: () => void) => {
 })
 
 export const EventListener = asEffect(
-    <T extends { on; off? }>(source: T, type: string, listener: (...args: any[]) => void) => {
+    <T extends { on: any; off?: any }>(
+        source: T,
+        type: string,
+        listener: (...args: any[]) => void
+    ) => {
         const off = source.on(type, listener)
         return () => (off ? off() : source.off(type, listener))
     }

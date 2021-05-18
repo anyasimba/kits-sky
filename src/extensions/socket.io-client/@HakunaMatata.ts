@@ -1,4 +1,3 @@
-import { connected } from 'process'
 import 'sky/common/HakunaMatata'
 
 declare global {

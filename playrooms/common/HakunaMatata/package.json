@@ -1,8 +1,0 @@
-{
-    "name": "hakuna-matata",
-    "scripts": {
-        "start": "sky start --mode development"
-    },
-    "server": true,
-    "html:title": "No worries!"
-}

@@ -2,7 +2,7 @@ import './_colors'
 
 export function ConsoleColors(
     overrideConsole: boolean,
-    Colors: (colors: typeof console.colors) => string[][]
+    Colors: (colors: typeof console.colors) => [keyof Console, ...string[]][]
 ) {
     let newConsole: Console
     if (overrideConsole) {
@@ -27,9 +27,9 @@ export function ConsoleColors(
 const base = Object.assign({}, console)
 const stream = process.stdout
 
-function extend(newConsole: Console, level: string, ...colors: string[]) {
+function extend(newConsole: Console, level: keyof Console, ...colors: string[]) {
     const color = colors.join('')
-    newConsole[level] = function (...params) {
+    newConsole[level] = function (...params: any[]) {
         stream.write(color)
         base[level](...params)
         // eslint-disable-next-line no-console

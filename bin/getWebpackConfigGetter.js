@@ -29,7 +29,7 @@ module.exports = (module, mode, cwd, globalPackages) => {
         rules.push({
             test: /\.tsx?$/,
             enforce: 'pre',
-            use: ['cache-loader', 'eslint-loader'],
+            use: ['eslint-loader'],
             exclude: ['/node_modules/', '/dist/'],
             include: [/src/, /extras/, cwd],
         })
@@ -50,7 +50,14 @@ module.exports = (module, mode, cwd, globalPackages) => {
         },
         {
             test: /\.css$/,
-            use: ['style-loader', 'css-loader?modules', 'cache-loader'],
+            use: [
+                'style-loader',
+                'css-loader?modules',
+                {
+                    loader: 'cache-loader',
+                    options: { cacheDirectory: path.resolve(__dirname, '../node_modules/.cache') },
+                },
+            ],
             exclude: '/node_modules/',
             include: [/src/, /extras/, cwd],
         }

@@ -3,6 +3,6 @@ globalify(_, Math)
 
 declare global {
     interface Math {
-        clampAngle(angle: number)
+        clampAngle(angle: number): number
     }
 }
