@@ -102,11 +102,30 @@ module.exports = (package, mode, cwd, globalPackages) => {
             }
         }
 
+        const app = ['./extras/server']
+        if (package.server && package.server.native) {
+            app.push(`./bin/native/standard/@include-native`)
+
+            const native = `${cwd}/.vscode/storage/native/server-native/build/Release/native.node`
+            const sync = () => {
+                try {
+                    if (fs.existsSync(native)) {
+                        fs.copyFileSync(native, `${outputDir}/native.node`)
+                    }
+                } catch (e) {
+                    //
+                }
+            }
+            sync()
+            fs.watchFile(native, sync)
+        }
+        app.push(server)
+
         return {
             stats: 'minimal',
             mode,
             entry: {
-                app: ['./extras/server', server],
+                app,
             },
             resolve,
             context: path.resolve(__dirname, '../'),
@@ -115,6 +134,10 @@ module.exports = (package, mode, cwd, globalPackages) => {
             externals: [
                 ({ request }, callback) => {
                     try {
+                        if (request.indexOf('native.node') !== -1) {
+                            callback(null, 'commonjs ' + request)
+                            return
+                        }
                         const modulePath = require.resolve(request)
                         if (modulePath.indexOf('node_modules') !== -1) {
                             callback(null, 'commonjs ' + request)

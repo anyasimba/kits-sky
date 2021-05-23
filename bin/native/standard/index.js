@@ -6,7 +6,7 @@ module.exports = (package, mode, cwd) => {
     const nodeGyp = path.normalize(
         path.resolve(__dirname, '../../../node_modules/.bin/node-gyp.cmd')
     )
-    const buildDir = path.normalize(`${cwd}/dist/server/`)
+    const buildDir = path.normalize(`${cwd}/.vscode/storage/${package.name}/server-native/`)
 
     function configure() {
         const config = {
@@ -27,8 +27,8 @@ module.exports = (package, mode, cwd) => {
 
         config.targets[0].sources.push(path.resolve(__dirname, 'main.cc'))
 
-        fs.mkdirSync(`${cwd}/dist/server`, { recursive: true })
-        fs.writeFileSync(`${cwd}/dist/server/binding.gyp`, JSON.stringify(config, null, 4))
+        fs.mkdirSync(buildDir, { recursive: true })
+        fs.writeFileSync(`${buildDir}/binding.gyp`, JSON.stringify(config, null, 4))
 
         let r = spawnSync(nodeGyp, ['-j', 'max', '--release', '-C', buildDir, 'clean'], {
             stdio: 'inherit',

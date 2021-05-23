@@ -1,1 +1,3 @@
-import 'sky/common/math'
+import 'sky/common/native'
+
+console.log((global as any).native)

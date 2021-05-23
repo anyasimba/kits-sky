@@ -4,5 +4,8 @@
         "start": "sky start --mode development",
         "native": "sky native"
     },
-    "server": true
+    "client": false,
+    "server": {
+        "native": true
+    }
 }
