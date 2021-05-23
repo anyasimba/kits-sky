@@ -6,6 +6,8 @@ const os = require('os')
 const webpack = require('webpack')
 const express = require('express')
 const getWebpackConfigGetter = require('./getWebpackConfigGetter')
+const getStandardNative = require('./native/standard')
+const getWebNative = require('./native/web')
 
 const globalPackages = ['sky']
 const [command, mode] = getArgs()
@@ -13,12 +15,15 @@ const cwd = process.cwd()
 
 const scripts = ['/app.js']
 
+const package = getModule(path.join(cwd, 'package.json'))
+const hasClient = package.client !== false
+const hasServer = package.server || package.client === false
+
 switch (command) {
     case 'start': {
-        const module = getModule(path.join(cwd, 'package.json'))
-        const webpackConfigGetter = getWebpackConfigGetter(module, mode, cwd, globalPackages)
+        const webpackConfigGetter = getWebpackConfigGetter(package, mode, cwd, globalPackages)
 
-        if (module.client !== false) {
+        if (hasClient) {
             const app = express()
             const config = webpackConfigGetter.getClientConfig()
             const compiler = watchConfig(config)
@@ -39,7 +44,7 @@ switch (command) {
             app.listen(3019)
         }
 
-        if (module.server || module.client === false) {
+        if (hasServer) {
             fs.mkdtemp(path.join(os.tmpdir()), (err, folder) => {
                 if (err) throw err
                 watchConfig(webpackConfigGetter.getServerConfig(folder))
@@ -49,17 +54,28 @@ switch (command) {
         break
     }
     case 'build': {
-        const module = getModule(path.join(cwd, 'package.json'))
-        const webpackConfigGetter = getWebpackConfigGetter(module, mode, cwd, globalPackages)
+        const webpackConfigGetter = getWebpackConfigGetter(package, mode, cwd, globalPackages)
 
-        if (module.client !== false) {
+        if (hasClient) {
             runConfig(webpackConfigGetter.getClientConfig())
         }
 
-        if (module.server) {
+        if (hasServer) {
             runConfig(webpackConfigGetter.getServerConfig())
         }
 
+        break
+    }
+    case 'native': {
+        if (hasClient) {
+            const native = getWebNative(package, mode, cwd)
+            native.build()
+        }
+        if (hasServer) {
+            const native = getStandardNative(package, mode, cwd)
+            native.configure()
+            native.build()
+        }
         break
     }
     default:

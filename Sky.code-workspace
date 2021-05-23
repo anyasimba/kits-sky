@@ -7,17 +7,23 @@
 			"path": "src\\extensions"
 		},
 		{
-			"path": "src\\draft"
-		},
-		{
 			"path": "src\\standard"
 		},
 		{
 			"path": "src\\common"
 		},
 		{
+			"path": "draft"
+		},
+		{
 			"path": "playrooms"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"cstdlib": "cpp",
+			"functional": "cpp",
+			"cmath": "cpp"
+		}
+	}
 }

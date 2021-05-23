@@ -1,7 +1,9 @@
 {
     "name": "auto-sync",
     "scripts": {
-        "start": "sky start --mode development"
+        "start": "sky start --mode development",
+        "build": "sky build",
+        "native": "sky native"
     },
-    "client": false
+    "client": true
 }

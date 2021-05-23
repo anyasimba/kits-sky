@@ -5,7 +5,7 @@ const { execSync } = require('child_process')
 const webpack = require('webpack')
 const NodemonPlugin = require('nodemon-webpack-plugin')
 
-module.exports = (module, mode, cwd, globalPackages) => {
+module.exports = (package, mode, cwd, globalPackages) => {
     const resolve = {
         fallback: {},
         extensions: ['.ts', '.tsx', '.js'],
@@ -94,7 +94,7 @@ module.exports = (module, mode, cwd, globalPackages) => {
         let server
         if (fs.existsSync(path.join(cwd, 'server'))) {
             server = path.join(cwd, 'server')
-        } else if (module.client === false) {
+        } else if (package.client === false) {
             if (fs.existsSync(path.join(cwd, 'src'))) {
                 server = path.join(cwd, 'src')
             } else {

@@ -1,5 +1,5 @@
 import { Bullet } from './Bullet'
-import { Player } from './Player'
+import { Player } from '../Player'
 
 export class Location {
     players: Player[] = []
@@ -10,7 +10,7 @@ export class Location {
     @share h: number = 90
 
     constructor() {
-        this.autoSync.visibility = new GlobalVisibility()
+        // this.autoSync.visibility = new GlobalVisibility()
     }
 
     update(dt: number) {
@@ -20,13 +20,13 @@ export class Location {
     addPlayer(player: Player) {
         this.players.push(player)
         player.location = this
-        this.autoSync.visibility!.addEntity(player)
-        this.autoSync.visibility!.addObserver(player)
+        // this.autoSync.visibility!.addEntity(player)
+        // this.autoSync.visibility!.addObserver(player)
     }
 
     addBullet(bullet: Bullet) {
         this.bullets.push(bullet)
         bullet.location = this
-        this.autoSync.visibility!.addEntity(bullet)
+        // this.autoSync.visibility!.addEntity(bullet)
     }
 }

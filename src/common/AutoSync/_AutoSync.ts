@@ -1,3 +1,6 @@
 export class AutoSync<T> {
-    visibility: nullable<T> = null
+    addEntity(entity: any) {}
+    removeEntity(entity: any) {}
+    addObserver(observer: Observer) {}
+    removeObserver(observer: Observer) {}
 }

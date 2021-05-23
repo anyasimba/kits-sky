@@ -1,4 +1,4 @@
-import { Player } from './entities/Player'
+import { Player } from './Player'
 import { Location } from './entities/Location'
 
 export class Game {

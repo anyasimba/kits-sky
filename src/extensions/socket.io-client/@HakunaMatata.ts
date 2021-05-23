@@ -7,9 +7,9 @@ declare global {
 namespace Global {
     export function withIoClientSocket(
         socket: Io.ClientSocket,
-        cb: (scope: IHakunaMatata, socket: Io.ClientSocket) => void
+        cb: (scope: HakunaMatata, socket: Io.ClientSocket) => void
     ) {
-        let withConnected: IHakunaMatata | null = null
+        let withConnected: HakunaMatata | null = null
 
         const getConnected = FunctionEventEmitter(() => withConnected)
 
