@@ -9,7 +9,20 @@ class Room extends HakunaMatata {
     foos: Foo[] = []
 }
 
+class Small extends Effect {
+    param = 'small'
+    constructor() {
+        super()
+        this.use(() => {
+            console.log('small start')
+            return () => console.log('small end')
+        })
+    }
+}
+
 class Foo extends HakunaMatata {
+    @effect small = new Small()
+
     @relation<Room>(function (this: Foo, room) {
         setRelation(list(room.foos, this))
     })
@@ -17,6 +30,8 @@ class Foo extends HakunaMatata {
 
     constructor() {
         super()
+
+        this.small = new Small()
 
         this.use(() => {
             console.log('foo created')
@@ -31,6 +46,7 @@ const getScope = withScope(scope => {})(scope => {})
 getScope()?.add(foo)
 getScope()?.add(foo.room)
 console.log(foo.room.foos)
+commit()
 foo.destroy()
 console.log(foo.room.foos)
 commit()

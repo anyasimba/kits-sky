@@ -21,7 +21,7 @@ export class HakunaMatata {
         }
     }
 
-    add(hakunaMatata: HakunaMatata) {
+    add<T extends HakunaMatata>(hakunaMatata: T) {
         hakunaMatata.__attachTo(this)
         this.__hakunaMatatas.push(hakunaMatata)
         return hakunaMatata
@@ -32,7 +32,7 @@ export class HakunaMatata {
         this.__remove(hakunaMatata)
     }
 
-    addEffect(effect: Effect) {
+    addEffect<T extends Effect>(effect: T) {
         if (effect.disposed) {
             return
         }

@@ -6,7 +6,11 @@ globalify(_)
 console.log('No worries!')
 
 declare global {
-    function use(cb: () => ((...args: any[]) => void) | void): void
+    type link = _.link
+    const link: typeof _.link
+
+    type effect = _.effect
+    const effect: typeof _.effect
 
     type HakunaMatata = _.HakunaMatata
     const HakunaMatata: typeof _.HakunaMatata
