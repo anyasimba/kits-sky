@@ -1,20 +1,12 @@
 // production
 import './Dropdown.styl'
 
-export class State {
-    @mobx.observable showContent = false
-
-    @mobx.action toggle () {
-        this.showContent = !this.showContent
-    }
-
-    @mobx.action close () {
-        this.showContent = false
-    }
+export class DropDownState {
+    @mobx.observable open = false
 }
 
 export const DropDown = () => {
-    const state = mobx.makeObservable(new State)
+    const state = mobx.makeObservable(new DropDownState)
 
     const Element = mobx.observer((props: {
         [key: string]: any
@@ -35,12 +27,12 @@ export const DropDown = () => {
     
         const $this = React.useRef<HTMLDivElement>()
     
-        React.useEffect(() => {
+        useEffect(() => {
             const handleClick = (e: MouseEvent) => {
                 if (!$this.current.contains(e.target as any)) {
-                    state.close()
+                    state.open = false
                 } else {
-                    state.toggle()
+                    state.open = !state.open
                 }
             }
             window.addEventListener('click', handleClick)
