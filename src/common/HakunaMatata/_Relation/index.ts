@@ -9,5 +9,4 @@ declare global {
 
     type Relation = _.Relation
     const setRelation: typeof _.setRelation
-    const setEffect: typeof _.setEffect
 }

@@ -1,14 +1,13 @@
 import { purgatoryRef } from './_purgatoryRef'
-import { Effect } from './_Effect/_Effect'
 import { withScopeRef } from './_Scope/_withScopeRef'
 
 export class HakunaMatata {
-    private __hakunaMatatas: HakunaMatata[] = []
-    private __effects: (Effect | (() => void))[] = []
-    private __links: HakunaMatata[] = []
+    private __parents: [HakunaMatata, (() => void) | undefined][] = []
+    private __childs: HakunaMatata[] = []
     private __relations: [HakunaMatata, () => void][] = []
-    private __relationsLinks: [HakunaMatata, () => void][] = []
+    private __relationsChilds: [HakunaMatata, () => void][] = []
     private __destructors: ((...args: any[]) => void)[] = []
+    private __destroyArgs: optional<any[]>
     private __disposed: optional<boolean>
     get disposed() {
         return this.__disposed === true
@@ -16,14 +15,14 @@ export class HakunaMatata {
 
     constructor() {
         if (!withScopeRef.on) {
-            const purgatory = purgatoryRef.hakunaMatataPurgatory
+            const purgatory = purgatoryRef.purgatory
             purgatory.push(this)
         }
     }
 
     add<T extends HakunaMatata>(hakunaMatata: T) {
         hakunaMatata.__attachTo(this)
-        this.__hakunaMatatas.push(hakunaMatata)
+        this.__childs.push(hakunaMatata)
         return hakunaMatata
     }
 
@@ -32,29 +31,28 @@ export class HakunaMatata {
         this.__remove(hakunaMatata)
     }
 
-    addEffect<T extends Effect>(effect: T) {
-        if (effect.disposed) {
-            return
-        }
-        ;(effect as any).__attachTo(this)
-        this.__effects.push(effect)
-        return effect
-    }
-
-    removeEffect(effect: Effect) {
-        ;(effect as any).__detachFrom(this)
-        this.__removeEffect(effect)
-    }
-
     destroy(...args: any[]) {
-        this.__detachFromAll()
-        this.__clear(...args)
+        this.__disposed = true
+        this.__destroyArgs = args
+        const purgatory = purgatoryRef.purgatory
+        purgatory.push(this)
     }
 
-    use(effect: () => () => void) {
-        const destructor = effect()
-        if (destructor) {
-            this.onDestroy(destructor)
+    use(effect: (detach: () => void) => () => void) {
+        const ref: any = {}
+        const detach = () => {
+            if (!ref.done) {
+                ref.skip = true
+                return
+            }
+            if (ref.destructor) {
+                this.__destructors.splice(this.__destructors.indexOf(ref.destructor))
+            }
+        }
+        ref.destructor = effect(detach)
+        ref.done = true
+        if (!ref.skip && ref.destructor) {
+            this.onDestroy(ref.destructor)
         }
     }
 
@@ -63,41 +61,49 @@ export class HakunaMatata {
     }
 
     private __remove(hakunaMatata: HakunaMatata) {
-        this.__hakunaMatatas.splice(this.__hakunaMatatas.indexOf(hakunaMatata), 1)
+        this.__childs.splice(this.__childs.indexOf(hakunaMatata), 1)
     }
 
-    private __removeEffect(effect: Effect) {
-        this.__effects.splice(this.__effects.indexOf(effect), 1)
-    }
-
-    private __attachTo(target: HakunaMatata) {
-        if (this.__links.length === 0) {
-            const purgatory = purgatoryRef.hakunaMatataPurgatory
+    private __attachTo(target: HakunaMatata, cb?: () => void) {
+        if (this.__disposed) {
+            throw new Error('disposed')
+        }
+        if (target.__disposed) {
+            throw new Error('target disposed')
+        }
+        if (this.__parents.length === 0) {
+            const purgatory = purgatoryRef.purgatory
             purgatory.splice(purgatory.indexOf(this), 1)
         }
-        this.__links.push(target)
+        this.__parents.push([target, cb])
     }
 
     private __detachFrom(target: HakunaMatata) {
-        this.__links.splice(this.__links.indexOf(target), 1)
-        if (this.__links.length === 0) {
-            const purgatory = purgatoryRef.hakunaMatataPurgatory
+        for (let i = 0; i < this.__parents.length; ++i) {
+            if (this.__parents[i][0] === target) {
+                this.__parents.splice(i, 1)
+                break
+            }
+        }
+        if (this.__parents.length === 0) {
+            const purgatory = purgatoryRef.purgatory
             purgatory.push(this)
         }
     }
 
-    private __clear(...args: any[]) {
+    private __destroy() {
         this.__disposed = true
-        this.__hakunaMatatas.forEach(hakunaMatata => hakunaMatata.__detachFrom(this))
-
-        // after
-        this.__relationsLinks.forEach(([hakunaMatata, relation]) => relation())
-        this.__effects.forEach(effect => (effect as any).__detachFrom(this))
-        this.__relations.forEach(([subject, relations]) => relations())
-        this.__destructors.forEach(destructor => destructor(...args))
-    }
-
-    private __detachFromAll() {
-        this.__links.forEach(link => !link.disposed && link.__remove(this))
+        this.__childs.forEach(hakunaMatata => hakunaMatata.__detachFrom(this))
+        this.__parents.forEach(([parent, cb]) => {
+            if (!parent.disposed) {
+                parent.__remove(this)
+                if (cb) {
+                    cb()
+                }
+            }
+        })
+        this.__relationsChilds.forEach(([hakunaMatata, relation]) => relation())
+        this.__relations.forEach(([subject, relation]) => relation())
+        this.__destructors.forEach(destructor => destructor(...(this.__destroyArgs || [])))
     }
 }

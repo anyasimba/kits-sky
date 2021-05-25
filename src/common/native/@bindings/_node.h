@@ -238,7 +238,7 @@ static void isExternal (const v8::FunctionCallbackInfo<v8::Value>& args) {
         delete obj;\
     ___BIND_END\
     ___BIND_CLASS(NAME)\
-    BIND_CLASS_PROP(NAME, bool, dead)
+    BIND_CLASS_PROP(NAME, bool, disposed)
 
 #define BIND_CLASS_PROP(NAME, PROP_TYPE, PROP_NAME)\
     ___BIND_BEGIN(NAME##_get_##PROP_NAME)\

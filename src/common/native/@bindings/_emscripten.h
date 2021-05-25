@@ -239,7 +239,7 @@ struct ___FromScript<Array<T>> {
         delete (NAME *)emscriptenObj.obj;\
     };\
     ___BIND_CLASS(NAME)\
-    BIND_CLASS_PROP(NAME, bool, dead)
+    BIND_CLASS_PROP(NAME, bool, disposed)
 
 #define BIND_CLASS_PROP(NAME, PROP_TYPE, PROP_NAME)\
     typedef ___Arg<PROP_TYPE>::type (*___##NAME##_get_##PROP_NAME##_fn)(___EmscriptenObj emscriptenObj);\

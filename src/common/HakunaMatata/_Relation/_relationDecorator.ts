@@ -2,19 +2,22 @@ import { relationRef } from './_relationRef'
 
 export type relation = typeof relation
 export function relation<T>(set: (subject: T) => void) {
-    return function (prorotype: any, key: string) {
-        const $$key = Symbol(key)
-
-        Object.defineProperty(prorotype, key, {
-            get() {
+    return function (prototype: any, key: string) {
+        let descriptor = Object.getOwnPropertyDescriptor(prototype, key)!
+        if (descriptor == null) {
+            descriptor = {}
+        }
+        if (descriptor.get == null) {
+            const $$key = Symbol(key)
+            descriptor.get = function (this: any) {
                 return this[$$key]
-            },
-            set(newSubject: T | null | undefined) {
+            }
+            descriptor.set = function (this: any, newSubject: T | null | undefined) {
                 if (this[$$key] != null) {
                     const list = (this as any).__relations
                     for (let i = 0; i < list.length; i++) {
-                        const [child, relation] = list[i]
-                        if (child === this[$$key]) {
+                        const [parent, relation] = list[i]
+                        if (parent === this[$$key]) {
                             relation()
                             break
                         }
@@ -22,15 +25,44 @@ export function relation<T>(set: (subject: T) => void) {
                     removeSubject.call(this, this[$$key])
                 }
                 if (newSubject != null) {
-                    setSubject.call(this, $$key, newSubject)
+                    setSubject.call(
+                        this,
+                        () => this[$$key],
+                        (v: any) => (this[$$key] = v),
+                        newSubject
+                    )
                 }
                 this[$$key] = newSubject
-            },
-        })
+            }
+        } else {
+            const get = descriptor.get!
+            const set = descriptor.set!
+            descriptor.get = function (this: any) {
+                return get.call(this)
+            }
+            descriptor.set = function (this: any, newSubject: T | null | undefined) {
+                if (get.call(this) != null) {
+                    const list = (this as any).__relations
+                    for (let i = 0; i < list.length; i++) {
+                        const [parent, relation] = list[i]
+                        if (parent === get.call(this)) {
+                            relation()
+                            break
+                        }
+                    }
+                    removeSubject.call(this, get.call(this))
+                }
+                if (newSubject != null) {
+                    setSubject.call(this, get.bind(this), set.bind(this), newSubject)
+                }
+                set.call(this, newSubject)
+            }
+        }
+        Object.defineProperty(prototype, key, descriptor)
     }
 
     function removeThisFrom(this: HakunaMatata, subject: HakunaMatata) {
-        const list = (subject as any).__relationsLinks
+        const list = (subject as any).__relationsChilds
         for (let i = 0; i < list.length; i++) {
             const [child, relation] = list[i]
             if (child === this) {
@@ -43,15 +75,15 @@ export function relation<T>(set: (subject: T) => void) {
     function removeSubject(this: HakunaMatata, subject: any) {
         const list = (this as any).__relations
         for (let i = 0; i < list.length; i++) {
-            const [child, relation] = list[i]
-            if (child === subject) {
+            const [parent, relation] = list[i]
+            if (parent === subject) {
                 list.splice(i, 1)
                 break
             }
         }
     }
 
-    function setSubject(this: HakunaMatata, $$key: symbol, newSubject: any) {
+    function setSubject(this: HakunaMatata, get_: any, set_: any, newSubject: any) {
         relationRef.subject = newSubject
         relationRef.self = this
         set.call(this, newSubject)
@@ -61,10 +93,10 @@ export function relation<T>(set: (subject: T) => void) {
         relationRef.relations = []
 
         if (newSubject instanceof HakunaMatata) {
-            ;(newSubject as any).__relationsLinks.push([
+            ;(newSubject as any).__relationsChilds.push([
                 this,
                 () => {
-                    ;(this as any)[$$key] = null
+                    set_(null)
                     removeSubject.call(this, newSubject)
                     relations!.forEach(relation => relation())
                 },

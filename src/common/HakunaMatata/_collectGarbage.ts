@@ -4,18 +4,12 @@ import { purgatoryRef } from './_purgatoryRef'
 commit.add(collectGarbage)
 
 function collectGarbage() {
-    while (purgatoryRef.hakunaMatataPurgatory.length > 0) {
-        const hakunaMatatas = purgatoryRef.hakunaMatataPurgatory
-        purgatoryRef.hakunaMatataPurgatory = []
+    while (purgatoryRef.purgatory.length > 0) {
+        const hakunaMatatas = purgatoryRef.purgatory
+        purgatoryRef.purgatory = []
 
         hakunaMatatas.forEach(hakunaMatata => {
-            ;(hakunaMatata as any).__clear()
+            ;(hakunaMatata as any).__destroy()
         })
     }
-
-    const effects = purgatoryRef.effectsPurgatory
-    purgatoryRef.effectsPurgatory = []
-    effects.forEach(effect => {
-        ;(effect as any).__clear()
-    })
 }
