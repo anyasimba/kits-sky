@@ -174,6 +174,7 @@ function applyArrayProp(name: string, prototype: any, prop: any) {
         Object.defineProperty(prototype, prop.key, {
             get() {
                 const native = this[$$native]
+                const self = this
                 this[key] = this[key] || {
                     get length() {
                         return length(native)
@@ -192,18 +193,19 @@ function applyArrayProp(name: string, prototype: any, prop: any) {
                     },
                     add(value: HakunaMatata) {
                         ;(value as any).__attachTo(this, () => remove(native, unwrap(value)))
-                        this.__childs.push(value)
+                        console.log(self)
+                        self.__childs.push(value)
                         add(native, unwrap(value))
                     },
                     remove(value: any) {
-                        this.remove(value)
+                        self.remove(value)
                         remove(native, unwrap(value))
                     },
                     clear() {
                         const len = length(native)
                         for (let i = 0; i < len; i++) {
                             const value = wrap(get(native, i))
-                            this.remove(value)
+                            self.remove(value)
                         }
                         clear(native)
                     },
@@ -260,9 +262,9 @@ function applyProp(name: string, prototype: any, prop: any) {
                 return wraps[get(this[$$native])]
             },
             set(value) {
-                const current = get(this[$$native])
-                if (pointer(current) !== 0) {
-                    this.remove(wraps[pointer(get(this[$$native]))])
+                const currentPointer = pointer(get(this[$$native]))
+                if (currentPointer !== 0) {
+                    this.remove(wraps[currentPointer])
                 }
                 if (value) {
                     ;(value as any).__attachTo(this, () => set(this[$$native], null))

@@ -42,7 +42,7 @@ struct Phys2Body: Native {
     real restitution;
 
     // Shape interface
-    Phys2Shape* shape;
+    Phys2Shape* shape = nullptr;
 
     OcthreeBelongs belongs;
 };
