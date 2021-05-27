@@ -24,7 +24,7 @@ declare const global: any
 export class Native extends HakunaMatata {
     constructor() {
         super()
-        ;(this as any)[$$nativeConstructor]()
+        ;(this as any)[$$nativeConstructor].call(this)
     }
 }
 
@@ -58,11 +58,10 @@ export const native = {
             const nativeDestructor = global.___NATIVE[`${name}_destroy`]
 
             constructor.prototype[$$nativeConstructor] = function (...args: any[]) {
-                const key = (this[$$native] as any).pointer()
-
                 this.use(() => {
+                    this[$$native] = nativeConstructor(...args)
+                    const key = pointer(this[$$native])
                     wraps[key] = this
-                    nativeConstructor(...args)
                     return () => {
                         delete wraps[key]
                         nativeDestructor(this[$$native])
@@ -94,6 +93,13 @@ export const native = {
     },
 }
 
+function pointer(native: any): number {
+    if (global.___NATIVE.pointer) {
+        return global.___NATIVE.pointer(native)
+    }
+    return native.pointer()
+}
+
 function unwrapArgs(args: any[], unwraps: any[]) {
     for (let i = 0; i < unwraps.length; ++i) {
         unwraps[i](args)
@@ -122,7 +128,7 @@ function ArgWrap(arg: string) {
         return
     }
     let wrap = (v: any) => {
-        const key = v.pointer()
+        const key = pointer(v)
         return wraps[key]
     }
     const j = (arg.lastIndexOf('<') + 1) / 6
@@ -254,8 +260,9 @@ function applyProp(name: string, prototype: any, prop: any) {
                 return wraps[get(this[$$native])]
             },
             set(value) {
-                if (get(this[$$native])) {
-                    this.remove(wraps[get(this[$$native])])
+                const current = get(this[$$native])
+                if (pointer(current) !== 0) {
+                    this.remove(wraps[pointer(get(this[$$native]))])
                 }
                 if (value) {
                     ;(value as any).__attachTo(this, () => set(this[$$native], null))

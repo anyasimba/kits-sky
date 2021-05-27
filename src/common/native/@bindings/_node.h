@@ -163,10 +163,17 @@ struct ___FromScript<Array<T>> {
         }\
     };
 
-// Is external
+// is external
 static void isExternal (const v8::FunctionCallbackInfo<v8::Value>& args) {
     v8::Isolate *isolate = args.GetIsolate();
     args.GetReturnValue().Set(args[0]->IsExternal());
+}
+
+// pointer
+static void pointer (const v8::FunctionCallbackInfo<v8::Value>& args) {
+    v8::Isolate *isolate = args.GetIsolate();
+    ARG(0, void*, obj);
+    args.GetReturnValue().Set(___ToScript<size_t>::fn(isolate, (size_t)obj));
 }
 
 //
@@ -221,7 +228,7 @@ static void isExternal (const v8::FunctionCallbackInfo<v8::Value>& args) {
     ___BIND_END\
     ___BIND_FUNCTION(NAME)
 
-#define BIND_FUNCTION_VOID(NAME, ARGS, __VA_ARGS__)\
+#define BIND_FUNCTION_VOID(NAME, ARGS, ...)\
     ___BIND_BEGIN(NAME)\
         __VA_ARGS__;\
         NAME ARGS;\
@@ -284,7 +291,7 @@ static void isExternal (const v8::FunctionCallbackInfo<v8::Value>& args) {
     ___BIND_END\
     ___BIND_CLASS_ARRAY_PROP(NAME, PROP_NAME)
 
-#define BIND_CLASS_METHOD (NAME, RETURN, METHOD, ARGS, ...)\
+#define BIND_CLASS_METHOD(NAME, RETURN, METHOD, ARGS, ...)\
     ___BIND_BEGIN(NAME##_##METHOD)\
         ARG(0, NAME*, obj);\
         __VA_ARGS__;\

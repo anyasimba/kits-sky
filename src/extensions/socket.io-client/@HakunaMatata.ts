@@ -1,10 +1,10 @@
 import 'sky/common/HakunaMatata'
 
 declare global {
-    const withIoClientSocket: typeof Global.withIoClientSocket
+    const withIoClientSocket: typeof _.withIoClientSocket
 }
 
-namespace Global {
+namespace _ {
     export function withIoClientSocket(
         socket: Io.ClientSocket,
         cb: (scope: HakunaMatata, socket: Io.ClientSocket) => void
@@ -35,5 +35,4 @@ namespace Global {
         return getConnected
     }
 }
-
-globalify(Global)
+globalify(_)

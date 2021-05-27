@@ -10,5 +10,5 @@ using namespace std;
 #include "Octhree.h"
 
 struct Native {
-    bool dead = false;
+    bool disposed = false;
 };

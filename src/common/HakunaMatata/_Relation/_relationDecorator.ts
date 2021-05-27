@@ -98,7 +98,6 @@ export function relation<T>(set: (subject: T) => void) {
                 () => {
                     set_(null)
                     removeSubject.call(this, newSubject)
-                    relations!.forEach(relation => relation())
                 },
             ])
             ;(this as any).__relations.push([
