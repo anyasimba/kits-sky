@@ -193,7 +193,6 @@ function applyArrayProp(name: string, prototype: any, prop: any) {
                     },
                     add(value: HakunaMatata) {
                         ;(value as any).__attachTo(this, () => remove(native, unwrap(value)))
-                        console.log(self)
                         self.__childs.push(value)
                         add(native, unwrap(value))
                     },
