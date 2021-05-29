@@ -1,4 +1,3 @@
-// production
 import * as _ from './loadFileFromDisk'
 globalify(_, 'Web')
 

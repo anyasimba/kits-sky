@@ -13,8 +13,6 @@ const globalPackages = ['sky']
 const [command, mode] = getArgs()
 const cwd = process.cwd()
 
-const scripts = ['/app.js']
-
 const package = getModule(path.join(cwd, 'package.json'))
 const hasClient = package.client !== false
 const hasServer = package.server || package.client === false
@@ -37,9 +35,10 @@ switch (command) {
                     },
                 })
             )
+
             app.use(require('webpack-hot-middleware')(compiler))
             app.get('/', (req, res) => {
-                res.send(getHtml(module['html:title'], scripts))
+                res.send(getHtml(module['html:title'], ['/app.js']))
             })
             app.listen(3019)
         }
@@ -155,7 +154,7 @@ function getHtml(title, scripts) {
         </head>
         <body>
             <div id='root'></div>
-            ${scripts.map(script => `<script src='${script}'></script>`)}
+            ${scripts.map(script => `<script src='${script}'></script>`).join('')}
         </body>
         </html>
     `

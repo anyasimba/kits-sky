@@ -37,7 +37,7 @@ export const native = {
             {
                 const getDisposed = global.___NATIVE[`${name}_get_disposed`]
                 const setDisposed = global.___NATIVE[`${name}_set_disposed`]
-                Object.defineProperty(prototype, 'disposed', {
+                Object.defineProperty(prototype, '__disposed', {
                     get: function () {
                         return getDisposed(this[$$native])
                     },
@@ -192,7 +192,7 @@ function applyArrayProp(name: string, prototype: any, prop: any) {
                         return wrap(get(native, idx))
                     },
                     add(value: HakunaMatata) {
-                        ;(value as any).__attachTo(this, () => remove(native, unwrap(value)))
+                        ;(value as any).__attachTo(self, () => remove(native, unwrap(value)))
                         self.__childs.push(value)
                         add(native, unwrap(value))
                     },
@@ -255,7 +255,6 @@ function applyProp(name: string, prototype: any, prop: any) {
     const get = global.___NATIVE[`${name}_get_${prop.key}`]
     const set = global.___NATIVE[`${name}_set_${prop.key}`]
     if (prop.type.indexOf('*') !== -1) {
-        const key = Symbol(prop.key)
         Object.defineProperty(prototype, prop.key, {
             get() {
                 return wraps[get(this[$$native])]

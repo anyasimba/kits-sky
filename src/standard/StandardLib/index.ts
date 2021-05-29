@@ -1,4 +1,4 @@
-import * as _ from './standard-lib'
+import * as _ from './_StandardLib'
 globalify(_)
 
 declare global {

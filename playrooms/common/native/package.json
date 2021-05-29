@@ -4,7 +4,10 @@
         "start": "sky start --mode development",
         "native": "sky native"
     },
-    "client": false,
+    "client": {
+        "title": "Test Native",
+        "native": true
+    },
     "server": {
         "native": true
     }

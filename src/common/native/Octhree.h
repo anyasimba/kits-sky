@@ -44,7 +44,7 @@ struct ___OcthreeNodes {
         memset(node, 0, sizeof(node));
     }
 
-    virtual void __onRemove () {}
+    virtual bool __onRemove () {return false;}
 };
 
 template<class T>
@@ -135,9 +135,9 @@ struct OcthreeNode: ___OcthreeNodes<T> {
         }
     }
 
-    void remove (const T& obj) {
+    bool remove (const T& obj) {
         objs.remove(obj);
-        __onRemove();
+        return __onRemove();
     }
     
     void _tryAdd (OcthreeBelongs& belongs, size_t i, float halfSize, const T& obj, float size, AABB3 aabb) {
@@ -154,30 +154,32 @@ struct OcthreeNode: ___OcthreeNodes<T> {
     }
     
     void _tryGet (Array<T>& result, size_t i, float halfSize, float size, AABB3 aabb) {
+        if (this->node[i] == nullptr) {
+            return;
+        }
         if (aabb.xb > halfSize || aabb.yb > halfSize || aabb.zb > halfSize) {
             return;
         }
         if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
             return;
         }
-        if (this->node[i] == nullptr) {
-            return;
-        }
         this->node[i]->get(result, halfSize, aabb);
     }
 
-    void __onRemove () {
+    bool __onRemove () {
         if (objs.size() > 0) {
-            return;
+            return false;
         }
         for (size_t i = 0; i < 8; ++i) {
             if (this->node[i] != nullptr) {
-                return;
+                return false;
             }
         }
         parent->node[idx] = nullptr;
-        parent->__onRemove();
-        delete this;
+        if (parent->__onRemove()) {
+            delete parent;
+        }
+        return true;
     }
 };
 
@@ -280,7 +282,10 @@ struct Octhree: ___OcthreeNodes<T> {
     void remove (const T& obj, OcthreeBelongs& belongs) {
         FOR (i, belongs.nodes) {
             auto node = (OcthreeNode<T>*)belongs.nodes[i];
-            node->remove(obj);
+            if (node->remove(obj)) {
+                printf("delete %p\n", node);
+                delete node;
+            }
         }
     }
     

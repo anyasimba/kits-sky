@@ -1,4 +1,4 @@
-import 'sky/common/_commit'
+import 'sky/common/commit'
 import { purgatoryRef } from './_purgatoryRef'
 
 commit.add(collectGarbage)

@@ -65,21 +65,52 @@ module.exports = (package, mode, cwd, globalPackages) => {
 
     function getClientConfig() {
         let client
-        if (fs.existsSync(path.join(cwd, 'src'))) {
+        if (fs.existsSync(path.join(cwd, 'client'))) {
+            client = path.join(cwd, 'client')
+        } else if (fs.existsSync(path.join(cwd, 'src'))) {
             client = path.join(cwd, 'src')
         } else {
             client = cwd
         }
 
+        const app = ['webpack-hot-middleware/client', './extras/client']
+
+        const globals = []
+
+        if (package.client && package.client.native) {
+            const nativePath = path.join(cwd, '.vscode/storage/native/web-native.js')
+            globals.push(nativePath)
+            app.push(nativePath)
+            app.push('./bin/native/web/@include-native')
+        }
+
+        app.push(client)
+
         return {
             stats: 'minimal',
             mode,
             entry: {
-                app: ['webpack-hot-middleware/client', './extras/client', client],
+                app,
             },
-            resolve,
+            resolve: {
+                ...resolve,
+                fallback: {
+                    ...resolve.fallback,
+                    fs: false,
+                    path: false,
+                },
+            },
             context: path.resolve(__dirname, '../'),
-            module: { rules },
+            module: {
+                rules: [
+                    ...rules,
+                    {
+                        test: /\.js$/,
+                        include: globals,
+                        loader: 'script-loader',
+                    },
+                ],
+            },
             target: 'web',
             output: {
                 filename: 'app.js',
