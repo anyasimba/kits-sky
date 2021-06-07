@@ -1,4 +1,8 @@
-import * as _ from './@'
+import './AABB'
+import './Polygon'
+import './Polyline'
+
+import * as _ from './_'
 globalify(_, Math)
 
 declare global {

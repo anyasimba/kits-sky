@@ -1,4 +1,4 @@
-import './@bindings'
+import './@binding'
 
 import './phys2/Phys2Body'
 import './phys2/Phys2Force'

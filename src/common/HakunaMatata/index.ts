@@ -1,5 +1,5 @@
 import 'sky/common/EventEmitter'
-import * as _ from './@'
+import * as _ from './_'
 globalify(_)
 
 // eslint-disable-next-line no-console

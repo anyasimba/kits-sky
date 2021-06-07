@@ -1,10 +1,10 @@
 import 'sky/common/HakunaMatata'
 
 declare global {
-    const withIoServerSockets: typeof Global.withIoServerSockets
+    const withIoServerSockets: typeof _.withIoServerSockets
 }
 
-namespace Global {
+namespace _ {
     export const withIoServerSocket = withScope((scope, socket: Io.ServerSocket, io: Io.Server) => {
         socket.on('disconnect', scope.destroy)
     })
@@ -21,4 +21,4 @@ namespace Global {
     }
 }
 
-globalify(Global)
+globalify(_)

@@ -76,3 +76,316 @@ d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2Sys
 00007FF7F46D9A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
 00007FF7F465E7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
 00007FF7F4657AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 25940 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (187): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (185): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 15244 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (187): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (185): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 11616 received SIGSEGV for address: 0xb1c73c37
+PID 19744 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (187): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (185): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 22768 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (197): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (190): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 15200 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (198): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (190): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 25448 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (201): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (193): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 14084 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (201): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (193): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 11888 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (201): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (193): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 4644 received SIGSEGV for address: 0xc43af199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFAC4328A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFAC4301276 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43011A5 (ntdll): (filename not available): RtlRaiseException
+00007FFAC43AF199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43AF163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFAC43B7EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43B81CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC43BDE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFAC42D5BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFAC42D47B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (201): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (193): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF785CA8280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA77C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA7B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF785CA790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF786149A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860CE7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF7860C7AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 21444 received SIGSEGV for address: 0xbe50f199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFABE488A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFABE461276 (ntdll): (filename not available): RtlRaiseException
+00007FFABE4611A5 (ntdll): (filename not available): RtlRaiseException
+00007FFABE50F199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFABE50F163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFABE517EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE5181CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE51DE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE435BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFABE4347B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (193): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (194): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF660728280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF6607277C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF660727B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF66072790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF660BC9A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF660B4E7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF660B47AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 17492 received SIGSEGV for address: 0xbe50f199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFABE488A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFABE461276 (ntdll): (filename not available): RtlRaiseException
+00007FFABE4611A5 (ntdll): (filename not available): RtlRaiseException
+00007FFABE50F199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFABE50F163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFABE517EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE5181CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE51DE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE435BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFABE4347B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (193): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (194): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF660728280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF6607277C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF660727B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF66072790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF660BC9A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF660B4E7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF660B47AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+PID 12952 received SIGSEGV for address: 0xbe50f199
+SymInit: Symbol-SearchPath: '.;D:\_Projects\@Kits\sky\sky\playrooms\common\native;C:\Program Files\nodejs;C:\WINDOWS;C:\WINDOWS\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'Fuurou'
+OS-Version: 10.0.19042 () 0x100-0x1
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\stackwalker.cpp (924): StackWalker::ShowCallstack
+d:\_projects\@kits\sky\sky\node_modules\segfault-handler\src\segfault-handler.cpp (242): segfault_handler
+00007FFABE488A4C (ntdll): (filename not available): RtlDeleteAce
+00007FFABE461276 (ntdll): (filename not available): RtlRaiseException
+00007FFABE4611A5 (ntdll): (filename not available): RtlRaiseException
+00007FFABE50F199 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFABE50F163 (ntdll): (filename not available): RtlIsZeroMemory
+00007FFABE517EE2 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE5181CA (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE51DE51 (ntdll): (filename not available): RtlpNtSetValueKey
+00007FFABE435BF0 (ntdll): (filename not available): RtlGetCurrentServiceSessionId
+00007FFABE4347B1 (ntdll): (filename not available): RtlFreeHeap
+minkernel\crts\ucrt\src\appcrt\heap\free_base.cpp (105): _free_base
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (196): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\octhree.h (196): OcthreeNode<Phys2Body *>::__onRemove
+d:\_projects\@kits\sky\sky\src\common\native\phys2\phys2system.cc (53): Phys2System::update
+00007FF660728280 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF6607277C7 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF660727B08 (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF66072790E (node): (filename not available): v8::internal::Builtins::builtin_handle
+00007FF660BC9A3D (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF660B4E7CC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap
+00007FF660B47AFC (node): (filename not available): v8::internal::SetupIsolateDelegate::SetupHeap

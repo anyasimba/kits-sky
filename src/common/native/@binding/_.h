@@ -1,4 +1,9 @@
 #pragma once
+#include "../collections/Array.h"
+
+struct Native {
+    bool disposed = false;
+};
 
 #ifdef __EMSCRIPTEN__
 #include "_emscripten.h"

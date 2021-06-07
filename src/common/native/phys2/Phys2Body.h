@@ -46,7 +46,7 @@ struct Phys2Body: Native {
 
     OcthreeBelongs belongs;
 };
-BINDING (Phys2Body) {
+BINDING(Phys2Body) {
     BIND_CLASS(Phys2Body, ())
     BIND_CLASS_METHOD_VOID(Phys2Body, init, (density), ARG(1, real, density))
     BIND_CLASS_PROP(Phys2Body, Phys2Shape*, shape)

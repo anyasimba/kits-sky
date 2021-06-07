@@ -54,7 +54,7 @@ struct Phys2Circle: Phys2Shape {
         return aabb;
     }
 };
-BINDING (Phys2Circle) {
+BINDING(Phys2Circle) {
     BIND_CLASS(Phys2Circle, ())
     BIND_CLASS_METHOD_VOID(Phys2Circle, initialize, (density), ARG(1, real, density))
     BIND_CLASS_PROP(Phys2Circle, real, radius)
@@ -236,7 +236,7 @@ struct Phys2Polygon: Phys2Shape {
     vec2 m_vertices[MaxPolyVertexCount];
     vec2 m_normals[MaxPolyVertexCount];
 };
-BINDING (Phys2Polygon) {
+BINDING(Phys2Polygon) {
     BIND_CLASS(Phys2Polygon, ())
     BIND_CLASS_METHOD_VOID(Phys2Polygon, initialize, (density), ARG(1, real, density))
     BIND_CLASS_METHOD_VOID(Phys2Polygon, setVertices, (vertices), ARG(1, Array<vec2>, vertices))

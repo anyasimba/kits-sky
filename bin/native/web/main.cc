@@ -1,4 +1,4 @@
-#include <src/common/native/@.h>
+#include <src/common/native/_.h>
 
 EMSCRIPTEN_BINDINGS(___Emscripten) {
     class_<___EmscriptenEnum>("___EmscriptenEnum");
@@ -7,5 +7,5 @@ EMSCRIPTEN_BINDINGS(___Emscripten) {
 }
 
 EMSCRIPTEN_BINDINGS(main) {
-    BIND(Common)
+    BIND(Native)
 }

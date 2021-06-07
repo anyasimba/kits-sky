@@ -9,21 +9,21 @@ typedef void (*Phys2CollisionCallback)(Phys2Manifold* m, Phys2Body* a, Phys2Body
 
 extern Phys2CollisionCallback Phys2Dispatch[Phys2Shape::eCount][Phys2Shape::eCount];
 
-void Phys2CircletoCircle (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
-void Phys2CircletoPolygon (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
-void Phys2PolygontoCircle (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
-void Phys2PolygontoPolygon (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2CircleToCircle (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2CircleToPolygon (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2PolygonToCircle (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2PolygonToPolygon (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
 
 Phys2CollisionCallback Dispatch[Phys2Shape::eCount][Phys2Shape::eCount] = {
     {
-        Phys2CircletoCircle, Phys2CircletoPolygon
+        Phys2CircleToCircle, Phys2CircleToPolygon
     },
     {
-        Phys2PolygontoCircle, Phys2PolygontoPolygon
+        Phys2PolygonToCircle, Phys2PolygonToPolygon
     },
 };
 
-void Phys2CircletoCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2CircleToCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2Circle* A = reinterpret_cast<Phys2Circle*>(a->shape);
     Phys2Circle* B = reinterpret_cast<Phys2Circle*>(b->shape);
 
@@ -54,7 +54,7 @@ void Phys2CircletoCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     }
 }
 
-void Phys2CircletoPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2CircleToPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2Circle* A  = reinterpret_cast<Phys2Circle*>(a->shape);
     Phys2Polygon* B = reinterpret_cast<Phys2Polygon*>(b->shape);
 
@@ -135,8 +135,8 @@ void Phys2CircletoPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     }
 }
 
-void Phys2PolygontoCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
-    Phys2CircletoPolygon(m, b, a);
+void Phys2PolygonToCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+    Phys2CircleToPolygon(m, b, a);
     m->normal = -m->normal;
 }
 
@@ -234,7 +234,7 @@ int32_t Phys2Clip (vec2 n, real c, vec2 *face) {
     return sp;
 }
 
-void Phys2PolygontoPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2PolygonToPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2Polygon* A = reinterpret_cast<Phys2Polygon *>(a->shape);
     Phys2Polygon* B = reinterpret_cast<Phys2Polygon *>(b->shape);
     m->contact_count = 0;

@@ -1,5 +1,4 @@
-import 'sky/common/math'
-import * as _ from './TiledMap'
+import * as _ from './_'
 globalify(_)
 
 declare global {

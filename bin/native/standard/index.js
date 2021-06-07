@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const path = require('path')
 const fs = require('fs')
 const { spawnSync } = require('child_process')

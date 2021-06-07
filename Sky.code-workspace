@@ -23,7 +23,34 @@
 		"files.associations": {
 			"cstdlib": "cpp",
 			"functional": "cpp",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"vector": "cpp",
+			"bitset": "cpp",
+			"chrono": "cpp",
+			"xhash": "cpp",
+			"xtree": "cpp",
+			"xutility": "cpp",
+			"__bit_reference": "cpp",
+			"algorithm": "cpp",
+			"map": "cpp",
+			"unordered_map": "cpp",
+			"deque": "cpp",
+			"iosfwd": "cpp",
+			"istream": "cpp",
+			"iterator": "cpp",
+			"ratio": "cpp",
+			"string": "cpp",
+			"type_traits": "cpp",
+			"xiosbase": "cpp",
+			"xlocale": "cpp",
+			"xlocinfo": "cpp",
+			"xlocmon": "cpp",
+			"xlocnum": "cpp",
+			"xloctime": "cpp",
+			"xmemory0": "cpp",
+			"xstring": "cpp",
+			"xxatomic": "cpp",
+			"set": "cpp"
 		}
 	}
 }

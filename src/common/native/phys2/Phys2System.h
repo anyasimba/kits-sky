@@ -20,7 +20,7 @@ struct Phys2System: Native {
     void integrateForces (Phys2Body* body, real dt);
     void integrateVelocity (Phys2Body* body, real dt);
 };
-BINDING (Phys2System) {
+BINDING(Phys2System) {
     BIND_CLASS(Phys2System, ())
     BIND_CLASS_ARRAY_PROP(Phys2System, Phys2Body*, bodies)
     BIND_CLASS_ARRAY_PROP(Phys2System, Phys2Body*, staticBodies)

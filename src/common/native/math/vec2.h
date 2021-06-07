@@ -1,6 +1,6 @@
 #pragma once
-#include "../Array.h"
-#include "../@bindings/@.h"
+#include "../collections/Array.h"
+#include "../@binding/_.h"
 #include <math.h>
 extern "C" {
     #include <math.h>

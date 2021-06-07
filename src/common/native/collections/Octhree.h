@@ -1,12 +1,4 @@
 #pragma once
-extern "C" {
-    #include <math.h>
-}
-#include <iostream>
-#include <vector>
-using namespace std;
-
-#include "math/@.h"
 
 inline float po2 (float size) {
     float r = 32;
@@ -44,8 +36,12 @@ struct ___OcthreeNodes {
         memset(node, 0, sizeof(node));
     }
 
-    virtual bool __onRemove () {return false;}
+    virtual void __onRemove () {}
 };
+
+#include "set"
+static int __count = 0;
+static std::set<void*> nodes;
 
 template<class T>
 struct OcthreeNode: ___OcthreeNodes<T> {
@@ -85,7 +81,11 @@ struct OcthreeNode: ___OcthreeNodes<T> {
 
     OcthreeNode (___OcthreeNodes<T>* parent, size_t idx, float size)
         : parent(parent), idx(idx), size(size)
-    {}
+    {
+        ++__count;
+        nodes.insert(this);
+        printf("new node count: %i | this: %p | parent: %p | idx: %i | size: %f\n", __count, this, parent, idx, size);
+    }
 
     void add (OcthreeBelongs& belongs, const T& obj, float size, AABB3 aabb) {
         if (size == this->size) {
@@ -100,18 +100,39 @@ struct OcthreeNode: ___OcthreeNodes<T> {
             AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb,    aabb.ye,    aabb.zb,    aabb.ze),
             AABB3(aabb.xb,    aabb.xe,    aabb.yb-hs, aabb.ye-hs, aabb.zb,    aabb.ze),
             AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb-hs, aabb.ye-hs, aabb.zb,    aabb.ze),
-            AABB3(aabb.xb,    aabb.xe,    aabb.yb,    aabb.ye,    aabb.zb=hs, aabb.ze-hs),
-            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb,    aabb.ye,    aabb.zb=hs, aabb.ze-hs),
-            AABB3(aabb.xb,    aabb.xe,    aabb.yb-hs, aabb.ye-hs, aabb.zb=hs, aabb.ze-hs),
-            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb-hs, aabb.ye-hs, aabb.zb=hs, aabb.ze-hs),
+            AABB3(aabb.xb,    aabb.xe,    aabb.yb,    aabb.ye,    aabb.zb-hs, aabb.ze-hs),
+            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb,    aabb.ye,    aabb.zb-hs, aabb.ze-hs),
+            AABB3(aabb.xb,    aabb.xe,    aabb.yb-hs, aabb.ye-hs, aabb.zb-hs, aabb.ze-hs),
+            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb-hs, aabb.ye-hs, aabb.zb-hs, aabb.ze-hs),
         };
         for (size_t i = 0; i < 8; ++i) {
             auto& aabb = aabbArr[i];
-            this->_tryAdd(belongs, i, hs, obj, size, aabb);
+            if (aabb.xb > hs || aabb.yb > hs || aabb.zb > hs) {
+                continue;
+            }
+            if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
+                continue;
+            }
+            printf("ADD TO %i, %p, %f\n", i, this->node[i], hs);
+            if (this->node[i] == nullptr) {
+                printf("CREATE NODE %i %f\n", i, hs);
+                this->node[i] = new OcthreeNode<T>(this, i, hs);
+            }
+            if (nodes.count(this->node[i]) == 0) {
+                printf("ADD TO DESTROYED NODE!\n");
+            }
+            this->node[i]->add(belongs, obj, size, aabb);
         }
     }
 
-    void get (Array<T>& result, float size, AABB3 aabb) {
+    void get (Array<T>& result, AABB3 aabb) {
+        if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
+            return;
+        }
+        if (aabb.xb > this->size || aabb.yb > this->size || aabb.zb > this->size) {
+            return;
+        }
+
         FOR(i, objs) {
             if (find(result.begin(), result.end(), objs[i]) == result.end()) {
                 result.push_back(objs[i]);
@@ -124,62 +145,42 @@ struct OcthreeNode: ___OcthreeNodes<T> {
             AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb,    aabb.ye,    aabb.zb,    aabb.ze),
             AABB3(aabb.xb,    aabb.xe,    aabb.yb-hs, aabb.ye-hs, aabb.zb,    aabb.ze),
             AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb-hs, aabb.ye-hs, aabb.zb,    aabb.ze),
-            AABB3(aabb.xb,    aabb.xe,    aabb.yb,    aabb.ye,    aabb.zb=hs, aabb.ze-hs),
-            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb,    aabb.ye,    aabb.zb=hs, aabb.ze-hs),
-            AABB3(aabb.xb,    aabb.xe,    aabb.yb-hs, aabb.ye-hs, aabb.zb=hs, aabb.ze-hs),
-            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb-hs, aabb.ye-hs, aabb.zb=hs, aabb.ze-hs),
+            AABB3(aabb.xb,    aabb.xe,    aabb.yb,    aabb.ye,    aabb.zb-hs, aabb.ze-hs),
+            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb,    aabb.ye,    aabb.zb-hs, aabb.ze-hs),
+            AABB3(aabb.xb,    aabb.xe,    aabb.yb-hs, aabb.ye-hs, aabb.zb-hs, aabb.ze-hs),
+            AABB3(aabb.xb-hs, aabb.xe-hs, aabb.yb-hs, aabb.ye-hs, aabb.zb-hs, aabb.ze-hs),
         };
         for (size_t i = 0; i < 8; ++i) {
             auto& aabb = aabbArr[i];
-            this->_tryGet(result, i, hs, size, aabb);
+            if (this->node[i] == nullptr) {
+                continue;
+            }
+            this->node[i]->get(result, aabb);
         }
     }
 
-    bool remove (const T& obj) {
+    void remove (const T& obj) {
         objs.remove(obj);
-        return __onRemove();
-    }
-    
-    void _tryAdd (OcthreeBelongs& belongs, size_t i, float halfSize, const T& obj, float size, AABB3 aabb) {
-        if (aabb.xb > halfSize || aabb.yb > halfSize || aabb.zb > halfSize) {
-            return;
-        }
-        if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
-            return;
-        }
-        if (this->node[i] == nullptr) {
-            this->node[i] = new OcthreeNode<T>(this, i, halfSize);
-        }
-        this->node[i]->add(belongs, obj, size, aabb);
-    }
-    
-    void _tryGet (Array<T>& result, size_t i, float halfSize, float size, AABB3 aabb) {
-        if (this->node[i] == nullptr) {
-            return;
-        }
-        if (aabb.xb > halfSize || aabb.yb > halfSize || aabb.zb > halfSize) {
-            return;
-        }
-        if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
-            return;
-        }
-        this->node[i]->get(result, halfSize, aabb);
+        __onRemove();
     }
 
-    bool __onRemove () {
+    void __onRemove () {
         if (objs.size() > 0) {
-            return false;
+            return;
         }
         for (size_t i = 0; i < 8; ++i) {
             if (this->node[i] != nullptr) {
-                return false;
+                return;
             }
         }
-        parent->node[idx] = nullptr;
-        if (parent->__onRemove()) {
-            delete parent;
+        --__count;
+        if (nodes.count(this) == 0) {
+            printf("THIS IS ALREADY DESTROYED NODE\n");
         }
-        return true;
+        nodes.erase(nodes.find(this));
+        parent->node[idx] = nullptr;
+        delete this;
+        parent->__onRemove();
     }
 };
 
@@ -235,9 +236,7 @@ struct Octhree: ___OcthreeNodes<T> {
 
     OcthreeBelongs add (const T& obj, AABB3 aabb) {
         OcthreeBelongs belongs;
-
-        auto size = Octhree<T>::sizeOf(aabb);
-
+        float size = Octhree<T>::sizeOf(aabb);
         const AABB3 aabbArr[8] = {
             AABB3(aabb.xb, aabb.xe, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
             AABB3(-aabb.xe, -aabb.xb, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
@@ -250,7 +249,21 @@ struct Octhree: ___OcthreeNodes<T> {
         };
         for (size_t i = 0; i < 8; ++i) {
             auto& aabb = aabbArr[i];
-            this->__tryAdd(belongs, i, obj, size, aabb);
+            if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
+                continue;
+            }
+            auto rootSize = Octhree<T>::rootSizeOf(aabb);
+            if (this->node[i] == nullptr) {
+                this->node[i] = new OcthreeNode<T>(this, i, rootSize);
+            } else {
+                while (this->node[i]->size < rootSize) {
+                    auto newNode = new OcthreeNode<T>(this, i, this->node[i]->size*2);
+                    newNode->node[0] = this->node[i];
+                    this->node[i]->parent = newNode;
+                    this->node[i] = newNode;
+                }
+            }
+            this->node[i]->add(belongs, obj, size, aabb);
         }
 
         return belongs;
@@ -258,9 +271,6 @@ struct Octhree: ___OcthreeNodes<T> {
 
     Array<T> get (AABB3 aabb) {
         Array<T> items;
-
-        auto size = Octhree<T>::sizeOf(aabb);
-
         const AABB3 aabbArr[8] = {
             AABB3(aabb.xb, aabb.xe, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
             AABB3(-aabb.xe, -aabb.xb, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
@@ -272,67 +282,24 @@ struct Octhree: ___OcthreeNodes<T> {
             AABB3(-aabb.xe, -aabb.xb, -aabb.ye, -aabb.yb, -aabb.ze, -aabb.zb),
         };
         for (size_t i = 0; i < 8; ++i) {
-            auto& aabb = aabbArr[i];
-            this->__tryGet(items, i, size, aabb);
-        }
+            if (this->node[i] == nullptr) {
+                continue;
+            }
 
+            this->node[i]->get(items, aabbArr[i]);
+        }
         return items;
     }
 
     void remove (const T& obj, OcthreeBelongs& belongs) {
         FOR (i, belongs.nodes) {
             auto node = (OcthreeNode<T>*)belongs.nodes[i];
-            if (node->remove(obj)) {
-                printf("delete %p\n", node);
-                delete node;
-            }
+            node->remove(obj);
         }
     }
     
     void update (const T& obj, OcthreeBelongs& belongs, AABB3 aabb) {
         this->remove(obj, belongs);
         belongs = this->add(obj, aabb);
-    }
-
-    void __tryAdd (OcthreeBelongs& belongs, size_t i, const T& obj, float size, AABB3 aabb) {
-        if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
-            return;
-        }
-        auto rootSize = Octhree<T>::rootSizeOf(aabb);
-
-        auto nodeSize = fmax(size, rootSize);
-
-        if (this->node[i] == nullptr) {
-            this->node[i] = new OcthreeNode<T>(this, i, nodeSize);
-        } else {
-            while (this->node[i]->size < nodeSize) {
-                auto newNode = new OcthreeNode<T>(this, i, this->node[i]->size*2);
-                newNode->node[0] = this->node[i];
-                this->node[i]->parent = newNode;
-                this->node[i] = newNode;
-            }
-        }
-        this->node[i]->add(belongs, obj, size, aabb);
-    }
-
-    void __tryGet (Array<T>& result, size_t i, float size, AABB3 aabb) {
-        if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
-            return;
-        }
-        auto rootSize = Octhree<T>::rootSizeOf(aabb);
-
-        auto nodeSize = fmax(size, rootSize);
-
-        if (this->node[i] == nullptr) {
-            this->node[i] = new OcthreeNode<T>(this, i, nodeSize);
-        } else {
-            while (this->node[i]->size < nodeSize) {
-                auto newNode = new OcthreeNode<T>(this, i, this->node[i]->size*2);
-                newNode->node[0] = this->node[i];
-                this->node[i]->parent = newNode;
-                this->node[i] = newNode;
-            }
-        }
-        this->node[i]->get(result, size, aabb);
     }
 };
