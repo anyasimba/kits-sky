@@ -61,7 +61,7 @@ struct OctreeNode: ___OctreeNodes<T> {
             objs.add(obj);
             return;
         }
-        
+
         auto hs = this->size*0.5f;
         const AABB3 aabbArr[8] = {
             AABB3(aabb.xb,    aabb.xe,    aabb.yb,    aabb.ye,    aabb.zb,    aabb.ze),
@@ -301,5 +301,6 @@ struct Octree: ___OctreeNodes<T> {
     }
 #endif
 };
-
-
+BINDING(Octree) {
+    //BIND_CLASS(Octree<Native*>, ());
+}

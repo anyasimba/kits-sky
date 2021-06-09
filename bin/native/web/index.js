@@ -22,7 +22,6 @@ module.exports = (package, mode, cwd) => {
             console.error(r.error)
             process.exit(r.status)
         }
-        console.log('status', r.status)
     }
 
     return {

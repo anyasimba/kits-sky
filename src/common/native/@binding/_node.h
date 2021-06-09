@@ -126,10 +126,14 @@ struct ___FromScript<T*> {
 template<class T>
 struct ___FromScript<Array<T>> {
     static Array<T> fn(v8::Isolate *isolate, const v8::Local<v8::Value>& v) {
-        size_t size = v.As<v8::Object>()->Get(v8::String::NewFromUtf8(isolate, "length")).As<v8::Number>()->Value();
+        v8::Local<v8::Context> context = isolate->GetCurrentContext();
+        size_t size =
+            v.As<v8::Object>()->Get(context, v8::String::NewFromUtf8(isolate, "length"))
+                .ToLocalChecked().As<v8::Number>()->Value();
         Array<T> r(size);
         for (size_t i = 0; i < size; ++i) {
-            r[i] = ___FromScript<T>::fn(isolate, v.As<v8::Object>()->Get(v8::Number::New(isolate, i)));
+            r[i] =
+                ___FromScript<T>::fn(isolate, v.As<v8::Object>()->Get(context, v8::Number::New(isolate, i)).ToLocalChecked());
         }
         return move(r);
     }
@@ -139,6 +143,7 @@ struct ___FromScript<Array<T>> {
     template<>\
     struct ___FromScript<NAME> {\
         static NAME fn(v8::Isolate *isolate, const v8::Local<v8::Value>& v) {\
+            v8::Local<v8::Context> context = isolate->GetCurrentContext();\
             NAME result;\
             __VA_ARGS__;\
             return result;\
@@ -146,7 +151,9 @@ struct ___FromScript<Array<T>> {
     };
 
 #define FROM_SCRIPT_ARG(TYPE, NAME)\
-    (void)0;result.NAME = ___FromScript<TYPE>::fn(isolate, v.As<v8::Object>()->Get(v8::String::NewFromUtf8(isolate, #NAME)));(void)0
+    (void)0;result.NAME =\
+        ___FromScript<TYPE>::fn(isolate, v.As<v8::Object>()->Get(context, v8::String::NewFromUtf8(isolate, #NAME)).ToLocalChecked());\
+    (void)0
 
 // Enum
 #define SCRIPT_ENUM(NAME)\

@@ -1,3 +1,4 @@
+import 'sky/common/Update'
 import 'sky/common/native'
 
 const root = withScope(() => {})(() => {})()!
@@ -17,8 +18,8 @@ circleBody2.position = new vec2({ x: 200, y: 101 })
 physSystem.addBody(circleBody2)
 
 root.add(
-    new Interval(() => {
-        physSystem.update(1 / 400)
+    new IntervalWithDt(dt => {
+        physSystem.update(dt)
         console.log(circleBody.position.x)
     }, 1000)
 )

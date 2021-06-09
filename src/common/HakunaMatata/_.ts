@@ -1,3 +1,5 @@
+import 'sky/common/Update'
+
 import './_React'
 import './_Relation'
 import './_Scope'

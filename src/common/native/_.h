@@ -3,6 +3,6 @@
 #include "phys2/_.h"
 
 BINDING(Native) {
-    BIND(NativePointer);
+    BIND(Octree);
     BIND(Phys2);
 }

@@ -51,9 +51,9 @@ module.exports = (package, mode, cwd) => {
         let r = spawnSync(nodeGyp, ['-j', 'max', '--release', '-C', buildDir, 'build'], {
             stdio: 'inherit',
         })
-        if (r.error) {
+        if (r.error || r.status !== 0) {
             console.error(r.error)
-            process.exit(1)
+            process.exit(r.status)
         }
     }
 
