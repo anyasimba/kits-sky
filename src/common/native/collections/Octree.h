@@ -1,6 +1,6 @@
 #pragma once
 
-inline float po2 (float size) {
+inline float po2(float size) {
     float r = 32;
     while (r < size) {
         r *= 2;
@@ -8,86 +8,54 @@ inline float po2 (float size) {
     return r;
 }
 
-struct OcthreeBelongs {
+struct OctreeBelongs {
     Array<void*> nodes;
 };
+TO_SCRIPT_STRUCT(OctreeBelongs,
+    TO_SCRIPT_ARG(Array<void*>, nodes));
+FROM_SCRIPT_STRUCT(OctreeBelongs,
+    FROM_SCRIPT_ARG(Array<void*>, nodes));
 
-struct ___OcthreeDebug {
+struct ___OctreeDebug {
     float x;
     float y;
     size_t size;
 };
-TO_SCRIPT_STRUCT(___OcthreeDebug,
+TO_SCRIPT_STRUCT(___OctreeDebug,
     TO_SCRIPT_ARG(float, x),
     TO_SCRIPT_ARG(float, y),
-    TO_SCRIPT_ARG(size_t, size))
-FROM_SCRIPT_STRUCT(___OcthreeDebug,
+    TO_SCRIPT_ARG(size_t, size));
+FROM_SCRIPT_STRUCT(___OctreeDebug,
     FROM_SCRIPT_ARG(float, x),
     FROM_SCRIPT_ARG(float, y),
-    FROM_SCRIPT_ARG(size_t, size))
+    FROM_SCRIPT_ARG(size_t, size));
 
 template<class T>
-struct OcthreeNode;
+struct OctreeNode;
 
 template<class T>
-struct ___OcthreeNodes {
-    OcthreeNode<T>* node[8];
-    ___OcthreeNodes () {
-        memset(node, 0, sizeof(node));
+struct ___OctreeNodes {
+    int id;
+    OctreeNode<T>* node[8];
+    ___OctreeNodes() {}
+
+    virtual bool __onRemove () {
+        return false;
     }
-
-    virtual void __onRemove () {}
 };
 
-#include "set"
-static int __count = 0;
-static std::set<void*> nodes;
-
 template<class T>
-struct OcthreeNode: ___OcthreeNodes<T> {
-    ___OcthreeNodes<T>* parent;
+struct OctreeNode: ___OctreeNodes<T> {
+    ___OctreeNodes<T>* parent;
     size_t idx;
-    float size;
+    size_t size;
     Array<T> objs;
 
-    void debug (Array<___OcthreeDebug>& debugs, vec3 factor, vec2 shift) {
-        if (debugs.size() > 200) {
-            return;
-        }
-        const vec3 factors[8] = {
-            vec3(0.f, 0.f, 0.f),
-            vec3(1.f, 0.f, 0.f),
-            vec3(0.f, 1.f, 0.f),
-            vec3(1.f, 1.f, 0.f),
-            vec3(0.f, 0.f, 1.f),
-            vec3(1.f, 0.f, 1.f),
-            vec3(0.f, 1.f, 1.f),
-            vec3(1.f, 1.f, 1.f),
-        };
-
-        for (size_t i = 0; i < 8; ++i) {
-            auto node = this->node[i];
-            if (node == nullptr) {
-                continue;
-            }
-            ___OcthreeDebug debug;
-            debug.x = factor.x * (shift.x + node->size * (0.5f + factors[i].x));
-            debug.y = factor.y * (shift.y + node->size * (0.5f + factors[i].y));
-            debug.size = node->size;
-            debugs.push_back(debug);
-            node->debug(debugs, factor, vec2(shift.x + node->size * factors[i].x, shift.y + node->size * factors[i].y));
-        }
-    }
-
-    OcthreeNode (___OcthreeNodes<T>* parent, size_t idx, float size)
+    OctreeNode(___OctreeNodes<T>* parent, size_t idx, size_t size)
         : parent(parent), idx(idx), size(size)
-    {
-        ++__count;
-        nodes.insert(this);
-        printf("new node count: %i | this: %p | parent: %p | idx: %i | size: %f\n", __count, this, parent, idx, size);
-    }
+    {}
 
-    void add (OcthreeBelongs& belongs, const T& obj, float size, AABB3 aabb) {
+    void add(OctreeBelongs& belongs, const T& obj, size_t size, AABB3 aabb) {
         if (size == this->size) {
             belongs.nodes.push_back((void*)this);
             objs.add(obj);
@@ -113,22 +81,18 @@ struct OcthreeNode: ___OcthreeNodes<T> {
             if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
                 continue;
             }
-            printf("ADD TO %i, %p, %f\n", i, this->node[i], hs);
             if (this->node[i] == nullptr) {
-                printf("CREATE NODE %i %f\n", i, hs);
-                this->node[i] = new OcthreeNode<T>(this, i, hs);
-            }
-            if (nodes.count(this->node[i]) == 0) {
-                printf("ADD TO DESTROYED NODE!\n");
+                this->node[i] = new OctreeNode<T>(this, i, hs);
             }
             this->node[i]->add(belongs, obj, size, aabb);
         }
     }
 
-    void get (Array<T>& result, AABB3 aabb) {
+    void get(Array<T>& result, AABB3 aabb) {
         if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
             return;
         }
+        printf("get %p\n", this);
         if (aabb.xb > this->size || aabb.yb > this->size || aabb.zb > this->size) {
             return;
         }
@@ -159,34 +123,63 @@ struct OcthreeNode: ___OcthreeNodes<T> {
         }
     }
 
-    void remove (const T& obj) {
+    bool remove(const T& obj) {
         objs.remove(obj);
-        __onRemove();
+        return __onRemove();
     }
 
-    void __onRemove () {
+    bool __onRemove() {
         if (objs.size() > 0) {
-            return;
+            return false;
         }
         for (size_t i = 0; i < 8; ++i) {
             if (this->node[i] != nullptr) {
-                return;
+                return false;
             }
         }
-        --__count;
-        if (nodes.count(this) == 0) {
-            printf("THIS IS ALREADY DESTROYED NODE\n");
-        }
-        nodes.erase(nodes.find(this));
         parent->node[idx] = nullptr;
-        delete this;
-        parent->__onRemove();
+        if (parent->__onRemove()) {
+            delete parent;
+        }
+        return true;
     }
+
+#ifdef DEBUG
+    void debug(Array<___OctreeDebug>& debugs, vec3 factor, vec2 shift) {
+        if (debugs.size() > 200) {
+            return;
+        }
+
+        const vec3 factors[8] = {
+            vec3(0.f, 0.f, 0.f),
+            vec3(1.f, 0.f, 0.f),
+            vec3(0.f, 1.f, 0.f),
+            vec3(1.f, 1.f, 0.f),
+            vec3(0.f, 0.f, 1.f),
+            vec3(1.f, 0.f, 1.f),
+            vec3(0.f, 1.f, 1.f),
+            vec3(1.f, 1.f, 1.f),
+        };
+
+        for (size_t i = 0; i < 8; ++i) {
+            auto node = this->node[i];
+            if (node == nullptr) {
+                continue;
+            }
+            ___OctreeDebug debug;
+            debug.x = factor.x * (shift.x + node->size * (0.5f + factors[i].x));
+            debug.y = factor.y * (shift.y + node->size * (0.5f + factors[i].y));
+            debug.size = node->size;
+            debugs.push_back(debug);
+            node->debug(debugs, factor, vec2(shift.x + node->size * factors[i].x, shift.y + node->size * factors[i].y));
+        }
+    }
+#endif
 };
 
 template<class T>
-struct Octhree: ___OcthreeNodes<T> {
-    static float sizeOf (AABB3 aabb) {
+struct Octree: ___OctreeNodes<T> {
+    static size_t sizeOf(AABB3 aabb) {
         auto size = aabb.xe - aabb.xb;
         size = fmax(aabb.ye-aabb.yb, size);
         size = fmax(aabb.ze-aabb.zb, size);
@@ -194,7 +187,7 @@ struct Octhree: ___OcthreeNodes<T> {
         return size;
     }
 
-    static float rootSizeOf (AABB3 aabb) {
+    static size_t rootSizeOf(AABB3 aabb) {
         auto size = aabb.xe;
         size = fmax(aabb.ye, size);
         size = fmax(aabb.ze, size);
@@ -202,41 +195,9 @@ struct Octhree: ___OcthreeNodes<T> {
         return size;
     }
 
-    Array<___OcthreeDebug> debug () {
-        Array<___OcthreeDebug> debugs;
-
-        const vec3 factors[8] = {
-            vec3(1.f, 1.f, 1.f),
-            vec3(-1.f, 1.f, 1.f),
-            vec3(1.f, -1.f, 1.f),
-            vec3(-1.f, -1.f, 1.f),
-            vec3(1.f, 1.f, -1.f),
-            vec3(-1.f, 1.f, -1.f),
-            vec3(1.f, -1.f, -1.f),
-            vec3(-1.f, -1.f, -1.f),
-        };
-
-        for (size_t i = 0; i < 8; ++i) {
-            auto& node = this->node[i];
-            if (node == nullptr) {
-                continue;
-            }
-            auto factor = factors[i];
-            ___OcthreeDebug debug;
-            debug.x = node->size * 0.5f * factor.x;
-            debug.y = node->size * 0.5f * factor.y;
-            debug.size = node->size;
-            debugs.push_back(debug);
-            vec2 shift(0.f, 0.f);
-            node->debug(debugs, factor, shift);
-        }
-
-        return debugs;
-    }
-
-    OcthreeBelongs add (const T& obj, AABB3 aabb) {
-        OcthreeBelongs belongs;
-        float size = Octhree<T>::sizeOf(aabb);
+    OctreeBelongs add(const T& obj, AABB3 aabb) {
+        OctreeBelongs belongs;
+        auto size = Octree<T>::sizeOf(aabb);
         const AABB3 aabbArr[8] = {
             AABB3(aabb.xb, aabb.xe, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
             AABB3(-aabb.xe, -aabb.xb, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
@@ -252,14 +213,15 @@ struct Octhree: ___OcthreeNodes<T> {
             if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
                 continue;
             }
-            auto rootSize = Octhree<T>::rootSizeOf(aabb);
+            auto rootSize = Octree<T>::rootSizeOf(aabb);
             if (this->node[i] == nullptr) {
-                this->node[i] = new OcthreeNode<T>(this, i, rootSize);
+                this->node[i] = new OctreeNode<T>(this, i, rootSize);
             } else {
                 while (this->node[i]->size < rootSize) {
-                    auto newNode = new OcthreeNode<T>(this, i, this->node[i]->size*2);
+                    auto newNode = new OctreeNode<T>(this, i, this->node[i]->size*2);
                     newNode->node[0] = this->node[i];
                     this->node[i]->parent = newNode;
+                    this->node[i]->idx = 0;
                     this->node[i] = newNode;
                 }
             }
@@ -269,7 +231,7 @@ struct Octhree: ___OcthreeNodes<T> {
         return belongs;
     }
 
-    Array<T> get (AABB3 aabb) {
+    Array<T> get(AABB3 aabb) {
         Array<T> items;
         const AABB3 aabbArr[8] = {
             AABB3(aabb.xb, aabb.xe, aabb.yb, aabb.ye, aabb.zb, aabb.ze),
@@ -291,15 +253,53 @@ struct Octhree: ___OcthreeNodes<T> {
         return items;
     }
 
-    void remove (const T& obj, OcthreeBelongs& belongs) {
+    void remove(const T& obj, OctreeBelongs& belongs) {
         FOR (i, belongs.nodes) {
-            auto node = (OcthreeNode<T>*)belongs.nodes[i];
-            node->remove(obj);
+            auto node = (OctreeNode<T>*)belongs.nodes[i];
+            if (node->remove(obj)) {
+                delete node;
+            }
         }
     }
     
-    void update (const T& obj, OcthreeBelongs& belongs, AABB3 aabb) {
+    void update(const T& obj, OctreeBelongs& belongs, AABB3 aabb) {
         this->remove(obj, belongs);
         belongs = this->add(obj, aabb);
     }
+
+#ifdef DEBUG
+    Array<___OctreeDebug> debug() {
+        Array<___OctreeDebug> debugs;
+
+        const vec3 factors[8] = {
+            vec3(1.f, 1.f, 1.f),
+            vec3(-1.f, 1.f, 1.f),
+            vec3(1.f, -1.f, 1.f),
+            vec3(-1.f, -1.f, 1.f),
+            vec3(1.f, 1.f, -1.f),
+            vec3(-1.f, 1.f, -1.f),
+            vec3(1.f, -1.f, -1.f),
+            vec3(-1.f, -1.f, -1.f),
+        };
+
+        for (size_t i = 0; i < 8; ++i) {
+            auto& node = this->node[i];
+            if (node == nullptr) {
+                continue;
+            }
+            auto factor = factors[i];
+            ___OctreeDebug debug;
+            debug.x = node->size * 0.5f * factor.x;
+            debug.y = node->size * 0.5f * factor.y;
+            debug.size = node->size;
+            debugs.push_back(debug);
+            vec2 shift(0.f, 0.f);
+            node->debug(debugs, factor, shift);
+        }
+
+        return debugs;
+    }
+#endif
 };
+
+

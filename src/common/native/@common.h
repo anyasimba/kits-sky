@@ -11,4 +11,4 @@ using namespace std;
 #include "@binding/_.h"
 #include "math/_.h"
 #include "collections/Array.h"
-#include "collections/Octhree.h"
+#include "collections/Octree.h"

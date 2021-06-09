@@ -1,11 +1,11 @@
 #include "Phys2Manifold.h"
 #include "Phys2Collision.h"
 
-void Phys2Manifold::solve () {
+void Phys2Manifold::solve() {
     Dispatch[A->shape->getType()][B->shape->getType()](this, A, B);
 }
 
-void Phys2Manifold::initialize (real dt, vec2 gravity) {
+void Phys2Manifold::initialize(real dt, vec2 gravity) {
     // Calculate average restitution
     e = std::min(A->restitution, B->restitution);
 
@@ -31,7 +31,7 @@ void Phys2Manifold::initialize (real dt, vec2 gravity) {
     }
 }
 
-void Phys2Manifold::applyImpulse () {
+void Phys2Manifold::applyImpulse() {
     // Early out and positional correct if both objects have infinite mass
     if(equal(A->im + B->im, 0)) {
         infiniteMassCorrection();
@@ -97,7 +97,7 @@ void Phys2Manifold::applyImpulse () {
     }
 }
 
-void Phys2Manifold::positionalCorrection () {
+void Phys2Manifold::positionalCorrection() {
     const real k_slop = 0.05f; // Penetration allowance
     const real percent = 0.4f; // Penetration percentage to correct
     vec2 correction = (std::max(penetration - k_slop, 0.0f) / (A->im + B->im)) * normal * percent;
@@ -105,7 +105,7 @@ void Phys2Manifold::positionalCorrection () {
     B->position += correction * B->im;
 }
 
-void Phys2Manifold::infiniteMassCorrection () {
+void Phys2Manifold::infiniteMassCorrection() {
     A->velocity.set(0.f, 0.f);
     B->velocity.set(0.f, 0.f);
 }

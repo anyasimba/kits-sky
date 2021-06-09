@@ -4,7 +4,7 @@ extern "C" {
     #include <cfloat>
 }
 
-inline float ___intersect2__D2 (float a11, float a12, float a21, float a22) {
+inline float ___intersect2__D2(float a11, float a12, float a21, float a22) {
   return a11 * a22 - a12 * a21;
 }
 
@@ -14,7 +14,7 @@ struct Intersect2 {
     float y;
 };
 
-inline Intersect2 intersect2 (float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, bool limit) {
+inline Intersect2 intersect2(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, bool limit) {
     Intersect2 result;
 
     float ady = y1 - y2;

@@ -9,10 +9,10 @@ typedef void (*Phys2CollisionCallback)(Phys2Manifold* m, Phys2Body* a, Phys2Body
 
 extern Phys2CollisionCallback Phys2Dispatch[Phys2Shape::eCount][Phys2Shape::eCount];
 
-void Phys2CircleToCircle (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
-void Phys2CircleToPolygon (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
-void Phys2PolygonToCircle (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
-void Phys2PolygonToPolygon (Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2CircleToCircle(Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2CircleToPolygon(Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2PolygonToCircle(Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
+void Phys2PolygonToPolygon(Phys2Manifold *m, Phys2Body *a, Phys2Body *b);
 
 Phys2CollisionCallback Dispatch[Phys2Shape::eCount][Phys2Shape::eCount] = {
     {
@@ -23,7 +23,7 @@ Phys2CollisionCallback Dispatch[Phys2Shape::eCount][Phys2Shape::eCount] = {
     },
 };
 
-void Phys2CircleToCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2CircleToCircle(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2Circle* A = reinterpret_cast<Phys2Circle*>(a->shape);
     Phys2Circle* B = reinterpret_cast<Phys2Circle*>(b->shape);
 
@@ -54,7 +54,7 @@ void Phys2CircleToCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     }
 }
 
-void Phys2CircleToPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2CircleToPolygon(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2Circle* A  = reinterpret_cast<Phys2Circle*>(a->shape);
     Phys2Polygon* B = reinterpret_cast<Phys2Polygon*>(b->shape);
 
@@ -135,12 +135,12 @@ void Phys2CircleToPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     }
 }
 
-void Phys2PolygonToCircle (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2PolygonToCircle(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2CircleToPolygon(m, b, a);
     m->normal = -m->normal;
 }
 
-real Phys2FindAxisLeastPenetration (uint32_t* faceIndex, Phys2Polygon* A, Phys2Polygon* B) {
+real Phys2FindAxisLeastPenetration(uint32_t* faceIndex, Phys2Polygon* A, Phys2Polygon* B) {
     real bestDistance = -FLT_MAX;
     uint32_t bestIndex;
 
@@ -177,7 +177,7 @@ real Phys2FindAxisLeastPenetration (uint32_t* faceIndex, Phys2Polygon* A, Phys2P
     return bestDistance;
 }
 
-void Phys2FindIncidentFace (vec2* v, Phys2Polygon* RefPoly, Phys2Polygon* IncPoly, uint32_t referenceIndex) {
+void Phys2FindIncidentFace(vec2* v, Phys2Polygon* RefPoly, Phys2Polygon* IncPoly, uint32_t referenceIndex) {
     vec2 referenceNormal = RefPoly->m_normals[referenceIndex];
 
     // Calculate normal in incident's frame of reference
@@ -201,7 +201,7 @@ void Phys2FindIncidentFace (vec2* v, Phys2Polygon* RefPoly, Phys2Polygon* IncPol
     v[1] = IncPoly->u * IncPoly->m_vertices[incidentFace] + IncPoly->body->position;
 }
 
-int32_t Phys2Clip (vec2 n, real c, vec2 *face) {
+int32_t Phys2Clip(vec2 n, real c, vec2 *face) {
     uint32_t sp = 0;
     vec2 out[2] = {
         face[0],
@@ -234,7 +234,7 @@ int32_t Phys2Clip (vec2 n, real c, vec2 *face) {
     return sp;
 }
 
-void Phys2PolygonToPolygon (Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
+void Phys2PolygonToPolygon(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     Phys2Polygon* A = reinterpret_cast<Phys2Polygon *>(a->shape);
     Phys2Polygon* B = reinterpret_cast<Phys2Polygon *>(b->shape);
     m->contact_count = 0;

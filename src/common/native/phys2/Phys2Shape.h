@@ -11,7 +11,7 @@ struct Phys2Shape: Native {
         eCount
     };
 
-    Phys2Shape () {}
+    Phys2Shape() {}
     virtual void initialize(real density) = 0;
     virtual void computeMass(real density) = 0;
     virtual void setOrient(real radians) = 0;
@@ -28,24 +28,24 @@ struct Phys2Shape: Native {
 };
 
 struct Phys2Circle: Phys2Shape {
-    void initialize (real density) {
+    void initialize(real density) {
         computeMass(density);
     }
 
-    void computeMass (real density) {
+    void computeMass(real density) {
         body->m = M_PI*radius*radius*density;
         body->im = (body->m) ? 1.0f/body->m : 0.0f;
         body->I = body->m*radius*radius;
         body->iI = (body->I) ? 1.0f/body->I : 0.0f;
     }
 
-    void setOrient (real radians) {}
+    void setOrient(real radians) {}
 
-    Type getType (void) const {
+    Type getType(void) const {
         return eCircle;
     }
 
-    AABB3 aabb () const {
+    AABB3 aabb() const {
         AABB3 aabb;
         aabb.xb = body->position.x - radius;
         aabb.yb = body->position.y - radius;
@@ -55,17 +55,17 @@ struct Phys2Circle: Phys2Shape {
     }
 };
 BINDING(Phys2Circle) {
-    BIND_CLASS(Phys2Circle, ())
-    BIND_CLASS_METHOD_VOID(Phys2Circle, initialize, (density), ARG(1, real, density))
-    BIND_CLASS_PROP(Phys2Circle, real, radius)
+    BIND_CLASS(Phys2Circle, ());
+    BIND_CLASS_METHOD_VOID(Phys2Circle, initialize, (density), ARG(1, real, density));
+    BIND_CLASS_PROP(Phys2Circle, real, radius);
 }
 
 struct Phys2Polygon: Phys2Shape {
-    void initialize (real density) {
+    void initialize(real density) {
         computeMass(density);
     }
 
-    void computeMass (real density) {
+    void computeMass(real density) {
         // Calculate centroid and moment of interia
         // vec2 c(0.0f, 0.0f); // centroid
         real area = 0.0f;
@@ -105,7 +105,7 @@ struct Phys2Polygon: Phys2Shape {
         body->iI = body->I ? 1.0f/body->I : 0.0f;
     }
 
-    void setOrient (real radians) {
+    void setOrient(real radians) {
         u.set(radians);
     }
 
@@ -113,7 +113,7 @@ struct Phys2Polygon: Phys2Shape {
         return ePoly;
     }
 
-    AABB3 aabb () const {
+    AABB3 aabb() const {
         AABB3 aabb;
         vec2 v = m_vertices[0];
         v = u*v + body->position;
@@ -134,7 +134,7 @@ struct Phys2Polygon: Phys2Shape {
         return aabb;
     }
 
-    void setVertices (Array<vec2> vertices) {
+    void setVertices(Array<vec2> vertices) {
         // No hulls with less than 3 vertices (ensure actual polygon)
         assert(vertices.size() > 2 && vertices.size() <= MaxPolyVertexCount);
         auto count = std::min((int32_t)vertices.size(), MaxPolyVertexCount);
@@ -215,7 +215,7 @@ struct Phys2Polygon: Phys2Shape {
     }
 
     // The extreme point along a direction within a polygon
-    vec2 getSupport (const vec2& dir) {
+    vec2 getSupport(const vec2& dir) {
         real bestProjection = -FLT_MAX;
         vec2 bestVertex;
 
@@ -237,7 +237,7 @@ struct Phys2Polygon: Phys2Shape {
     vec2 m_normals[MaxPolyVertexCount];
 };
 BINDING(Phys2Polygon) {
-    BIND_CLASS(Phys2Polygon, ())
-    BIND_CLASS_METHOD_VOID(Phys2Polygon, initialize, (density), ARG(1, real, density))
-    BIND_CLASS_METHOD_VOID(Phys2Polygon, setVertices, (vertices), ARG(1, Array<vec2>, vertices))
+    BIND_CLASS(Phys2Polygon, ());
+    BIND_CLASS_METHOD_VOID(Phys2Polygon, initialize, (density), ARG(1, real, density));
+    BIND_CLASS_METHOD_VOID(Phys2Polygon, setVertices, (vertices), ARG(1, Array<vec2>, vertices));
 }

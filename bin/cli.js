@@ -83,7 +83,7 @@ switch (command) {
 function getArgs() {
     let command = process.argv[2]
     let setMode = false
-    let mode
+    let mode = 'production'
     process.argv.slice(3).forEach(arg => {
         if (setMode) {
             setMode = false

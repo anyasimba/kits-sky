@@ -10,49 +10,49 @@ struct ___ToScript {};
 
 template<>
 struct ___ToScript<bool> {
-    static v8::Local<v8::Boolean> fn (v8::Isolate *isolate, const bool &v) {
+    static v8::Local<v8::Boolean> fn(v8::Isolate *isolate, const bool &v) {
         return v8::Boolean::New(isolate, v);
     }
 };
 
 template<>
 struct ___ToScript<int> {
-    static v8::Local<v8::Number> fn (v8::Isolate *isolate, const int &v) {
+    static v8::Local<v8::Number> fn(v8::Isolate *isolate, const int &v) {
         return v8::Number::New(isolate, v);
     }
 };
 
 template<>
 struct ___ToScript<uint32_t> {
-    static v8::Local<v8::Number> fn (v8::Isolate *isolate, const int &v) {
+    static v8::Local<v8::Number> fn(v8::Isolate *isolate, const int &v) {
         return v8::Number::New(isolate, v);
     }
 };
 
 template<>
 struct ___ToScript<uint64_t> {
-    static v8::Local<v8::Number> fn (v8::Isolate *isolate, const int &v) {
+    static v8::Local<v8::Number> fn(v8::Isolate *isolate, const int &v) {
         return v8::Number::New(isolate, v);
     }
 };
 
 template<>
 struct ___ToScript<float> {
-    static v8::Local<v8::Number> fn (v8::Isolate *isolate, const float &v) {
+    static v8::Local<v8::Number> fn(v8::Isolate *isolate, const float &v) {
         return v8::Number::New(isolate, v);
     }
 };
 
 template<class T>
 struct ___ToScript<T*> {
-    static v8::Local<v8::External> fn (v8::Isolate *isolate, const T* v) {
+    static v8::Local<v8::External> fn(v8::Isolate *isolate, const T* v) {
         return v8::External::New(isolate, (void *) v);
     }
 };
 
 template<class T>
 struct ___ToScript<Array<T>> {
-    static v8::Local<v8::Array> fn (v8::Isolate *isolate, const Array<T>& v) {
+    static v8::Local<v8::Array> fn(v8::Isolate *isolate, const Array<T>& v) {
         v8::Local<v8::Array> r = v8::Array::New(isolate);
         for (size_t i = 0; i < v.size(); ++i) {
             r->Set(v8::Number::New(isolate, i), ___ToScript<T>::fn(isolate, v[i]));
@@ -64,7 +64,7 @@ struct ___ToScript<Array<T>> {
 #define TO_SCRIPT_STRUCT(NAME, ...)\
     template<>\
     struct ___ToScript<NAME> {\
-        static v8::Local<v8::Object> fn (v8::Isolate *isolate, const NAME& v) {\
+        static v8::Local<v8::Object> fn(v8::Isolate *isolate, const NAME& v) {\
             v8::Local<v8::Object> r = v8::Object::New(isolate);\
             __VA_ARGS__;\
             return r;\

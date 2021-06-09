@@ -5,8 +5,8 @@ struct Phys2Body;
 
 struct Phys2Manifold {
     Phys2Manifold(Phys2Body* a, Phys2Body* b)
-      : A(a)
-      , B(b)
+        : A(a)
+        , B(b)
     {}
 
     void solve();                             // Generate contact information

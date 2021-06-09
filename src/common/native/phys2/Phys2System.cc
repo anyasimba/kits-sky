@@ -1,7 +1,7 @@
 #include "Phys2System.h"
 #include "Phys2Shape.h"
 
-void Phys2System::update (float dt) {
+void Phys2System::update(float dt) {
     dt /= (float)totalIterations;
     for (size_t i = 0; i < totalIterations; ++i) {
         // Generate new collision info
@@ -9,7 +9,7 @@ void Phys2System::update (float dt) {
 
         for (uint32_t i = 0; i < bodies.size( ); ++i) {
             Phys2Body* A = bodies[i];
-            auto nearBodies = octhree.get(A->shape->aabb());
+            auto nearBodies = octree.get(A->shape->aabb());
             for (uint32_t j = 0; j < nearBodies.size(); ++j) {
                 Phys2Body *B = nearBodies[j];
                 if (A == B)
@@ -50,7 +50,7 @@ void Phys2System::update (float dt) {
         // Update aabb
         for(uint32_t i = 0; i < bodies.size(); ++i) {
             Phys2Body *b = bodies[i];
-            octhree.update(b, b->belongs, b->shape->aabb());
+            octree.update(b, b->belongs, b->shape->aabb());
         }
 
         // Clear all forces
@@ -61,16 +61,7 @@ void Phys2System::update (float dt) {
     }
 }
 
-void Phys2System::__onAdd (Phys2Body* body) {
-    auto aabb = body->shape->aabb();
-    body->belongs = octhree.add(body, aabb);
-}
-
-void Phys2System::__onRemove (Phys2Body* body) {
-    octhree.remove(body, body->belongs);
-}
-
-void Phys2System::integrateForces (Phys2Body *b, real dt) {
+void Phys2System::integrateForces(Phys2Body *b, real dt) {
     if (b->im == 0.0f)
         return;
 
@@ -83,7 +74,7 @@ void Phys2System::integrateForces (Phys2Body *b, real dt) {
     }
 }
 
-void Phys2System::integrateVelocity (Phys2Body *b, real dt) {
+void Phys2System::integrateVelocity(Phys2Body *b, real dt) {
     if (b->im == 0.0f)
         return;
 
@@ -91,4 +82,13 @@ void Phys2System::integrateVelocity (Phys2Body *b, real dt) {
     b->orient += b->angularVelocity*dt;
     b->setOrient(b->orient);
     integrateForces(b, dt);
+}
+
+void Phys2System::__onAdd(Phys2Body* body) {
+    auto aabb = body->shape->aabb();
+    body->belongs = octree.add(body, aabb);
+}
+
+void Phys2System::__onRemove(Phys2Body* body) {
+    octree.remove(body, body->belongs);
 }

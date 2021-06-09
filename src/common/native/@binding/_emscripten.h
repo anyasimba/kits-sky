@@ -31,29 +31,29 @@ val::operator T ()  {
 struct ___EmscriptenEnum {
     int v;
     template<class T>
-    ___EmscriptenEnum (T v) {
+    ___EmscriptenEnum(T v) {
         this->v = (int) v;
     }
     template<class T>
-    operator T () {
+    operator T() {
         return (T) v;
     }
 };
 
 struct ___EmscriptenObj {
     void *obj;
-    ___EmscriptenObj (void *obj)
+    ___EmscriptenObj(void *obj)
         : obj(obj)
     {}
-    size_t pointer () {
+    size_t pointer() {
         return (size_t)obj;
     }
     template<class T>
-    operator T* () {
+    operator T*() {
         return (T*)obj;
     }
     template<class T>
-    operator const T* () {
+    operator const T*() {
         return (const T*)obj;
     }
 };
@@ -65,37 +65,37 @@ struct ___ToScript {
 
 template<>
 struct ___ToScript<bool> {
-    static bool fn (bool r) { return r; }
+    static bool fn(bool r) { return r; }
 };
 
 template<>
 struct ___ToScript<int> {
-    static int fn (int r) { return r; }
+    static int fn(int r) { return r; }
 };
 
 template<>
 struct ___ToScript<uint32_t> {
-    static uint32_t fn (uint32_t r) { return r; }
+    static uint32_t fn(uint32_t r) { return r; }
 };
 
 template<>
 struct ___ToScript<uint64_t> {
-    static uint64_t fn (uint64_t r) { return r; }
+    static uint64_t fn(uint64_t r) { return r; }
 };
 
 template<>
 struct ___ToScript<float> {
-    static float fn (float r) { return r; }
+    static float fn(float r) { return r; }
 };
 
 template<class T>
 struct ___ToScript<T*> {
-    static ___EmscriptenObj fn (T* r) { return r; }
+    static ___EmscriptenObj fn(T* r) { return r; }
 };
 
 template<class T>
 struct ___ToScript<Array<T>> {
-    static val fn (const Array<T>& a) {
+    static val fn(const Array<T>& a) {
         val r = val::array();
         for (size_t i = 0; i < a.size(); ++i) {
             r.set(i, ___ToScript<T>::fn(a[i]));
@@ -107,7 +107,7 @@ struct ___ToScript<Array<T>> {
 #define TO_SCRIPT_STRUCT(NAME, ...)\
     template<>\
     struct ___ToScript<NAME> {\
-        static val fn (const NAME& v) {\
+        static val fn(const NAME& v) {\
             val r = val::object();\
             __VA_ARGS__;\
             return r;\
@@ -130,7 +130,7 @@ template<class T> struct ___Arg<T*> { typedef ___EmscriptenObj type; };
 
 template<class T>
 struct ___FromScript<T*> {
-    static T* fn (const val& v) {
+    static T* fn(const val& v) {
         return v.as<___EmscriptenObj>(allow_raw_pointers());
     }
 };
@@ -150,7 +150,7 @@ struct ___FromScript<Array<T>> {
 #define FROM_SCRIPT_STRUCT(NAME, ...)\
     template<>\
     struct ___FromScript<NAME> {\
-        static NAME fn (const val& v) {\
+        static NAME fn(const val& v) {\
             NAME result;\
             __VA_ARGS__;\
             return result;\
@@ -164,13 +164,13 @@ struct ___FromScript<Array<T>> {
 #define SCRIPT_ENUM(NAME)\
     template<>\
     struct ___ToScript<NAME> {\
-        static val fn (const NAME& v) {\
+        static val fn(const NAME& v) {\
             return val((int) v);\
         }\
     };\
     template<>\
     struct ___FromScript<NAME> {\
-        static NAME fn (const val& v) {\
+        static NAME fn(const val& v) {\
             return (NAME) v.as<int>();\
         }\
     };

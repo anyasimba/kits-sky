@@ -18,10 +18,11 @@ module.exports = (package, mode, cwd) => {
                 PROJECT_NAME: package.name,
             },
         })
-        if (r.error) {
+        if (r.error || r.status !== 0) {
             console.error(r.error)
-            process.exit(1)
+            process.exit(r.status)
         }
+        console.log('status', r.status)
     }
 
     return {

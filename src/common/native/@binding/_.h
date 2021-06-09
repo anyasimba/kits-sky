@@ -12,3 +12,8 @@ struct Native {
 #ifdef BUILDING_NODE_EXTENSION
 #include "_node.h"
 #endif
+
+struct NativePointer: Native {};
+BINDING(NativePointer) {
+    BIND_CLASS(NativePointer, ());
+}
