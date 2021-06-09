@@ -1,9 +1,5 @@
 import 'sky/common/native'
-
-const div1 = makeDiv()
-document.body.appendChild(div1)
-const div2 = makeDiv()
-document.body.appendChild(div2)
+import { Circle } from './Circle'
 
 // root
 const root = withScope(() => {})(() => {})()!
@@ -12,18 +8,17 @@ const root = withScope(() => {})(() => {})()!
 const physSystem = root.add(new Phys2System())
 
 // entities
-const circle = new Phys2Circle()
-circle.radius = 9.5
-const circleBody = new Phys2Body(circle, 1)
-circleBody.position = new vec2({ x: 100, y: 100 })
-circleBody.velocity = new vec2({ x: 100, y: 0 })
-physSystem.addBody(circleBody)
+const circles: Circle[] = []
+const circle = new Circle()
+circle.body.position = new vec2({ x: 100, y: 100 })
+circle.body.velocity = new vec2({ x: 100, y: 0 })
+physSystem.addBody(circle.body)
+circles.push(circle)
 
-const circle2 = new Phys2Circle()
-circle2.radius = 9.5
-const circleBody2 = new Phys2Body(circle2, 1)
-circleBody2.position = new vec2({ x: 200, y: 110 })
-physSystem.addBody(circleBody2)
+const circle2 = new Circle()
+circle2.body.position = new vec2({ x: 200, y: 110 })
+physSystem.addBody(circle2.body)
+circles.push(circle2)
 
 // update
 root.add(
@@ -32,22 +27,8 @@ root.add(
 
         commit()
 
-        div1.style.left = `${circleBody.position.x - 9.5}px`
-        div1.style.top = `${circleBody.position.y - 9.5}px`
-
-        div2.style.left = `${circleBody2.position.x - 9.5}px`
-        div2.style.top = `${circleBody2.position.y - 9.5}px`
+        circles.forEach(circle => circle.update())
     })
 )
 
 commit()
-
-function makeDiv() {
-    const div = document.createElement('div')
-    div.style.position = 'absolute'
-    div.style.background = 'red'
-    div.style.borderRadius = '9.5px'
-    div.style.width = '19px'
-    div.style.height = '19px'
-    return div
-}
