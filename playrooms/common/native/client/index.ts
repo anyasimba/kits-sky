@@ -5,9 +5,13 @@ document.body.appendChild(div1)
 const div2 = makeDiv()
 document.body.appendChild(div2)
 
+// root
 const root = withScope(() => {})(() => {})()!
+
+// systems
 const physSystem = root.add(new Phys2System())
 
+// entities
 const circle = new Phys2Circle()
 circle.radius = 9.5
 const circleBody = new Phys2Body(circle, 1)
@@ -21,9 +25,10 @@ const circleBody2 = new Phys2Body(circle2, 1)
 circleBody2.position = new vec2({ x: 200, y: 110 })
 physSystem.addBody(circleBody2)
 
+// update
 root.add(
-    new AnimationFrames(() => {
-        physSystem.update(1 / 60)
+    new AnimationFramesWithDt(dt => {
+        physSystem.update(dt)
 
         commit()
 

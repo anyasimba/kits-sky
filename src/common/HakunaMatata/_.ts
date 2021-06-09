@@ -9,3 +9,5 @@ export { link } from './_decorators'
 export { HakunaMatata } from './_HakunaMatata'
 
 export * from './_@lib'
+
+export const root = withScope(() => {})(() => {})()!
