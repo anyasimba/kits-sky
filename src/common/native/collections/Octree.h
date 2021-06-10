@@ -8,34 +8,11 @@ inline float po2(float size) {
     return r;
 }
 
-struct OctreeBelongs {
-    Array<void*> nodes;
-};
-TO_SCRIPT_STRUCT(OctreeBelongs,
-    TO_SCRIPT_ARG(Array<void*>, nodes));
-FROM_SCRIPT_STRUCT(OctreeBelongs,
-    FROM_SCRIPT_ARG(Array<void*>, nodes));
-
-struct ___OctreeDebug {
-    float x;
-    float y;
-    size_t size;
-};
-TO_SCRIPT_STRUCT(___OctreeDebug,
-    TO_SCRIPT_ARG(float, x),
-    TO_SCRIPT_ARG(float, y),
-    TO_SCRIPT_ARG(size_t, size));
-FROM_SCRIPT_STRUCT(___OctreeDebug,
-    FROM_SCRIPT_ARG(float, x),
-    FROM_SCRIPT_ARG(float, y),
-    FROM_SCRIPT_ARG(size_t, size));
-
 template<class T>
 struct OctreeNode;
 
 template<class T>
-struct ___OctreeNodes {
-    int id;
+struct ___OctreeNodes: Native {
     OctreeNode<T>* node[8];
     ___OctreeNodes() {}
 
@@ -43,6 +20,14 @@ struct ___OctreeNodes {
         return false;
     }
 };
+
+struct OctreeBelongs {
+    Array<void*> nodes;
+};
+TO_SCRIPT_STRUCT(OctreeBelongs,
+    TO_SCRIPT_ARG(Array<void*>, nodes));
+FROM_SCRIPT_STRUCT(OctreeBelongs,
+    FROM_SCRIPT_ARG(Array<void*>, nodes));
 
 template<class T>
 struct OctreeNode: ___OctreeNodes<T> {
@@ -143,39 +128,13 @@ struct OctreeNode: ___OctreeNodes<T> {
         }
         return true;
     }
-
-#ifdef DEBUG
-    void debug(Array<___OctreeDebug>& debugs, vec3 factor, vec2 shift) {
-        if (debugs.size() > 200) {
-            return;
-        }
-
-        const vec3 factors[8] = {
-            vec3(0.f, 0.f, 0.f),
-            vec3(1.f, 0.f, 0.f),
-            vec3(0.f, 1.f, 0.f),
-            vec3(1.f, 1.f, 0.f),
-            vec3(0.f, 0.f, 1.f),
-            vec3(1.f, 0.f, 1.f),
-            vec3(0.f, 1.f, 1.f),
-            vec3(1.f, 1.f, 1.f),
-        };
-
-        for (size_t i = 0; i < 8; ++i) {
-            auto node = this->node[i];
-            if (node == nullptr) {
-                continue;
-            }
-            ___OctreeDebug debug;
-            debug.x = factor.x * (shift.x + node->size * (0.5f + factors[i].x));
-            debug.y = factor.y * (shift.y + node->size * (0.5f + factors[i].y));
-            debug.size = node->size;
-            debugs.push_back(debug);
-            node->debug(debugs, factor, vec2(shift.x + node->size * factors[i].x, shift.y + node->size * factors[i].y));
-        }
-    }
-#endif
 };
+BINDING(OctreeNode) {
+    typedef OctreeNode<Native*> OctreeNode;
+    BIND_CLASS_PROP(OctreeNode, size_t, size);
+    BIND_CLASS_PROP(OctreeNode, size_t, idx);
+    BIND_CLASS_ARRAY_PROP(OctreeNode, Native*, objs);
+}
 
 template<class T>
 struct Octree: ___OctreeNodes<T> {
@@ -266,41 +225,8 @@ struct Octree: ___OctreeNodes<T> {
         this->remove(obj, belongs);
         belongs = this->add(obj, aabb);
     }
-
-#ifdef DEBUG
-    Array<___OctreeDebug> debug() {
-        Array<___OctreeDebug> debugs;
-
-        const vec3 factors[8] = {
-            vec3(1.f, 1.f, 1.f),
-            vec3(-1.f, 1.f, 1.f),
-            vec3(1.f, -1.f, 1.f),
-            vec3(-1.f, -1.f, 1.f),
-            vec3(1.f, 1.f, -1.f),
-            vec3(-1.f, 1.f, -1.f),
-            vec3(1.f, -1.f, -1.f),
-            vec3(-1.f, -1.f, -1.f),
-        };
-
-        for (size_t i = 0; i < 8; ++i) {
-            auto& node = this->node[i];
-            if (node == nullptr) {
-                continue;
-            }
-            auto factor = factors[i];
-            ___OctreeDebug debug;
-            debug.x = node->size * 0.5f * factor.x;
-            debug.y = node->size * 0.5f * factor.y;
-            debug.size = node->size;
-            debugs.push_back(debug);
-            vec2 shift(0.f, 0.f);
-            node->debug(debugs, factor, shift);
-        }
-
-        return debugs;
-    }
-#endif
 };
 BINDING(Octree) {
-    //BIND_CLASS(Octree<Native*>, ());
+    typedef Octree<Native*> Octree;
+    BIND_CLASS(Octree, ());
 }

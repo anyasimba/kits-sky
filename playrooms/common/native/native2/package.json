@@ -1,5 +1,5 @@
 {
-    "name": "native",
+    "name": "native-2",
     "scripts": {
         "start": "sky start --mode development",
         "native": "sky native"

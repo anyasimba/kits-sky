@@ -2,7 +2,7 @@
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 ENGINE_BUILD_DIR = $(PROJECT_PATH)/.vscode/storage/engine-web-native
-PROJECT = $(PROJECT_PATH)/.vscode/storage/$(PROJECT_NAME)/web-native
+PROJECT = $(PROJECT_PATH)/.vscode/storage/web-native
 
 ENGINE_SOURCES = $(ENGINE_PATH)/bin/native/web/main.cc $(call rwildcard,$(ENGINE_PATH)/src/common/native,*.cc)
 ENGINE_HEADERS = $(call rwildcard,$(ENGINE_PATH)/src/common/native,*.h)

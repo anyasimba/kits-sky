@@ -1,0 +1,11 @@
+{
+    "name": "native-1",
+    "scripts": {
+        "start": "sky start --mode development",
+        "native": "sky native"
+    },
+    "client": false,
+    "server": {
+        "native": true
+    }
+}

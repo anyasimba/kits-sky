@@ -1,5 +1,13 @@
 import 'sky/common/math'
 
+declare global {
+    type Phys2Circle = _.Phys2Circle
+    const Phys2Circle: typeof _.Phys2Circle
+
+    type Phys2Polygon = _.Phys2Polygon
+    const Phys2Polygon: typeof _.Phys2Polygon
+}
+
 namespace _ {
     @native.class('Phys2Circle')
     export class Phys2Circle extends Native {
@@ -22,11 +30,3 @@ namespace _ {
     }
 }
 globalify(_)
-
-declare global {
-    type Phys2Circle = _.Phys2Circle
-    const Phys2Circle: typeof _.Phys2Circle
-
-    type Phys2Polygon = _.Phys2Polygon
-    const Phys2Polygon: typeof _.Phys2Polygon
-}

@@ -1,5 +1,10 @@
 import 'sky/common/math'
 
+declare global {
+    const Phys2System: typeof _.Phys2System
+    type Phys2System = _.Phys2System
+}
+
 namespace _ {
     @native.class('Phys2System')
     export class Phys2System extends Native {
@@ -34,8 +39,3 @@ namespace _ {
     }
 }
 globalify(_)
-
-declare global {
-    const Phys2System: typeof _.Phys2System
-    type Phys2System = _.Phys2System
-}
