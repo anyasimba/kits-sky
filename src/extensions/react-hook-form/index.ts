@@ -1,4 +1,4 @@
-import * as _ from './react-hook-form'
+import * as _ from './&'
 Object.assign(global, _)
 
 declare global {

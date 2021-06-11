@@ -1,5 +1,5 @@
 #pragma once
-#include "@common.h"
+#include ".common.h"
 #include "Phys2Body.h"
 
 #define MaxPolyVertexCount 1024

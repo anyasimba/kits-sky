@@ -19,7 +19,7 @@ namespace _ {
         @native.method('void', 'Phys2Body*') private __onAdd!: (body: Phys2Body) => void
         @native.method('void', 'Phys2Body*') private __onRemove!: (body: Phys2Body) => void
 
-        addBody(body: Phys2Body) {
+        add(body: Phys2Body) {
             if (body.m === 0) {
                 this.staticBodies.add(body)
             } else {
@@ -28,7 +28,7 @@ namespace _ {
             this.__onAdd(body)
         }
 
-        removeBody(body: Phys2Body) {
+        remove(body: Phys2Body) {
             if (body.m === 0) {
                 this.staticBodies.remove(body)
             } else {

@@ -1,6 +1,6 @@
 import React_ from 'react'
 import ReactDOM_ from 'react-dom'
-import * as _ from './react'
+import * as _ from './&'
 Object.assign(
     global,
     {

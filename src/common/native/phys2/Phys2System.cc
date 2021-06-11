@@ -50,7 +50,7 @@ void Phys2System::update(float dt) {
         // Update aabb
         for(uint32_t i = 0; i < bodies.size(); ++i) {
             Phys2Body *b = bodies[i];
-            octree.update(b, b->belongs, b->shape->aabb());
+            b->belongs = octree.update(b, b->belongs, b->shape->aabb());
         }
 
         // Clear all forces

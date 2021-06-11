@@ -139,9 +139,7 @@ module.exports = (package, mode, cwd, globalPackages) => {
             const native = `${cwd}/.vscode/storage/server-native/build/Release/native.node`
             const sync = () => {
                 try {
-                    console.log('wtf', native)
                     if (fs.existsSync(native)) {
-                        console.log('copy', native, `${outputDir}/native.node`)
                         fs.copyFileSync(native, `${outputDir}/native.node`)
                     }
                 } catch (e) {

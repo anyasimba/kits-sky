@@ -228,6 +228,12 @@ static void pointer (const v8::FunctionCallbackInfo<v8::Value>& args) {
     NODE_SET_METHOD(exports, #NAME"_array_clear_"#PROP_NAME,\
         ___##NAME##_array_clear_##PROP_NAME);
 
+#define ___BIND_CLASS_STATIC_ARRAY_PROP(NAME, PROP_NAME)\
+    NODE_SET_METHOD(exports, #NAME"_array_get_"#PROP_NAME,\
+        ___##NAME##_array_get_##PROP_NAME);\
+    NODE_SET_METHOD(exports, #NAME"_array_set_"#PROP_NAME,\
+        ___##NAME##_array_set_##PROP_NAME);
+
 #define ___BIND_CLASS_METHOD(NAME, METHOD)\
     NODE_SET_METHOD(exports, #NAME"_"#METHOD, ___##NAME##_##METHOD);
 
@@ -301,18 +307,32 @@ static void pointer (const v8::FunctionCallbackInfo<v8::Value>& args) {
     ___BIND_END\
     ___BIND_CLASS_ARRAY_PROP(NAME, PROP_NAME)
 
+#define BIND_CLASS_STATIC_ARRAY_PROP(NAME, PROP_TYPE, PROP_NAME)\
+    ___BIND_BEGIN(NAME##_array_get_##PROP_NAME)\
+        ARG(0, NAME*, obj);\
+        ARG(1, int, idx);\
+        args.GetReturnValue().Set(___ToScript<PROP_TYPE>::fn(isolate, obj->PROP_NAME[idx]));\
+    ___BIND_END\
+    ___BIND_BEGIN(NAME##_array_set_##PROP_NAME)\
+        ARG(0, NAME*, obj);\
+        ARG(1, int, idx);\
+        ARG(2, PROP_TYPE, v);\
+        obj->PROP_NAME[idx] = v;\
+    ___BIND_END\
+    ___BIND_CLASS_STATIC_ARRAY_PROP(NAME, PROP_NAME)
+
 #define BIND_CLASS_METHOD(NAME, RETURN, METHOD, ARGS, ...)\
     ___BIND_BEGIN(NAME##_##METHOD)\
-        ARG(0, NAME*, obj);\
+        ARG(0, NAME*, ___obj);\
         __VA_ARGS__;\
-        args.GetReturnValue().Set(___ToScript<RETURN>::fn(isolate, obj->METHOD ARGS));\
+        args.GetReturnValue().Set(___ToScript<RETURN>::fn(isolate, ___obj->METHOD ARGS));\
     ___BIND_END\
     ___BIND_CLASS_METHOD(NAME, METHOD)
 
 #define BIND_CLASS_METHOD_VOID(NAME, METHOD, ARGS, ...)\
     ___BIND_BEGIN(NAME##_##METHOD)\
-        ARG(0, NAME*, obj);\
+        ARG(0, NAME*, ___obj);\
         __VA_ARGS__;\
-        obj->METHOD ARGS;\
+        ___obj->METHOD ARGS;\
     ___BIND_END\
     ___BIND_CLASS_METHOD(NAME, METHOD)

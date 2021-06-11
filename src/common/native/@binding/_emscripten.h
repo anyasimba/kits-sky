@@ -212,6 +212,12 @@ struct ___FromScript<Array<T>> {
     emscripten::function(#NAME"_array_clear_"#PROP_NAME, ___##NAME##_array_clear_##PROP_NAME,\
         allow_raw_pointers());
 
+#define ___BIND_CLASS_STATIC_ARRAY_PROP(NAME, PROP_NAME)\
+    emscripten::function(#NAME"_array_get_"#PROP_NAME, ___##NAME##_array_get_##PROP_NAME,\
+        allow_raw_pointers());\
+    emscripten::function(#NAME"_array_set_"#PROP_NAME, ___##NAME##_array_set_##PROP_NAME,\
+        allow_raw_pointers());
+
 #define ___BIND_CLASS_METHOD(NAME, METHOD)\
     emscripten::function(#NAME"_"#METHOD, ___##NAME##_##METHOD,\
         allow_raw_pointers());
@@ -287,18 +293,31 @@ struct ___FromScript<Array<T>> {
     };\
     ___BIND_CLASS_ARRAY_PROP(NAME, PROP_NAME)
 
+#define BIND_CLASS_STATIC_ARRAY_PROP(NAME, PROP_TYPE, PROP_NAME)\
+    typedef ___Arg<PROP_TYPE>::type (*___##NAME##_array_get_##PROP_NAME##_fn)(___EmscriptenObj emscriptenObj, ARG(_, int, idx));\
+    ___##NAME##_array_get_##PROP_NAME##_fn ___##NAME##_array_get_##PROP_NAME = [](___EmscriptenObj emscriptenObj, ARG(_, int, idx)) -> ___Arg<PROP_TYPE>::type {\
+        NAME *obj = (NAME *)emscriptenObj.obj;\
+        return ___ToScript<PROP_TYPE>::fn(obj->PROP_NAME[idx]);\
+    };\
+    typedef void (*___##NAME##_array_set_##PROP_NAME##_fn)(___EmscriptenObj emscriptenObj, ARG(_, int, idx), ARG(_, PROP_TYPE, v));\
+    ___##NAME##_array_set_##PROP_NAME##_fn ___##NAME##_array_set_##PROP_NAME = [](___EmscriptenObj emscriptenObj, ARG(_, int, idx), ARG(_, PROP_TYPE, v)) -> void {\
+        NAME *obj = (NAME *)emscriptenObj.obj;\
+        obj->PROP_NAME[idx] = v;\
+    };\
+    ___BIND_CLASS_STATIC_ARRAY_PROP(NAME, PROP_NAME)
+
 #define BIND_CLASS_METHOD(NAME, RETURN, METHOD, ARGS, ...)\
     typedef ___Arg<RETURN>::type (*___##NAME##_##METHOD##_fn)(___EmscriptenObj emscriptenObj, ##__VA_ARGS__);\
-    ___##NAME##_##METHOD##_fn ___##NAME##_##METHOD = [](___EmscriptenObj emscriptenObj, ##__VA_ARGS__) -> ___Arg<RETURN>::type {\
-        NAME *obj = (NAME *)emscriptenObj.obj;\
-        return ___ToScript<RETURN>::fn(obj->METHOD ARGS);\
+    ___##NAME##_##METHOD##_fn ___##NAME##_##METHOD = [](___EmscriptenObj ___emscriptenObj, ##__VA_ARGS__) -> ___Arg<RETURN>::type {\
+        NAME *___obj = (NAME *)___emscriptenObj.obj;\
+        return ___ToScript<RETURN>::fn(___obj->METHOD ARGS);\
     };\
     ___BIND_CLASS_METHOD(NAME, METHOD)
 
 #define BIND_CLASS_METHOD_VOID(NAME, METHOD, ARGS, ...)\
     typedef void (*___##NAME##_##METHOD##_fn)(___EmscriptenObj emscriptenObj, ##__VA_ARGS__);\
-    ___##NAME##_##METHOD##_fn ___##NAME##_##METHOD = [](___EmscriptenObj emscriptenObj, ##__VA_ARGS__) -> void {\
-        NAME *obj = (NAME *)emscriptenObj.obj;\
-        obj->METHOD ARGS;\
+    ___##NAME##_##METHOD##_fn ___##NAME##_##METHOD = [](___EmscriptenObj ___emscriptenObj, ##__VA_ARGS__) -> void {\
+        NAME *___obj = (NAME *)___emscriptenObj.obj;\
+        ___obj->METHOD ARGS;\
     };\
     ___BIND_CLASS_METHOD(NAME, METHOD)

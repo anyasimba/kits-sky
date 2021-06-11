@@ -1,4 +1,4 @@
-import * as _ from './express'
+import * as _ from './&'
 globalify(_)
 
 declare global {

@@ -20,13 +20,13 @@ export class HakunaMatata {
         }
     }
 
-    add<T extends HakunaMatata>(hakunaMatata: T) {
+    addLink<T extends HakunaMatata>(hakunaMatata: T) {
         hakunaMatata.__attachTo(this)
         this.__childs.push(hakunaMatata)
         return hakunaMatata
     }
 
-    remove(hakunaMatata: HakunaMatata) {
+    removeLink(hakunaMatata: HakunaMatata) {
         hakunaMatata.__detachFrom(this)
         this.__remove(hakunaMatata)
     }

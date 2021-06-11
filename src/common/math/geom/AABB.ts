@@ -8,18 +8,33 @@ declare global {
 
 namespace _ {
     export class AABB2 {
-        constructor(public xb: number, public xe: number, public yb: number, public ye: number) {}
+        xb: number
+        yb: number
+        xe: number
+        ye: number
+        constructor(v: { xb: number; yb: number; xe: number; ye: number }) {
+            this.xb = v.xb
+            this.yb = v.yb
+            this.xe = v.xe
+            this.ye = v.ye
+        }
     }
 
     export class AABB3 {
-        constructor(
-            public xb: number,
-            public xe: number,
-            public yb: number,
-            public ye: number,
-            public zb: number,
-            public ze: number
-        ) {}
+        xb: number
+        yb: number
+        zb: number
+        xe: number
+        ye: number
+        ze: number
+        constructor(v: { xb: number; yb: number; zb: number; xe: number; ye: number; ze: number }) {
+            this.xb = v.xb
+            this.yb = v.yb
+            this.zb = v.zb
+            this.xe = v.xe
+            this.ye = v.ye
+            this.ze = v.ze
+        }
     }
 }
 

@@ -13,7 +13,7 @@ struct OctreeNode;
 
 template<class T>
 struct ___OctreeNodes: Native {
-    OctreeNode<T>* node[8];
+    OctreeNode<T>* nodes[8];
     ___OctreeNodes() {}
 
     virtual bool __onRemove () {
@@ -66,10 +66,10 @@ struct OctreeNode: ___OctreeNodes<T> {
             if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
                 continue;
             }
-            if (this->node[i] == nullptr) {
-                this->node[i] = new OctreeNode<T>(this, i, hs);
+            if (this->nodes[i] == nullptr) {
+                this->nodes[i] = new OctreeNode<T>(this, i, hs);
             }
-            this->node[i]->add(belongs, obj, size, aabb);
+            this->nodes[i]->add(belongs, obj, size, aabb);
         }
     }
 
@@ -101,10 +101,10 @@ struct OctreeNode: ___OctreeNodes<T> {
         };
         for (size_t i = 0; i < 8; ++i) {
             auto& aabb = aabbArr[i];
-            if (this->node[i] == nullptr) {
+            if (this->nodes[i] == nullptr) {
                 continue;
             }
-            this->node[i]->get(result, aabb);
+            this->nodes[i]->get(result, aabb);
         }
     }
 
@@ -118,11 +118,11 @@ struct OctreeNode: ___OctreeNodes<T> {
             return false;
         }
         for (size_t i = 0; i < 8; ++i) {
-            if (this->node[i] != nullptr) {
+            if (this->nodes[i] != nullptr) {
                 return false;
             }
         }
-        parent->node[idx] = nullptr;
+        parent->nodes[idx] = nullptr;
         if (parent->__onRemove()) {
             delete parent;
         }
@@ -131,6 +131,7 @@ struct OctreeNode: ___OctreeNodes<T> {
 };
 BINDING(OctreeNode) {
     typedef OctreeNode<Native*> OctreeNode;
+    BIND_CLASS_STATIC_ARRAY_PROP(OctreeNode, OctreeNode*, nodes);
     BIND_CLASS_PROP(OctreeNode, size_t, size);
     BIND_CLASS_PROP(OctreeNode, size_t, idx);
     BIND_CLASS_ARRAY_PROP(OctreeNode, Native*, objs);
@@ -173,18 +174,18 @@ struct Octree: ___OctreeNodes<T> {
                 continue;
             }
             auto rootSize = Octree<T>::rootSizeOf(aabb);
-            if (this->node[i] == nullptr) {
-                this->node[i] = new OctreeNode<T>(this, i, rootSize);
+            if (this->nodes[i] == nullptr) {
+                this->nodes[i] = new OctreeNode<T>(this, i, rootSize);
             } else {
-                while (this->node[i]->size < rootSize) {
-                    auto newNode = new OctreeNode<T>(this, i, this->node[i]->size*2);
-                    newNode->node[0] = this->node[i];
-                    this->node[i]->parent = newNode;
-                    this->node[i]->idx = 0;
-                    this->node[i] = newNode;
+                while (this->nodes[i]->size < rootSize) {
+                    auto newNode = new OctreeNode<T>(this, i, this->nodes[i]->size*2);
+                    newNode->nodes[0] = this->nodes[i];
+                    this->nodes[i]->parent = newNode;
+                    this->nodes[i]->idx = 0;
+                    this->nodes[i] = newNode;
                 }
             }
-            this->node[i]->add(belongs, obj, size, aabb);
+            this->nodes[i]->add(belongs, obj, size, aabb);
         }
 
         return belongs;
@@ -203,11 +204,11 @@ struct Octree: ___OctreeNodes<T> {
             AABB3(-aabb.xe, -aabb.xb, -aabb.ye, -aabb.yb, -aabb.ze, -aabb.zb),
         };
         for (size_t i = 0; i < 8; ++i) {
-            if (this->node[i] == nullptr) {
+            if (this->nodes[i] == nullptr) {
                 continue;
             }
 
-            this->node[i]->get(items, aabbArr[i]);
+            this->nodes[i]->get(items, aabbArr[i]);
         }
         return items;
     }
@@ -221,12 +222,25 @@ struct Octree: ___OctreeNodes<T> {
         }
     }
     
-    void update(const T& obj, OctreeBelongs& belongs, AABB3 aabb) {
+    OctreeBelongs update(const T& obj, OctreeBelongs& belongs, AABB3 aabb) {
         this->remove(obj, belongs);
-        belongs = this->add(obj, aabb);
+        return this->add(obj, aabb);
     }
 };
 BINDING(Octree) {
     typedef Octree<Native*> Octree;
     BIND_CLASS(Octree, ());
+    BIND_CLASS_STATIC_ARRAY_PROP(Octree, OctreeNode<Native*>*, nodes);
+    BIND_CLASS_METHOD(Octree, OctreeBelongs, add, (obj, aabb), ARG(0, Native*, obj), ARG(1, AABB3, aabb));
+    BIND_CLASS_METHOD(Octree, Array<Native*>, get, (aabb), ARG(0, AABB3, aabb));
+    BIND_CLASS_METHOD_VOID(Octree, remove, (obj, belongs), ARG(0, Native*, obj), ARG(1, OctreeBelongs, belongs));
+    BIND_CLASS_METHOD(
+        Octree,
+        OctreeBelongs,
+        update,
+        (obj, belongs, aabb),
+        ARG(0, Native*, obj),
+        ARG(1, OctreeBelongs, belongs),
+        ARG(2, AABB3, aabb)
+    );
 }
