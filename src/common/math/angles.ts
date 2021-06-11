@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     interface Math {
         clampAngle(angle: number): number
@@ -19,4 +21,3 @@ namespace _ {
 }
 
 globalify(_, Math)
-export {}

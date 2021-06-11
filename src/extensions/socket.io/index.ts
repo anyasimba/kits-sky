@@ -1,4 +1,4 @@
-import * as _ from './&'
+import * as _ from './_'
 globalify(_)
 
 declare global {

@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     type OctreeBelongs = _.OctreeBelongs
 
@@ -23,7 +25,7 @@ namespace _ {
 
     @native.class('Octree')
     export class Octree<T = Native> extends Native {
-        @native.prop('Array<OctreeNode*>') private nodes!: NativeArray<OctreeNode<T>>
+        @native.prop('OctreeNode*[8]') private nodes!: NativeArray<OctreeNode<T>>
 
         @native.method('OctreeBelongs', 'Native*', 'AABB3')
         add!: (obj: Native, aabb: AABB3) => OctreeBelongs
@@ -39,4 +41,3 @@ namespace _ {
     }
 }
 globalify(_)
-export {}

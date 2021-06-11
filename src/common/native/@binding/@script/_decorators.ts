@@ -1,3 +1,4 @@
+import { $$native, $$nativeConstructor, classes, methods, pointer, props, wraps } from './__'
 import { apply } from './_apply'
 
 declare const global: any
@@ -18,8 +19,6 @@ export const native = {
                     set: function (v) {
                         return setDisposed(this[$$native], v)
                     },
-                    enumerable: true,
-                    configurable: true,
                 })
             }
             for (let i = 0; i < mixins.length; ++i) {
@@ -65,19 +64,4 @@ export const native = {
             methods.push({ returnType, args, key })
         }
     },
-}
-
-@native.class('Native')
-export class Native extends HakunaMatata {
-    constructor() {
-        super()
-        ;(this as any)[$$nativeConstructor].call(this)
-    }
-}
-
-function pointer(native: any): number {
-    if (global.___NATIVE.pointer) {
-        return global.___NATIVE.pointer(native)
-    }
-    return native.pointer()
 }

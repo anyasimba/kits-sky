@@ -1,4 +1,4 @@
-import * as _ from './&'
+import * as _ from './_'
 Object.assign(global, _)
 
 declare global {

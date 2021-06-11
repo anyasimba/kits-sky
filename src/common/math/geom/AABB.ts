@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     type AABB2 = _.AABB2
     const AABB2: typeof _.AABB2
@@ -39,4 +41,3 @@ namespace _ {
 }
 
 globalify(_)
-export {}

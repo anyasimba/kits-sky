@@ -1,3 +1,7 @@
+import { $$native, pointer, wraps } from './__'
+
+declare const global: any
+
 export function applyProp(name: string, prototype: any, prop: any) {
     const get = global.___NATIVE[`${name}_get_${prop.key}`]
     const set = global.___NATIVE[`${name}_set_${prop.key}`]

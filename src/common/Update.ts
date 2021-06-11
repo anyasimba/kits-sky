@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     type Update = _.Update
     const Update: typeof _.Update
@@ -26,4 +28,3 @@ namespace _ {
 }
 
 globalify(_)
-export {}

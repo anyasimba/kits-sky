@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     type Polyline = _.Polyline
     const Polyline: typeof _.Polyline
@@ -10,4 +12,3 @@ namespace _ {
 }
 
 globalify(_)
-export {}

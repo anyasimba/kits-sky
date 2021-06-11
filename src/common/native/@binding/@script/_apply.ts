@@ -1,3 +1,6 @@
+import { applyArrayProp } from './_applyArrayProp'
+import { applyProp } from './_applyProp'
+
 export function apply(name: string, prototype: any, props: any, methods: any) {
     for (let i = 0; i < props.length; i++) {
         const prop = props[i]

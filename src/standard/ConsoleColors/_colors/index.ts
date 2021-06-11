@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     interface Console {
         colors: typeof colors
@@ -21,7 +23,6 @@ namespace colors {
     )
 }
 globalify({ colors }, console)
-export {}
 
 function getColors(codes: string[]) {
     return {
@@ -49,7 +50,7 @@ function getColors(codes: string[]) {
         _rgb: codes.slice(16, 232),
         grayscale: codes.slice(232, 256),
         rgb(r: number, g: number, b: number) {
-            return fg._rgb[36 * r + 6 * g + b]
+            return colors.fg._rgb[36 * r + 6 * g + b]
         },
     }
 }

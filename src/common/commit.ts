@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     const commit: typeof _.commit
 }
@@ -15,4 +17,3 @@ namespace _ {
 }
 
 globalify(_)
-export {}

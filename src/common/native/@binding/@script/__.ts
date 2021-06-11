@@ -1,3 +1,5 @@
+declare const global: any
+
 export const $$native = Symbol('native')
 export const $$nativeConstructor = Symbol('nativeConstructor')
 
@@ -6,6 +8,13 @@ export const props: any[] = []
 export const methods: any[] = []
 
 export const wraps: any = {}
+
+export function pointer(native: any): number {
+    if (global.___NATIVE.pointer) {
+        return global.___NATIVE.pointer(native)
+    }
+    return native.pointer()
+}
 
 export function unwrapArgs(args: any[], unwraps: any[]) {
     for (let i = 0; i < unwraps.length; ++i) {

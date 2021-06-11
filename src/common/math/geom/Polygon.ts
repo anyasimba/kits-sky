@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     type Polygon = _.Polygon
     const Polygon: typeof _.Polygon
@@ -10,4 +12,3 @@ namespace _ {
 }
 
 globalify(_)
-export {}

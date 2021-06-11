@@ -1,3 +1,7 @@
+import { $$native, ArgUnwrap, ArgWrap } from './__'
+
+declare const global: any
+
 export function applyArrayProp(name: string, prototype: any, prop: { type: string; key: string }) {
     let length = global.___NATIVE[`${name}_array_length_${prop.key}`]
     const get = global.___NATIVE[`${name}_array_get_${prop.key}`]

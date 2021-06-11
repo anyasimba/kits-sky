@@ -1,4 +1,8 @@
-function applyMethod(name: string, prototype: any, method: any) {
+import { $$native, ArgUnwrap, ArgWrap, unwrapArgs } from './__'
+
+declare const global: any
+
+export function applyMethod(name: string, prototype: any, method: any) {
     const fn = global.___NATIVE[`${name}_${method.key}`]
     const unwraps: any[] = []
     for (let i = 0; i < method.args.length; ++i) {

@@ -1,3 +1,5 @@
+export {}
+
 declare global {
     interface Math {
         easeInOutQuad(t: number, b: number, c: number, d: number): number
@@ -16,4 +18,3 @@ namespace _ {
 }
 
 globalify(_, Math)
-export {}
