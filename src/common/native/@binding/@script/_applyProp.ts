@@ -1,3 +1,4 @@
+import { propertyDecorator } from '@skyplay19/helpers'
 import { $$native, pointer, wraps } from './__'
 
 declare const global: any
@@ -6,34 +7,36 @@ export function applyProp(name: string, prototype: any, prop: any) {
     const get = global.___NATIVE[`${name}_get_${prop.key}`]
     const set = global.___NATIVE[`${name}_set_${prop.key}`]
     if (prop.type.indexOf('*') !== -1) {
-        Object.defineProperty(prototype, prop.key, {
+        propertyDecorator(() => ({
+            configurable: true,
+            enumerable: true,
             get() {
-                return wraps[get(this[$$native])]
+                return wraps[get((this as any)[$$native])]
             },
             set(value) {
-                const currentPointer = pointer(get(this[$$native]))
+                const currentPointer = pointer(get((this as any)[$$native]))
                 if (currentPointer !== 0) {
-                    this.remove(wraps[currentPointer])
+                    ;(this as any).remove(wraps[currentPointer])
                 }
                 if (value) {
-                    ;(value as any).__attachTo(this, () => set(this[$$native], null))
-                    this.__childs.push(value)
-                    set(this[$$native], value[$$native])
+                    ;(value as any).__attachTo(this, () => set((this as any)[$$native], null))
+                    ;(this as any).__childs.push(value)
+                    set((this as any)[$$native], value[$$native])
                 } else {
-                    set(this[$$native], null)
+                    set((this as any)[$$native], null)
                 }
             },
-        })
+        }))(prototype, prop.key)
     } else {
-        Object.defineProperty(prototype, prop.key, {
-            get: function () {
-                return get(this[$$native])
-            },
-            set: function (v) {
-                return set(this[$$native], v)
-            },
-            enumerable: true,
+        propertyDecorator(() => ({
             configurable: true,
-        })
+            enumerable: true,
+            get() {
+                return get((this as any)[$$native])
+            },
+            set(v) {
+                return set((this as any)[$$native], v)
+            },
+        }))(prototype, prop.key)
     }
 }

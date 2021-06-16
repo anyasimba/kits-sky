@@ -2,13 +2,13 @@ import { purgatoryRef } from './_purgatoryRef'
 import { withScopeRef } from './_Scope/_withScopeRef'
 
 export class HakunaMatata {
-    private __parents: [HakunaMatata, (() => void) | undefined][] = []
-    private __childs: HakunaMatata[] = []
-    private __relations: [HakunaMatata, () => void][] = []
-    private __relationsChilds: [HakunaMatata, () => void][] = []
-    private __destructors: ((...args: any[]) => void)[] = []
-    private __destroyArgs: optional<any[]>
-    private __disposed: optional<boolean>
+    @hidden private __parents: [HakunaMatata, (() => void) | undefined][] = []
+    @hidden private __childs: HakunaMatata[] = []
+    @hidden private __relations: [HakunaMatata, () => void][] = []
+    @hidden private __relationsChilds: [HakunaMatata, () => void][] = []
+    @hidden private __destructors: ((...args: any[]) => void)[] = []
+    @hidden private __destroyArgs: optional<any[]>
+    @hidden private __disposed: optional<boolean>
     get disposed() {
         return this.__disposed === true
     }

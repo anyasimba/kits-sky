@@ -77,7 +77,7 @@ module.exports = (package, mode, cwd, globalPackages) => {
         const globals = []
 
         if (package.client && package.client.native) {
-            const nativePath = path.join(cwd, '.vscode/storage/native/web-native.js')
+            const nativePath = path.join(cwd, '.vscode/storage/web-native.js')
             globals.push(nativePath)
             app.push(nativePath)
             app.push('./bin/native/web/@include-native')

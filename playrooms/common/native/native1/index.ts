@@ -5,7 +5,8 @@ import 'sky/common/native'
 const root = withScope(() => {})(() => {})()!
 
 // entities
-const item: Native & { belongs: OctreeBelongs } = new Native() as any
+const item: Native & { belongs: OctreeBelongs; x: number } = new Native() as any
+item.x = 19
 
 const octree = new Octree<typeof item>()
 item.belongs = octree.add(
@@ -14,38 +15,19 @@ item.belongs = octree.add(
         xb: 0,
         yb: 0,
         zb: 0,
-        xe: 1000,
-        ye: 1000,
-        ze: 1000,
+        xe: 56,
+        ye: 24,
+        ze: 1,
     })
 )
+const logOctree: any = toLog(octree)[0]
+console.log(logOctree.nodes[0])
 
-const nodes: OctreeNode<typeof item>[] = []
-for (let i = 0; i < 8; ++i) {
-    nodes.push((octree as any).nodes.get(i))
-}
-console.log(
-    nodes.map(node => ({
-        size: node.size,
-        idx: node.idx,
-        nodes: [...Array(8)].map((v, i) => {
-            const innerNode = node.nodes.get(i)
-            return innerNode
-                ? {
-                    size: innerNode.size,
-                    idx: innerNode.idx,
-                  }
-                : null
-        }),
-        objs: node.objs.items,
-    }))
-)
+// // update
+// root.addLink(
+//     new IntervalWithDt(dt => {
+//         commit()
+//     }, 1000)
+// )
 
-// update
-root.addLink(
-    new IntervalWithDt(dt => {
-        commit()
-    }, 1000)
-)
-
-commit()
+// commit()

@@ -1,4 +1,4 @@
-import * as _underscore from './underscore'
+import * as _underscore from './_'
 globalify(_underscore)
 
 declare global {

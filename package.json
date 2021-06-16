@@ -13,7 +13,7 @@
     "dependencies": {
         "@skyplay19/event-emitter": "^1.0.7",
         "@skyplay19/globalify": "^1.0.1",
-        "@skyplay19/helpers": "^1.0.11",
+        "@skyplay19/helpers": "^1.0.19",
         "express": "^4.17.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

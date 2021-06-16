@@ -2,6 +2,7 @@ import * as _ from './_'
 globalify(_)
 
 declare global {
+    const NativeArray: typeof _.NativeArray
     type StaticNativeArray<T> = _.StaticNativeArray<T>
     type NativeArray<T> = _.NativeArray<T>
     type NativeArrayOfNative<T> = _.NativeArrayOfNative<T>

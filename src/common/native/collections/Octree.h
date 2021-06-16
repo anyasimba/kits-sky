@@ -14,7 +14,9 @@ struct OctreeNode;
 template<class T>
 struct ___OctreeNodes: Native {
     OctreeNode<T>* nodes[8];
-    ___OctreeNodes() {}
+    ___OctreeNodes() {
+        memset(nodes, 0, sizeof(OctreeNode<T>*)*8);
+    }
 
     virtual bool __onRemove () {
         return false;
@@ -43,7 +45,7 @@ struct OctreeNode: ___OctreeNodes<T> {
     void add(OctreeBelongs& belongs, const T& obj, size_t size, AABB3 aabb) {
         if (size == this->size) {
             belongs.nodes.push_back((void*)this);
-            objs.add(obj);
+            this->objs.add(obj);
             return;
         }
 
@@ -77,7 +79,6 @@ struct OctreeNode: ___OctreeNodes<T> {
         if (aabb.xe < 0.f || aabb.ye < 0.f || aabb.ze < 0.f) {
             return;
         }
-        printf("get %p\n", this);
         if (aabb.xb > this->size || aabb.yb > this->size || aabb.zb > this->size) {
             return;
         }
@@ -185,7 +186,7 @@ struct Octree: ___OctreeNodes<T> {
                     this->nodes[i] = newNode;
                 }
             }
-            this->nodes[i]->add(belongs, obj, size, aabb);
+            this->nodes[i]->add(belongs, obj, rootSize, aabb);
         }
 
         return belongs;
@@ -213,7 +214,7 @@ struct Octree: ___OctreeNodes<T> {
         return items;
     }
 
-    void remove(const T& obj, OctreeBelongs& belongs) {
+    void remove(const T& obj, OctreeBelongs belongs) {
         FOR (i, belongs.nodes) {
             auto node = (OctreeNode<T>*)belongs.nodes[i];
             if (node->remove(obj)) {
@@ -222,7 +223,7 @@ struct Octree: ___OctreeNodes<T> {
         }
     }
     
-    OctreeBelongs update(const T& obj, OctreeBelongs& belongs, AABB3 aabb) {
+    OctreeBelongs update(const T& obj, OctreeBelongs belongs, AABB3 aabb) {
         this->remove(obj, belongs);
         return this->add(obj, aabb);
     }
@@ -231,16 +232,20 @@ BINDING(Octree) {
     typedef Octree<Native*> Octree;
     BIND_CLASS(Octree, ());
     BIND_CLASS_STATIC_ARRAY_PROP(Octree, OctreeNode<Native*>*, nodes);
-    BIND_CLASS_METHOD(Octree, OctreeBelongs, add, (obj, aabb), ARG(0, Native*, obj), ARG(1, AABB3, aabb));
-    BIND_CLASS_METHOD(Octree, Array<Native*>, get, (aabb), ARG(0, AABB3, aabb));
-    BIND_CLASS_METHOD_VOID(Octree, remove, (obj, belongs), ARG(0, Native*, obj), ARG(1, OctreeBelongs, belongs));
-    BIND_CLASS_METHOD(
-        Octree,
-        OctreeBelongs,
-        update,
-        (obj, belongs, aabb),
-        ARG(0, Native*, obj),
-        ARG(1, OctreeBelongs, belongs),
+    BIND_CLASS_METHOD(Octree, OctreeBelongs, add, (obj, aabb),
+        ARG(1, Native*, obj),
         ARG(2, AABB3, aabb)
+    );
+    BIND_CLASS_METHOD(Octree, Array<Native*>, get, (aabb),
+        ARG(1, AABB3, aabb)
+    );
+    BIND_CLASS_METHOD_VOID(Octree, remove, (obj, belongs),
+        ARG(1, Native*, obj),
+        ARG(2, OctreeBelongs, belongs)
+    );
+    BIND_CLASS_METHOD(Octree, OctreeBelongs, update, (obj, belongs, aabb),
+        ARG(1, Native*, obj),
+        ARG(2, OctreeBelongs, belongs),
+        ARG(3, AABB3, aabb)
     );
 }

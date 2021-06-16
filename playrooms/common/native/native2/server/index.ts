@@ -29,7 +29,7 @@ root.addLink(
         commit()
 
         console.log(circleBody.position.x)
-    }, 1000)
+    }, 100)
 )
 
 commit()

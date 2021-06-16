@@ -1,4 +1,4 @@
-import { $$native, $$nativeConstructor, classes, methods, pointer, props, wraps } from './__'
+import { $$native, $$nativeConstructor, classes, currentState, pointer, wraps } from './__'
 import { apply } from './_apply'
 
 declare const global: any
@@ -25,7 +25,7 @@ export const native = {
                 const { props, methods } = classes[mixins[i]]
                 apply(name, prototype, props, methods)
             }
-            apply(name, prototype, props, methods)
+            apply(name, prototype, currentState.props, currentState.methods)
 
             const nativeConstructor = global.___NATIVE[name]
             const nativeDestructor = global.___NATIVE[`${name}_destroy`]
@@ -42,12 +42,12 @@ export const native = {
                 })
             }
 
-            constructor.props = props
-            constructor.methods = methods
+            constructor.props = currentState.props
+            constructor.methods = currentState.methods
             classes[name] = constructor
 
-            props = []
-            methods = []
+            currentState.props = []
+            currentState.methods = []
 
             return constructor
         }
@@ -55,13 +55,13 @@ export const native = {
 
     prop(type: string) {
         return function (_: any, key: string) {
-            props.push({ type, key })
+            currentState.props.push({ type, key })
         }
     },
 
     method(returnType: string, ...args: any[]) {
         return function (_: any, key: string) {
-            methods.push({ returnType, args, key })
+            currentState.methods.push({ returnType, args, key })
         }
     },
 }

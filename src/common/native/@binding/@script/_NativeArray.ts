@@ -1,3 +1,12 @@
+export const NativeArray = {}
+
+toLogFilters.push((arg: any) => {
+    if (typeof arg === 'object' && Object.getPrototypeOf(arg) === NativeArray) {
+        return arg.items
+    }
+    return arg
+})
+
 export interface StaticNativeArray<T> {
     readonly length: number
     readonly items: T[]
