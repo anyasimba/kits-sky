@@ -2,6 +2,7 @@
 
 #include <cmath>
 using namespace std;
+const float EPSILON = 0.0001f;
 
 #include "AABB.h"
 #include "intersect2.h"

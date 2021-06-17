@@ -2,7 +2,11 @@ import 'sky/common/Update'
 import 'sky/common/native'
 
 // root
-const root = withScope(() => {})(() => {})()!
+let root = withScope(() => {})(() => {})()!
+function resetRoot() {
+    root.destroy()
+    root = withScope(() => {})(() => {})()!
+}
 
 // systems
 const physSystem = root.addLink(new Phys2System())
@@ -18,7 +22,7 @@ physSystem.add(circleBody)
 const circle2 = new Phys2Circle()
 circle2.radius = 19
 const circleBody2 = new Phys2Body(circle2, 1)
-circleBody2.position = new vec2({ x: 200, y: 101 })
+circleBody2.position = new vec2({ x: 200, y: 100 })
 physSystem.add(circleBody2)
 
 // update
@@ -26,10 +30,14 @@ root.addLink(
     new IntervalWithDt(dt => {
         physSystem.update(dt)
 
-        commit()
-
         console.log(circleBody.position.x)
-    }, 100)
+
+        if (_.isNaN(circleBody.position.x)) {
+            resetRoot()
+        }
+
+        commit()
+    }, 200)
 )
 
 commit()

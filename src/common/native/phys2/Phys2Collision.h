@@ -46,7 +46,7 @@ void Phys2CircleToCircle(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     if (distance == 0.0f) {
         m->penetration = A->radius;
         m->normal = vec2(1, 0);
-        m->contacts [0] = a->position;
+        m->contacts[0] = a->position;
     } else {
         m->penetration = radius - distance;
         m->normal = normal / distance; // Faster than using Normalized since we already performed sqrt
@@ -68,14 +68,13 @@ void Phys2CircleToPolygon(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     // Exact concept as using support points in Polygon vs Polygon
     real separation = -FLT_MAX;
     uint32_t faceNormal = 0;
-    for(uint32_t i = 0; i < B->m_vertexCount; ++i) {
+    for (uint32_t i = 0; i < B->m_vertexCount; ++i) {
         real s = dot(B->m_normals[i], center - B->m_vertices[i]);
 
-        if(s > A->radius)
+        if (s > A->radius)
             return;
 
-        if(s > separation)
-        {
+        if (s > separation) {
             separation = s;
             faceNormal = i;
         }
@@ -87,7 +86,7 @@ void Phys2CircleToPolygon(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     vec2 v2 = B->m_vertices[i2];
 
     // Check to see if center is within polygon
-    if(separation < FLT_EPSILON) {
+    if (separation < FLT_EPSILON) {
         m->contact_count = 1;
         m->normal = -(B->u * B->m_normals[faceNormal]);
         m->contacts[0] = m->normal * A->radius + a->position;
@@ -144,7 +143,7 @@ real Phys2FindAxisLeastPenetration(uint32_t* faceIndex, Phys2Polygon* A, Phys2Po
     real bestDistance = -FLT_MAX;
     uint32_t bestIndex;
 
-    for(uint32_t i = 0; i < A->m_vertexCount; ++i) {
+    for (uint32_t i = 0; i < A->m_vertexCount; ++i) {
         // Retrieve a face normal from A
         vec2 n = A->m_normals[i];
         vec2 nw = A->u * n;
@@ -167,7 +166,7 @@ real Phys2FindAxisLeastPenetration(uint32_t* faceIndex, Phys2Polygon* A, Phys2Po
         real d = dot(n, s - v);
 
         // Store greatest distance
-        if(d > bestDistance) {
+        if (d > bestDistance) {
             bestDistance = d;
             bestIndex = i;
         }
@@ -187,9 +186,9 @@ void Phys2FindIncidentFace(vec2* v, Phys2Polygon* RefPoly, Phys2Polygon* IncPoly
     // Find most anti-normal face on incident polygon
     int32_t incidentFace = 0;
     real minDot = FLT_MAX;
-    for(uint32_t i = 0; i < IncPoly->m_vertexCount; ++i) {
+    for (uint32_t i = 0; i < IncPoly->m_vertexCount; ++i) {
         real dot_ = dot(referenceNormal, IncPoly->m_normals[i]);
-        if(dot_ < minDot) {
+        if (dot_ < minDot) {
             minDot = dot_;
             incidentFace = i;
         }
@@ -242,13 +241,13 @@ void Phys2PolygonToPolygon(Phys2Manifold* m, Phys2Body* a, Phys2Body* b) {
     // Check for a separating axis with A's face planes
     uint32_t faceA;
     real penetrationA = Phys2FindAxisLeastPenetration(&faceA, A, B);
-    if(penetrationA >= 0.0f)
+    if (penetrationA >= 0.0f)
         return;
 
     // Check for a separating axis with B's face planes
     uint32_t faceB;
     real penetrationB = Phys2FindAxisLeastPenetration(&faceB, B, A);
-    if(penetrationB >= 0.0f)
+    if (penetrationB >= 0.0f)
         return;
 
     uint32_t referenceIndex;

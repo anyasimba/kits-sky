@@ -13,7 +13,7 @@ void Phys2Manifold::initialize(real dt, vec2 gravity) {
     sf = std::sqrt(A->staticFriction * A->staticFriction);
     df = std::sqrt(A->dynamicFriction * A->dynamicFriction);
 
-    for(uint32_t i = 0; i < contact_count; ++i) {
+    for (uint32_t i = 0; i < contact_count; ++i) {
         // Calculate radii from COM to contact
         vec2 ra = contacts[i] - A->position;
         vec2 rb = contacts[i] - B->position;
@@ -21,7 +21,6 @@ void Phys2Manifold::initialize(real dt, vec2 gravity) {
         vec2 rv =
             B->velocity + cross(B->angularVelocity, rb) -
             A->velocity - cross(A->angularVelocity, ra);
-
 
         // Determine if we should perform a resting collision or not
         // The idea is if the only thing moving this object is gravity,
@@ -33,12 +32,12 @@ void Phys2Manifold::initialize(real dt, vec2 gravity) {
 
 void Phys2Manifold::applyImpulse() {
     // Early out and positional correct if both objects have infinite mass
-    if(equal(A->im + B->im, 0)) {
+    if (equal(A->im + B->im, 0)) {
         infiniteMassCorrection();
         return;
     }
 
-    for(uint32_t i = 0; i < contact_count; ++i) {
+    for (uint32_t i = 0; i < contact_count; ++i) {
         // Calculate radii from COM to contact
         vec2 ra = contacts[i] - A->position;
         vec2 rb = contacts[i] - B->position;
@@ -86,7 +85,7 @@ void Phys2Manifold::applyImpulse() {
 
         // Coulumb's law
         vec2 tangentImpulse;
-        if(std::abs(jt) < j * sf)
+        if (std::abs(jt) < j * sf)
             tangentImpulse = t * jt;
         else
             tangentImpulse = t * -j * df;

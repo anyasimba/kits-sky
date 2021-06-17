@@ -70,7 +70,11 @@ struct vec2 {
     }
 
     vec2 unit() const {
-        return (*this)/length();
+        auto len = length();
+        if (len <= EPSILON) {
+            return *this;
+        }
+        return (*this)/len;
     }
 
     void rotate(float radians) {

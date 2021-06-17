@@ -43,7 +43,11 @@ struct vec3 {
     }
 
     vec3 unit() const {
-        return (*this)/length();
+        auto len = length();
+        if (len <= EPSILON) {
+            return *this;
+        }
+        return (*this)/len;
     }
 
     float dot(const vec3& v) const {

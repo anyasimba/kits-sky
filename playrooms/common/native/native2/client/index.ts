@@ -16,7 +16,7 @@ physSystem.add(circle.body)
 circles.push(circle)
 
 const circle2 = new Circle()
-circle2.body.position = new vec2({ x: 200, y: 110 })
+circle2.body.position = new vec2({ x: 200, y: 100 })
 physSystem.add(circle2.body)
 circles.push(circle2)
 
