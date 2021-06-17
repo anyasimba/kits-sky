@@ -25,9 +25,9 @@ root.addLink(
     new AnimationFramesWithDt(dt => {
         physSystem.update(dt)
 
-        commit()
-
         circles.forEach(circle => circle.update())
+
+        commit()
     })
 )
 
