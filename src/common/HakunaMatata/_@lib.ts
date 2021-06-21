@@ -1,12 +1,14 @@
 import { HakunaMatata } from './_HakunaMatata'
 
 export class Timeout extends HakunaMatata {
-    constructor(cb: () => void, timeout: number) {
+    constructor(cb: (dt: number) => void, timeout: number) {
         super()
+
+        const withDtCb = withDt(cb)
 
         this.use(detach => {
             const id = setTimeout(() => {
-                cb()
+                withDtCb()
                 detach()
             }, timeout)
 
@@ -14,35 +16,29 @@ export class Timeout extends HakunaMatata {
         })
     }
 }
-export class TimeoutWithDt extends Timeout {
-    constructor(cb: (dt: number) => void, timeout: number) {
-        super(withDt(cb), timeout)
-    }
-}
 
 export class Interval extends HakunaMatata {
-    constructor(cb: () => void, interval: number) {
+    constructor(cb: (dt: number) => void, interval: number) {
         super()
 
+        const withDtCb = withDt(cb)
+
         this.use(() => {
-            const id = setInterval(cb, interval)
+            const id = setInterval(withDtCb, interval)
             return () => clearInterval(id)
         })
     }
 }
-export class IntervalWithDt extends Interval {
-    constructor(cb: (dt: number) => void, interval: number) {
-        super(withDt(cb), interval)
-    }
-}
 
 export class AnimationFrame extends HakunaMatata {
-    constructor(cb: () => void) {
+    constructor(cb: (dt: number) => void) {
         super()
+
+        const withDtCb = withDt(cb)
 
         this.use(detach => {
             const id = requestAnimationFrame(() => {
-                cb()
+                withDtCb()
                 detach()
             })
 
@@ -50,28 +46,20 @@ export class AnimationFrame extends HakunaMatata {
         })
     }
 }
-export class AnimationFrameWithDt extends AnimationFrame {
-    constructor(cb: (dt: number) => void) {
-        super(withDt(cb))
-    }
-}
 
 export class AnimationFrames extends HakunaMatata {
-    constructor(cb: () => void) {
+    constructor(cb: (dt: number) => void) {
         super()
+
+        const withDtCb = withDt(cb)
 
         this.use(() => {
             let id = requestAnimationFrame(frame)
             function frame() {
                 id = requestAnimationFrame(frame)
-                cb()
+                withDtCb()
             }
             return () => cancelAnimationFrame(id)
         })
-    }
-}
-export class AnimationFramesWithDt extends AnimationFrames {
-    constructor(cb: (dt: number) => void) {
-        super(withDt(cb))
     }
 }

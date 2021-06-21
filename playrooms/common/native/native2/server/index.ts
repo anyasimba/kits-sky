@@ -27,7 +27,7 @@ physSystem.add(circleBody2)
 
 // update
 root.addLink(
-    new IntervalWithDt(dt => {
+    new Interval(dt => {
         physSystem.update(dt)
 
         console.log(circleBody.position.x)

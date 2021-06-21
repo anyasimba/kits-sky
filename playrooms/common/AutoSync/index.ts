@@ -1,6 +1,6 @@
 import 'sky/common/AutoSync'
 import 'sky/common/math'
-import { Game } from './Game'
+import { Game } from './Shooter/Game'
 
 const game = new Game()
 const player = game.addPlayer([

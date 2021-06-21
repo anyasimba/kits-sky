@@ -16,20 +16,4 @@ function decorate(access: string | null, prototype: any, key: string) {
     }
     const $prototype = prototype[__$$prototype]
     const $$key = Symbol(key)
-    Object.defineProperty($prototype, key, {
-        get: function () {
-            return this[$$key]
-        },
-        set: function (v) {
-            this[$$key] = v
-        },
-    })
-    Object.defineProperty($prototype, `raw_${key}`, {
-        get: function () {
-            return this[$$key]
-        },
-        set: function (v) {
-            this[$$key] = v
-        },
-    })
 }

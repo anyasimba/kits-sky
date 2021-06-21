@@ -1,15 +1,13 @@
 import { Bullet } from './entities/Bullet'
 import { Location } from './entities/Location'
 
-export class Player extends Observer {
+export class Player {
     @share location: nullable<Location> = null
     @share pos: vec2
     @share('this') secredCard: number
     @share publicCard: number
 
     constructor() {
-        super()
-
         this.pos = new vec2({ x: 19, y: 19 })
 
         this.secredCard = Math.floor(Math.random() * 10)

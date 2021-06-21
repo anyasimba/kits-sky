@@ -1,14 +1,11 @@
 import React_ from 'react'
 import ReactDOM_ from 'react-dom'
 import * as _ from './_'
-Object.assign(
-    global,
-    {
-        React: React_,
-        ReactDOM: ReactDOM_,
-    },
-    _
-)
+globalify(_)
+globalify({
+    React: React_,
+    ReactDOM: ReactDOM_,
+})
 
 declare global {
     const React: typeof React_

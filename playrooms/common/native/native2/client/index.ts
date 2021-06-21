@@ -22,7 +22,7 @@ circles.push(circle2)
 
 // update
 root.addLink(
-    new AnimationFramesWithDt(dt => {
+    new AnimationFrames(dt => {
         physSystem.update(dt)
 
         circles.forEach(circle => circle.update())
