@@ -1,3 +1,6 @@
+import 'sky/common/shared'
+
+@shared
 export class vec2 {
     static null: vec2 = new vec2({ x: 0, y: 0 })
 

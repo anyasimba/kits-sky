@@ -5,8 +5,8 @@ export class Location {
     players: Player[] = []
     bullets: Bullet[] = []
 
-    @share w: number = 160
-    @share h: number = 90
+    @share('number') w: number = 160
+    @share('number') h: number = 90
 
     constructor() {}
 

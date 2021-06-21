@@ -1,3 +1,4 @@
+import 'sky/common/shared'
 import 'sky/common/Update'
 
 import './_React'

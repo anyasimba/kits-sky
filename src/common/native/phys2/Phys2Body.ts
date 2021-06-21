@@ -1,3 +1,4 @@
+import 'sky/common/shared'
 import 'sky/common/math'
 
 declare global {
@@ -6,6 +7,7 @@ declare global {
 }
 
 namespace _ {
+    @shared
     @native.class('Phys2Body')
     export class Phys2Body extends Native {
         @native.prop('Shape*') shape: any

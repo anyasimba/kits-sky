@@ -1,3 +1,4 @@
+import 'sky/common/shared'
 import 'sky/common/math'
 
 declare global {
@@ -9,11 +10,13 @@ declare global {
 }
 
 namespace _ {
+    @shared
     @native.class('Phys2Circle')
     export class Phys2Circle extends Native {
         @native.prop('number') radius!: number
     }
 
+    @shared
     @native.class('Phys2Polygon')
     export class Phys2Polygon extends Native {
         @native.method('void', 'Array<vec2>') private setVertices!: (vertices: vec2[]) => void

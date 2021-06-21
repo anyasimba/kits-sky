@@ -1,8 +1,0 @@
-{
-    "name": "mobx",
-    "scripts": {
-        "start": "sky start --mode development"
-    },
-    "client": false,
-    "server": true
-}

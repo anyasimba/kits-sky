@@ -1,11 +1,17 @@
 import 'sky/common/AutoSync'
 import 'sky/common/math'
-import { Game } from './Shooter/Game'
+import 'sky/common/shared'
 
-const game = new Game()
-const player = game.addPlayer([
-    update => {
-        console.log(update)
-    },
-])
-player.move(new vec2({ x: 0, y: 1 }))
+const s = Symbol('ssss')
+
+@shared
+class Foo {
+    @share('number') x = 19
+    @share('number') y = 42
+}
+
+const foo = shared.new(Foo, (key, value) => {
+    console.log('update', key, value)
+})
+
+foo.x = 42

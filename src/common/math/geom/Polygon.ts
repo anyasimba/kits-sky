@@ -1,4 +1,4 @@
-export {}
+import 'sky/common/shared'
 
 declare global {
     type Polygon = _.Polygon
@@ -6,6 +6,7 @@ declare global {
 }
 
 namespace _ {
+    @shared
     export class Polygon {
         constructor(public points: vec2[] = []) {}
     }

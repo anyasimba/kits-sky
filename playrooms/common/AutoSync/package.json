@@ -5,5 +5,5 @@
         "build": "sky build",
         "native": "sky native"
     },
-    "client": true
+    "client": false
 }

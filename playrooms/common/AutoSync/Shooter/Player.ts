@@ -2,10 +2,10 @@ import { Bullet } from './entities/Bullet'
 import { Location } from './entities/Location'
 
 export class Player {
-    @share location: nullable<Location> = null
-    @share pos: vec2
-    @share('this') secredCard: number
-    @share publicCard: number
+    @share('Location | null') location: nullable<Location> = null
+    @share('vec2') pos: vec2
+    @share('number') secredCard: number
+    @share('number') publicCard: number
 
     constructor() {
         this.pos = new vec2({ x: 19, y: 19 })

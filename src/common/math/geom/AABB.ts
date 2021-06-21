@@ -1,4 +1,4 @@
-export {}
+import 'sky/common/shared'
 
 declare global {
     type AABB2 = _.AABB2
@@ -9,6 +9,7 @@ declare global {
 }
 
 namespace _ {
+    @shared
     export class AABB2 {
         xb: number
         yb: number
@@ -22,6 +23,7 @@ namespace _ {
         }
     }
 
+    @shared
     export class AABB3 {
         xb: number
         yb: number
