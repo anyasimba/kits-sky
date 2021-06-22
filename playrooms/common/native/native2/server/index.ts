@@ -32,10 +32,6 @@ root.addLink(
 
         console.log(circleBody.position.x)
 
-        if (_.isNaN(circleBody.position.x)) {
-            resetRoot()
-        }
-
         commit()
     }, 200)
 )

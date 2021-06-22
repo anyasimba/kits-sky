@@ -1,4 +1,4 @@
-import 'sky/common/HakunaMatata/_AutoSync/_shared'
+import 'sky/common/AutoSync/shared'
 
 @shared
 export class vec2 {

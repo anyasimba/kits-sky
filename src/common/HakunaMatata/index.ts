@@ -1,4 +1,5 @@
-import 'sky/common/HakunaMatata/EventEmitter'
+import 'sky/common/EventEmitter'
+import 'sky/common/AutoSync/shared'
 import * as _ from './_'
 globalify(_)
 

@@ -1,6 +1,5 @@
 import { purgatoryRef } from './_purgatoryRef'
 import { withScopeRef } from './_Scope/_withScopeRef'
-import './_AutoSync'
 
 @shared
 export class HakunaMatata extends EventEmitter {

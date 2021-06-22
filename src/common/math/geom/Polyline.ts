@@ -1,4 +1,4 @@
-import 'sky/common/HakunaMatata/_AutoSync/_shared'
+import 'sky/common/AutoSync/shared'
 
 declare global {
     type Polyline = _.Polyline

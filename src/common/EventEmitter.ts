@@ -1,4 +1,4 @@
-import './_AutoSync/_shared'
+import 'sky/common/AutoSync/shared'
 
 declare global {
     type EventEmitter = _.EventEmitter

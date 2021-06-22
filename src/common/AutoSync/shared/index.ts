@@ -7,4 +7,7 @@ declare global {
 
     type shared = _.shared
     const shared: typeof _.shared
+
+    type Shared = _.Shared
+    const Shared: typeof _.Shared
 }

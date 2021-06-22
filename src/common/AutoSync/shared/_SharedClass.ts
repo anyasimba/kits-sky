@@ -1,5 +1,5 @@
-import { $$id } from './__'
-import { createShared } from './_createShared'
+import { $$id } from '../__'
+import { createShared } from '../_createShared'
 
 export class Shared {
     new<

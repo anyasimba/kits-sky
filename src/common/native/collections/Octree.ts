@@ -40,4 +40,5 @@ namespace _ {
         update!: (obj: Native, belongs: OctreeBelongs, aabb: AABB3) => OctreeBelongs
     }
 }
+
 globalify(_)
