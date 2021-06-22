@@ -1,8 +1,9 @@
 import { purgatoryRef } from './_purgatoryRef'
 import { withScopeRef } from './_Scope/_withScopeRef'
+import './_AutoSync'
 
 @shared
-export class HakunaMatata {
+export class HakunaMatata extends EventEmitter {
     @hidden private __parents: [HakunaMatata, (() => void) | undefined][] = []
     @hidden private __childs: HakunaMatata[] = []
     @hidden private __relations: [HakunaMatata, () => void][] = []
@@ -15,6 +16,8 @@ export class HakunaMatata {
     }
 
     constructor() {
+        super()
+
         if (!withScopeRef.on) {
             const purgatory = purgatoryRef.purgatory
             purgatory.push(this)

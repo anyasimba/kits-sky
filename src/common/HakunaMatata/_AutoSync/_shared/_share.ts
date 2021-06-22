@@ -1,10 +1,8 @@
-import { propertyDecorator } from '@skyplay19/helpers'
 import { $$listener, $$prototype } from './__'
 
 export type share = typeof share
-export function share(type: string): (prototype: any, key: string) => void
-export function share(type: string): (prototype: any, key: string) => void {
-    return function (prototype: any, key: string) {
+export function share(type: string): (prototype: any, key: string | symbol) => void {
+    return function (prototype: any, key: string | symbol) {
         if (!Object.hasOwnProperty.call(prototype, $$prototype)) {
             let $prototype = Object.setPrototypeOf({}, prototype)
             if (prototype[$$prototype]) {
