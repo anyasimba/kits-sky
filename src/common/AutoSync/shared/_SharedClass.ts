@@ -1,14 +1,14 @@
 import { $$id } from '../__'
-import { createShared } from '../_createShared'
+import { newShared } from '../_newShared'
 
 export class Shared {
     new<
         T extends {
             new (...args: any[]): any
         }
-    >(classToCreate: T, ...args: ConstructorParameters<T>): InstanceType<T> {
-        if ((this as any)[$$id] != null) {
-            return createShared(classToCreate, ...args)
+    >(this: any, classToCreate: T, ...args: ConstructorParameters<T>): InstanceType<T> {
+        if (this[$$id] != null) {
+            return newShared(classToCreate, ...args)
         }
         return new classToCreate(...args)
     }

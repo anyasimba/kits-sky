@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import 'sky/common/HakunaMatata'
 
-const list = asRelation((array, object) => {
+const inArray = asRelation((array, object) => {
     array.push(object)
     return () => array.splice(array.indexOf(object), 1)
 })
@@ -14,8 +15,8 @@ class Small extends HakunaMatata {
     constructor() {
         super()
         this.use(() => {
-            console.log('small start')
-            return () => console.log('small end')
+            console.log('small created')
+            return () => console.log('small destroyed')
         })
     }
 }
@@ -24,7 +25,7 @@ class Foo extends HakunaMatata {
     @link small = new Small()
 
     @relation<Room>(function (this: Foo, room) {
-        setRelation(list(room.foos, this))
+        setRelation(inArray(room.foos, this))
     })
     room: nullable<Room> = null
 
@@ -42,9 +43,9 @@ class Foo extends HakunaMatata {
 
 const foo = new Foo()
 foo.room = new Room()
-const getScope = withScope(scope => {})(scope => {})
-getScope()?.addLink(foo)
-getScope()?.addLink(foo.room)
+const root = withScope(scope => {})(scope => {})()!
+root.addLink(foo)
+root.addLink(foo.room)
 console.log(foo.room.foos)
 commit()
 foo.destroy()

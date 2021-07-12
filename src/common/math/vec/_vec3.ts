@@ -1,12 +1,12 @@
 import 'sky/common/AutoSync/shared'
 
-@shared
+@shared('vec3')
 export class vec3 {
     static null: vec3 = new vec3({ x: 0, y: 0, z: 0 })
 
-    x: number
-    y: number
-    z: number
+    @share('number') x: number
+    @share('number') y: number
+    @share('number') z: number
     constructor(v: { x: number; y: number; z: number }) {
         this.x = v.x
         this.y = v.y

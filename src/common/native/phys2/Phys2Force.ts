@@ -7,7 +7,7 @@ declare global {
 }
 
 namespace _ {
-    @shared
+    @shared('Phys2Force')
     @native.class('Phys2Force')
     export class Phys2Force extends Native {
         @native.prop('vec2') force!: vec2

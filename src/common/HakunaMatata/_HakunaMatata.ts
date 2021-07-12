@@ -1,7 +1,6 @@
 import { purgatoryRef } from './_purgatoryRef'
 import { withScopeRef } from './_Scope/_withScopeRef'
 
-@shared
 export class HakunaMatata extends EventEmitter {
     @hidden private __parents: [HakunaMatata, (() => void) | undefined][] = []
     @hidden private __childs: HakunaMatata[] = []

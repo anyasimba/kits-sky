@@ -10,13 +10,13 @@ declare global {
 }
 
 namespace _ {
-    @shared
+    @shared('Phys2Circle')
     @native.class('Phys2Circle')
     export class Phys2Circle extends Native {
         @native.prop('number') radius!: number
     }
 
-    @shared
+    @shared('Phys2Polygon')
     @native.class('Phys2Polygon')
     export class Phys2Polygon extends Native {
         @native.method('void', 'Array<vec2>') private setVertices!: (vertices: vec2[]) => void
@@ -32,4 +32,5 @@ namespace _ {
         }
     }
 }
+
 globalify(_)

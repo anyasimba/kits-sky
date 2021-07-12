@@ -7,7 +7,7 @@ declare global {
 }
 
 namespace _ {
-    @shared
+    @shared('Phys2Body')
     @native.class('Phys2Body')
     export class Phys2Body extends Native {
         @native.prop('Shape*') shape: any

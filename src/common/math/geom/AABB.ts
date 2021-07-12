@@ -9,12 +9,12 @@ declare global {
 }
 
 namespace _ {
-    @shared
+    @shared('AABB2')
     export class AABB2 {
-        xb: number
-        yb: number
-        xe: number
-        ye: number
+        @share('number') xb: number
+        @share('number') yb: number
+        @share('number') xe: number
+        @share('number') ye: number
         constructor(v: { xb: number; yb: number; xe: number; ye: number }) {
             this.xb = v.xb
             this.yb = v.yb
@@ -23,14 +23,14 @@ namespace _ {
         }
     }
 
-    @shared
+    @shared('AABB3')
     export class AABB3 {
-        xb: number
-        yb: number
-        zb: number
-        xe: number
-        ye: number
-        ze: number
+        @share('number') xb: number
+        @share('number') yb: number
+        @share('number') zb: number
+        @share('number') xe: number
+        @share('number') ye: number
+        @share('number') ze: number
         constructor(v: { xb: number; yb: number; zb: number; xe: number; ye: number; ze: number }) {
             this.xb = v.xb
             this.yb = v.yb

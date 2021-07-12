@@ -6,9 +6,12 @@ declare global {
 }
 
 namespace _ {
-    @shared
+    @shared('Polyline')
     export class Polyline {
-        constructor(public points: vec2[] = []) {}
+        @share('vec2[]') points
+        constructor(points: vec2[] = []) {
+            this.points = points
+        }
     }
 }
 

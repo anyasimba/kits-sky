@@ -2,7 +2,7 @@ import { $$prototype, $$id } from './__'
 
 let uniqObjectId = 0
 
-export function createShared<
+export function newShared<
     T extends {
         new (...args: any[]): any
     }
