@@ -1,3 +1,4 @@
+import '../'
 import * as _ from './_'
 globalify(_)
 

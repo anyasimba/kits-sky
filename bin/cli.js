@@ -1,15 +1,16 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const fs = require('fs')
 const os = require('os')
-const webpack = require('webpack')
+const child_process = require('child_process')
+const esbuild = require('esbuild')
 const express = require('express')
-const getWebpackConfigGetter = require('./getWebpackConfigGetter')
+const getEsbuildConfigGetter = require('./getEsbuildConfigGetter')
 const getStandardNative = require('./native/standard')
 const getWebNative = require('./native/web')
 
-const globalPackages = ['sky']
 const [command, mode] = getArgs()
 const cwd = process.cwd()
 
@@ -19,49 +20,80 @@ const hasServer = package.server || package.client === false
 
 switch (command) {
     case 'start': {
-        const webpackConfigGetter = getWebpackConfigGetter(package, mode, cwd, globalPackages)
+        const esbuildConfigGetter = getEsbuildConfigGetter(package, mode, cwd)
 
         if (hasClient) {
             const app = express()
-            const config = webpackConfigGetter.getClientConfig()
-            const compiler = watchConfig(config)
-            app.use(
-                require('webpack-dev-middleware')(compiler, {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-                        'Access-Control-Allow-Headers':
-                            'X-Requested-With, content-type, Authorization',
-                    },
-                })
-            )
-
-            app.use(require('webpack-hot-middleware')(compiler))
-            app.get('/', (req, res) => {
-                res.send(getHtml(module['html:title'], ['/app.js']))
-            })
-            app.listen(3019)
+            const config = esbuildConfigGetter.getClientConfig()
         }
 
         if (hasServer) {
             fs.mkdtemp(path.join(os.tmpdir()), (err, folder) => {
-                if (err) throw err
-                watchConfig(webpackConfigGetter.getServerConfig(folder))
+                if (err) {
+                    throw err
+                }
+
+                const config = esbuildConfigGetter.getServerConfig(folder)
+
+                esbuild
+                    .build({
+                        ...config,
+                        watch: {
+                            onRebuild(error, result) {
+                                if (error) {
+                                    console.error('build failed:', error)
+                                } else {
+                                    console.log('build succeeded')
+                                    restart()
+                                }
+                            },
+                        },
+                    })
+                    .then(result => {
+                        restart()
+                    })
+
+                let childProcess
+                let isWatchNative = false
+                function restart() {
+                    if (!isWatchNative && package.server && package.server.native) {
+                        isWatchNative = true
+                        const nativePath = `${cwd}/.vscode/storage/server-native/build/Release/native.node`
+                        fs.watchFile(nativePath, () => {
+                            if (fs.existsSync(nativePath)) {
+                                restart()
+                            }
+                        })
+                    }
+
+                    if (childProcess) {
+                        childProcess.kill()
+                    }
+                    childProcess = child_process.spawn(
+                        'node',
+                        ['--enable-source-maps', path.join(folder, 'server.js')],
+                        {
+                            cwd,
+                            env: {
+                                NODE_PATH: path.join(__dirname, '../node_modules'),
+                            },
+                            stdio: 'inherit',
+                        }
+                    )
+                }
             })
         }
 
         break
     }
     case 'build': {
-        const webpackConfigGetter = getWebpackConfigGetter(package, mode, cwd, globalPackages)
+        const esbuildConfigGetter = getEsbuildConfigGetter(package, mode, cwd)
 
-        if (hasClient) {
-            runConfig(webpackConfigGetter.getClientConfig())
-        }
+        // if (hasClient) {
+        // }
 
-        if (hasServer) {
-            runConfig(webpackConfigGetter.getServerConfig())
-        }
+        // if (hasServer) {
+        // }
 
         break
     }
@@ -100,47 +132,6 @@ function getArgs() {
 
 function getModule(modulePath) {
     return JSON.parse(fs.readFileSync(modulePath).toString())
-}
-
-function watchConfig(config) {
-    const compiler = webpack(config)
-    compiler.watch(
-        {
-            ignored: /node_modules/,
-        },
-        function (err, _stats) {
-            if (err) {
-                // eslint-disable-next-line no-console
-                console.error(err)
-                return
-            }
-            process.stdout.write(`${_stats.toString(stats)}\n`)
-        }
-    )
-    return compiler
-}
-
-function runConfig(config) {
-    const compiler = webpack(config)
-    compiler.run((err, _stats) => {
-        if (err) {
-            // eslint-disable-next-line no-console
-            console.error(err)
-            return
-        }
-        process.stdout.write(`${_stats.toString(stats)}\n`)
-    })
-    return compiler
-}
-
-const stats = {
-    hash: false,
-    version: false,
-    children: true,
-    assets: false,
-    chunks: false,
-    entrypoints: false,
-    modules: false,
 }
 
 function getHtml(title, scripts) {

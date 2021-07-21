@@ -7,9 +7,8 @@ export function newShared<
         new (...args: any[]): any
     }
 >(classToCreate: T, ...args: ConstructorParameters<T>): InstanceType<T> {
-    const obj: any = {}
+    const obj: any = new classToCreate(...args)
     Object.setPrototypeOf(obj, classToCreate.prototype[$$prototype])
     obj[$$id] = ++uniqObjectId
-    classToCreate.call(obj, ...args)
     return obj
 }

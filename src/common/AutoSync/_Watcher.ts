@@ -1,4 +1,4 @@
-import { classMap } from "./__"
+import { HakunaMatata } from '../HakunaMatata/_HakunaMatata'
 
 export enum AutoSyncUpdateType {
     SET,

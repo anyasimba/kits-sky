@@ -5,7 +5,7 @@
             "sky/*": ["src/*"],
         },
         "allowUmdGlobalAccess": true,
-        "target": "es5",
+        "target": "ES6",
         "module": "commonjs",
         "strict": true,
         "experimentalDecorators": true,

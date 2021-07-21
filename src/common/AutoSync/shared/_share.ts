@@ -1,5 +1,5 @@
 import { $$id } from '../__'
-import { isObj, toType } from '../_typeUtils'
+import { toType } from '../_typeUtils'
 import { $$watchers, $$prototype } from './__'
 import { newShared } from '../_newShared'
 

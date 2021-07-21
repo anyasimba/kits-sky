@@ -7,7 +7,7 @@ globalify(_)
 console.log('No worries!')
 
 declare global {
-    const root: typeof _.root
+    const hakunaMatatas: typeof _.hakunaMatatas
 
     type link = _.link
     const link: typeof _.link

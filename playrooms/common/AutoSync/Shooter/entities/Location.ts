@@ -5,8 +5,10 @@ export class Location {
     players: Player[] = []
     bullets: Bullet[] = []
 
-    @share('number') w: number = 160
-    @share('number') h: number = 90
+    @share('number')
+    w: number = 160
+    @share('number')
+    h: number = 90
 
     constructor() {}
 
@@ -22,6 +24,5 @@ export class Location {
     addBullet(bullet: Bullet) {
         this.bullets.push(bullet)
         bullet.location = this
-        // this.autoSync.visibility!.addEntity(bullet)
     }
 }

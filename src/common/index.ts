@@ -1,7 +1,6 @@
 import './AutoSync'
 import './HakunaMatata'
 import './math'
-import './TiledMap'
 import './commit'
 import './EventEmitter'
 import './overrideConsole'
