@@ -8,12 +8,12 @@ declare global {
 
 namespace _ {
     /**
-     * Ease функция (in, out quad)
+     * Плавная функция (in, out quad)
      * @param {Number} t время, 0 - продолжительность
      * @param {Number} b начало
      * @param {Number} c длина
      * @param {Number} d duration, продолжительность
-     * @returns {Number} Returns the value of x for the equation.
+     * @returns {Number} Возвращает положение
      */
     export function easeInOutQuad(t: number, b: number, c: number, d: number): number {
         t /= d / 2

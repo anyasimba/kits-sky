@@ -17,8 +17,7 @@ module.exports = (package, mode, cwd) => {
         const inject = [path.join(__dirname, '../extras/client/index.ts')]
 
         if (package.client && package.client.native) {
-            inject.push(path.join(cwd, '.vscode/storage/web-native.js'))
-            inject.push(path.join(__dirname, 'native/web/@include-native.js'))
+            inject.push(path.join(__dirname, 'native/web/@inject-native.js'))
         }
 
         return {
@@ -45,7 +44,7 @@ module.exports = (package, mode, cwd) => {
 
         const inject = [path.join(__dirname, '../extras/server/index.ts')]
         if (package.server && package.server.native) {
-            inject.push(path.join(__dirname, 'native/standard/@include-native.js'))
+            inject.push(path.join(__dirname, 'native/standard/@inject-native.js'))
         }
 
         const nativePath = path

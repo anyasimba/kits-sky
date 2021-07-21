@@ -8,7 +8,5 @@
         "title": "Test Native",
         "native": true
     },
-    "server": {
-        "native": true
-    }
+    "server": false
 }

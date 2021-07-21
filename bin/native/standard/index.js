@@ -5,7 +5,7 @@ const { spawnSync } = require('child_process')
 
 module.exports = (package, mode, cwd) => {
     const nodeGyp = path.normalize(
-        path.resolve(__dirname, '../../../node_modules/.bin/node-gyp.cmd')
+        path.join(__dirname, '../../../node_modules/.bin/node-gyp.cmd')
     )
     const buildDir = path.normalize(`${cwd}/.vscode/storage/server-native/`)
 
@@ -15,18 +15,18 @@ module.exports = (package, mode, cwd) => {
                 {
                     target_name: 'native',
                     include_dirs: [
-                        path.normalize(`${path.resolve(__dirname, '../../../')}/`),
+                        path.normalize(`${path.join(__dirname, '../../../')}/`),
                         path.normalize(`${cwd}/`),
                     ],
                     sources: [],
                 },
             ],
         }
-        fromDir(path.resolve(__dirname, '../../../src/common/native'), '.cc', filePath => {
+        fromDir(path.join(__dirname, '../../../src/common/native'), '.cc', filePath => {
             config.targets[0].sources.push(filePath)
         })
 
-        config.targets[0].sources.push(path.resolve(__dirname, 'main.cc'))
+        config.targets[0].sources.push(path.join(__dirname, 'main.cc'))
 
         fs.mkdirSync(buildDir, { recursive: true })
         fs.writeFileSync(`${buildDir}/binding.gyp`, JSON.stringify(config, null, 4))

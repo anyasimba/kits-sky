@@ -24,7 +24,66 @@ switch (command) {
 
         if (hasClient) {
             const app = express()
+
             const config = esbuildConfigGetter.getClientConfig()
+            config.inject.push(path.join(__dirname, '@inject-hot-reload.js'))
+            let result
+            esbuild
+                .build({
+                    ...config,
+                    write: false,
+                    watch: {
+                        onRebuild(error, result_) {
+                            if (error) {
+                                console.error('build failed:', error)
+                            } else {
+                                console.log('--- client build succeeded ---')
+                                result = result_
+                            }
+                        },
+                    },
+                })
+                .then(result_ => {
+                    result = result_
+                })
+
+            app.use((req, res, next) => {
+                if (req.url === '/web-native.js') {
+                    res.send(fs.readFileSync(path.join(cwd, '.vscode/storage/web-native.js')))
+                        .status(200)
+                        .end()
+                    return
+                }
+                let finded = false
+                result.outputFiles.forEach(file => {
+                    if (finded) {
+                        return
+                    }
+                    if (
+                        path.normalize(path.join(cwd, 'dist/client', req.url)) ===
+                        path.normalize(file.path)
+                    ) {
+                        res.send(file.text).status(200).end()
+                        finded = true
+                    }
+                })
+                if (finded) {
+                    return
+                }
+                next()
+            })
+            app.use(express.static(path.join(cwd, 'public')))
+            app.use((req, res) => {
+                let title = package.name
+                if (package.client && package.client.title) {
+                    title = package.client.title
+                }
+
+                res.send(getHtml(title, ['/web-native.js', '/app.js']))
+                    .status(200)
+                    .end()
+            })
+            app.listen(3019)
         }
 
         if (hasServer) {
@@ -43,7 +102,6 @@ switch (command) {
                                 if (error) {
                                     console.error('build failed:', error)
                                 } else {
-                                    console.log('build succeeded')
                                     restart()
                                 }
                             },
@@ -56,6 +114,8 @@ switch (command) {
                 let childProcess
                 let isWatchNative = false
                 function restart() {
+                    console.log('--- build succeeded ---')
+
                     if (!isWatchNative && package.server && package.server.native) {
                         isWatchNative = true
                         const nativePath = `${cwd}/.vscode/storage/server-native/build/Release/native.node`
@@ -69,6 +129,7 @@ switch (command) {
                     if (childProcess) {
                         childProcess.kill()
                     }
+
                     childProcess = child_process.spawn(
                         'node',
                         ['--enable-source-maps', path.join(folder, 'server.js')],
@@ -145,6 +206,7 @@ function getHtml(title, scripts) {
         </head>
         <body>
             <div id='root'></div>
+            <div id='modal-root'></div>
             ${scripts.map(script => `<script src='${script}'></script>`).join('')}
         </body>
         </html>

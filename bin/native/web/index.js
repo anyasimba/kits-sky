@@ -7,13 +7,13 @@ module.exports = (package, mode, cwd) => {
         let unixWorkspacePath = path.normalize(cwd)
         unixWorkspacePath = unixWorkspacePath.replace(/\\/g, '/')
 
-        const makefilePath = path.resolve(__dirname, 'Makefile')
+        const makefilePath = path.join(__dirname, 'Makefile')
 
         const r = childProcess.spawnSync('mingw32-make', ['compile', '-f', makefilePath], {
             stdio: 'inherit',
             env: {
                 ...process.env,
-                ENGINE_PATH: path.resolve(__dirname, '../../../'),
+                ENGINE_PATH: path.join(__dirname, '../../../'),
                 PROJECT_PATH: unixWorkspacePath,
                 PROJECT_NAME: package.name,
             },

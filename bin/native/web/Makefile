@@ -10,8 +10,8 @@ OBJECTS = $(patsubst $(ENGINE_PATH)/%.cc,$(ENGINE_BUILD_DIR)/%.o,$(ENGINE_SOURCE
 
 CXX := em++
 CC := emcc
-CXXFLAGS := --bind -O2 -std=c++11 -I$(ENGINE_PATH)  -g
-LDFLAGS := --bind -O2 --js-library $(ENGINE_PATH)/bin/native/web/callback.js --memory-init-file 0 -g
+CXXFLAGS := --bind -O2 -std=c++11 -I$(ENGINE_PATH) -s WASM=0 -g
+LDFLAGS := --bind -O2 --js-library $(ENGINE_PATH)/bin/native/web/callback.js --memory-init-file 0 -s WASM=0 -g
 TARGET := js
 
 $(OBJECTS): $(ENGINE_SOURCES) $(ENGINE_HEADERS)

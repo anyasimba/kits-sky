@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import 'sky/common'
-overrideConsole(toLog)
 
 @shared('Entity')
 class Entity extends Shared {
